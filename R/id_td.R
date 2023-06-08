@@ -10,7 +10,6 @@
 #' svar <- id_td(var)
 #' }
 id_td <- function(var) {
-
   ## To do
   svar <- var
 
