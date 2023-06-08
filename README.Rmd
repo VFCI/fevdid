@@ -1,21 +1,29 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # fevdid
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/vfci/fevdid/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vfci/fevdid/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-R package to identify structural VAR shocks using maximization of
-explained forecast error variances. Implemented to target either the
-time domain or frequency domain.
+R package to identify structural VAR shocks using maximization of explained forecast error variances. Implemented to target either the time domain or frequency domain.
 
 ## Installation
 
-You can install the development version of fevdid from
-[GitHub](https://github.com/) with:
+You can install the development version of fevdid from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -26,7 +34,7 @@ devtools::install_github("VFCI/fevdid")
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
+```{r example}
 library(fevdid)
 ## basic example code
 ```
