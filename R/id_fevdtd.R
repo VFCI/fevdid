@@ -13,7 +13,6 @@
 #' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
 id_fevdtd <- function(var, target, horizon) {
-
   ## Check parameter values are what is expected
   if (!inherits(var, "varest")) stop("Please pass a VAR from 'vars::VAR'.")
 
@@ -21,7 +20,7 @@ id_fevdtd <- function(var, target, horizon) {
   k <- length(n)
   ni <- 1:k
 
-  if (is.character(target)){
+  if (is.character(target)) {
     if (!target %in% n) stop("Please provide a valid target variable.")
     ti <- which(n %in% target)
     t <- target
@@ -47,13 +46,13 @@ id_fevdtd <- function(var, target, horizon) {
 
   ## Squared IRF contributions
   irf2 <- array(0, dim = c(k, k, max(horizon)))
-  for (h in 1:max(horizon)){
-    irf2[, , h] <- (max(horizon) + 1 - max(min(horizon),h)) * t(irf[, , h]) %*% En %*% irf[, , h]
+  for (h in 1:max(horizon)) {
+    irf2[, , h] <- (max(horizon) + 1 - max(min(horizon), h)) * t(irf[, , h]) %*% En %*% irf[, , h]
   }
 
   if (max(horizon) == 1) {
     contributions <- irf2[, , 1]
-  } else{
+  } else {
     contributions <- rowSums(irf2[, , 1:max(horizon)], dims = 2)
   }
 
