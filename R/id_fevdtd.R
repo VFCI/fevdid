@@ -20,14 +20,15 @@ id_fevdtd <- function(var, target, horizon) {
   k <- length(n)
   ni <- 1:k
 
-  if (is.character(target)) {
-    if (!target %in% n) stop("Please provide a valid target variable.")
-    ti <- which(n %in% target)
-    t <- target
-  } else if (is.numeric(target)) {
+  if (is.numeric(target)) {
     if (!target %in% ni) stop("Please provide a valid target variable.")
     ti <- target
     t <- n[target]
+  } else {
+    target <- as.character(target)
+    if (!target %in% n) stop("Please provide a valid target variable.")
+    ti <- which(n %in% target)
+    t <- target
   }
 
   if (!is.numeric(horizon)) stop("Please provide an integer valued horizon.")
@@ -36,18 +37,20 @@ id_fevdtd <- function(var, target, horizon) {
   ## Fit a Choleskey SVAR (need orthogonal shocks)
   svar <- svars::id.chol(var)
 
-  ## Calculate IRFs out to horizon
-  irf <- svars:::IRF(svar$A_hat[, -1], svar$B, max(horizon)) |>
+  ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
+  irf <- vars::irf(svar, n.ahead = max(horizon))[[1]][, -1] |>
+    apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
     simplify2array()
 
   ## Target matrix
-  En <- matrix(0, k, k)
-  En[ti, ti] <- 1
+  tm <- matrix(0, k, k)
+  tm[ti, ti] <- 1
 
   ## Squared IRF contributions
   irf2 <- array(0, dim = c(k, k, max(horizon)))
   for (h in 1:max(horizon)) {
-    irf2[, , h] <- (max(horizon) + 1 - max(min(horizon), h)) * t(irf[, , h]) %*% En %*% irf[, , h]
+    h_weight <- max(horizon) + 1 - max(min(horizon), h)
+    irf2[, , h] <- h_weight * t(irf[, , h]) %*% tm %*% irf[, , h]
   }
 
   if (max(horizon) == 1) {
@@ -63,13 +66,13 @@ id_fevdtd <- function(var, target, horizon) {
   evec <- e$vectors[, ei]
 
   ## Construct max rotation matrix
-  Q <- matrix(0, k, k)
-  Q[, 1] <- evec
-  Q[, 2:k] <- pracma::nullspace(t(evec))
+  q <- matrix(0, k, k)
+  q[, 1] <- evec
+  q[, 2:k] <- pracma::nullspace(t(evec))
 
   ## Insert resulting matrix into var
   mvar <- svar
-  mvar$B <- svar$B %*% Q
+  mvar$B <- svar$B %*% q
   mvar$method <- "fevdtd"
 
   return(mvar)
