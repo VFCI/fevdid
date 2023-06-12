@@ -38,3 +38,11 @@ This is a basic example which shows you how to solve a common problem:
 library(fevdid)
 ## basic example code
 ```
+
+## References
+
+[Chapter 6: "Forecast error variance maximization"](https://jrenne.github.io/IdentifStructShocks/forecast-error-variance-maximization.html) of the book *The Identification of Dynamic Stuctural Shocks*, by Jean-Paul Renne and Kenza Benhima.
+
+- [jrenne Github](https://github.com/jrenne)
+
+Explains and codes up an example of identifying a shock that maximizes forecast error variance contribution.

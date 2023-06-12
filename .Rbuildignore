@@ -1,7 +1,8 @@
 ^README\.html$
-^bcadata\.Rproj$
+^fevdid\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^\.devcontainer$
 ^\.github$
 ^README\.Rmd$
 ^data-raw$
