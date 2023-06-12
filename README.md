@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/vfci/fevdid/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vfci/fevdid/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/VFCI/fevdid/branch/main/graph/badge.svg?token=2UCPW70685)](https://codecov.io/gh/VFCI/fevdid)
 <!-- badges: end -->
 
 R package to identify structural VAR shocks using maximization of
