@@ -22,7 +22,7 @@ test_that("Check that fevdtd > id.chol shocks", {
     m2 <- colSums(fevds[[ti]][hi, ])
 
     expect_true(
-      all(m >= m2), 
+      all(m >= m2),
       label = paste0("Iter: ", i, "\n", m, "\n", paste(m2, collapse = ", "))
       )
   }
