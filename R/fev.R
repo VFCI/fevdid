@@ -6,7 +6,6 @@
 #' @return forecast error variance
 #'
 fev <- function(var, h) {
-
   n <- colnames(var$y)
   k <- length(n)
 
@@ -17,7 +16,7 @@ fev <- function(var, h) {
 
   # Forecast Error Variance calculation
   fe <- list()
-  for(i in 1:k){
+  for (i in 1:k) {
     fe[[i]] <- as.data.frame(t(irf[i, , ]))
     colnames(fe[[i]]) <- n
   }
