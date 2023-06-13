@@ -48,7 +48,7 @@ id_fevdtd <- function(var, target, horizon) {
 
   ## Squared IRF contributions
   irf2 <- array(0, dim = c(k, k, max(horizon)))
-  for (h in 1:max(horizon)) {
+  for (h in 1:(max(horizon))) {
     h_weight <- max(horizon) + 1 - max(min(horizon), h)
     irf2[, , h] <- h_weight * t(irf[, , h]) %*% tm %*% irf[, , h]
   }

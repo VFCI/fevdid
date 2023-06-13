@@ -15,11 +15,11 @@ test_that("Check that fevdtd > id.chol shocks", {
 
     mvar <- id_fevdtd(v, ti, hi)
 
-    fevdm <- svars:::fevd.svars(mvar, n.ahead = max(hi))
-    fevds <- svars:::fevd.svars(svar, n.ahead = max(hi))
+    fevdm <- fev(mvar, h = max(hi))
+    fevds <- fev(svar, h = max(hi))
 
-    m <- mean(fevdm[[ti]][, 1][hi])
-    m2 <- colMeans(fevds[[ti]][hi, ])
+    m <- sum(fevdm[[ti]][, 1][hi])
+    m2 <- colSums(fevds[[ti]][hi, ])
 
     expect_true(
       all(m >= m2), 
