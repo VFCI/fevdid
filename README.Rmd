@@ -33,11 +33,36 @@ devtools::install_github("VFCI/fevdid")
 
 ## Usage
 
-This is a basic example which shows you how to solve a common problem:
+Example of identifying the main shock along the time domain.
+Here the target variable is inflation over four to ten quarters out. 
+The figure compares the identified main shock to the Choleskey shock for inflation, which already explains most of the variation in this simple 3-variable VAR.
+Clearly, however, the contribution from the Main shock is higher over the targeted time period.
 
-```{r example}
+```{r example, message = F}
 library(fevdid)
-## basic example code
+
+## US data on inflation (pi), output (x), and federal funds rate (i)
+x <- svars::USA
+v <- vars::VAR(x, p = 2)
+sv <- svars::id.chol(v, order_k = c("x", "pi", "i"))
+
+## Find shock that maximizes forecast error variance for inflation (pi)
+## from 4 to 10 quarters out
+mv <- id_fevdtd(v, target = "pi", horizon = 4:10)
+
+## Comparing fevds
+fevdsv <- vars::fevd(sv, n.ahead = 20)$pi
+fevdmv <- vars::fevd(mv, n.ahead = 20)$pi
+colnames(fevdmv) <- c("Main", "orth1", "orth2")
+
+
+## Plotting
+require(ggplot2)
+cbind(h = 1:20, fevdsv, fevdmv) |>
+  tidyr::pivot_longer(cols = !h) |>
+  dplyr::filter(name %in% c("Main", "pi")) |>
+  ggplot(aes(x = h, y = value, color = name)) +
+  geom_line()
 ```
 
 ## References
