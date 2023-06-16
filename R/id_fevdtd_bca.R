@@ -12,7 +12,7 @@
 #' v <- vars::VAR(x, p = 2)
 #' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
-id_fevdtd <- function(var, target, horizon) {
+id_fevdtd_bca <- function(var, target, horizon) {
   ## Check parameter values are what is expected
   if (!inherits(var, "varest")) stop("Please pass a VAR from 'vars::VAR'.")
 
@@ -43,23 +43,16 @@ id_fevdtd <- function(var, target, horizon) {
     apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
     simplify2array()
 
-  ## Target matrix
-  tm <- matrix(0, k, k)
-  tm[ti, ti] <- 1
+  vtmp <- t(irf[ti, , ])
 
-  ## Squared IRF contributions
-  irf2 <- array(0, dim = c(k, k, max(horizon)))
-  for (h in 1:(max(horizon))) {
-    h_weight <- max(horizon) + 1 - max(min(horizon), h)
-    irf2[, , h] <- h_weight * t(irf[, , h]) %*% tm %*% irf[, , h]
+  V0 <- matrix(0, k, k)
+  V1 <- 0
+  for (i in 1:max(horizon)){
+    V0 <- V0 + vtmp[i, ] %*% t(vtmp[i, ])
+    V1 <- V1 + t(vtmp[i, ]) %*% vtmp[i, ]
   }
 
-  if (max(horizon) == 1) {
-    contributions <- irf2[, , 1]
-  } else {
-    contributions <- rowSums(irf2[, , 1:max(horizon)], dims = 2)
-  }
-
+  contributions <- V0 / V1[[1]]
 
   ## Max eigen value
   e <- eigen(contributions)

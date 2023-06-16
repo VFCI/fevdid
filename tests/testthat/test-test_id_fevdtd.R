@@ -4,6 +4,7 @@ test_that("Check that fevdtd > id.chol shocks", {
 
   v <- vars::VAR(x, p = 2)
   svar <- svars::id.chol(v)
+  svar$B <- t(chol(cov(residuals(v))))
 
   h <- list(1, 1:10, 1:20, 1:40, 1:60, 5:10, 10:15, 15:20, 20:40, 40:60)
   t <- c("x", "pi", "i")

@@ -12,7 +12,7 @@
 #' v <- vars::VAR(x, p = 2)
 #' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
-id_fevdtd <- function(var, target, horizon) {
+id_fevdfd <- function(var, target, freqs, hmax = 1000) {
   ## Check parameter values are what is expected
   if (!inherits(var, "varest")) stop("Please pass a VAR from 'vars::VAR'.")
 
@@ -31,15 +31,17 @@ id_fevdtd <- function(var, target, horizon) {
     t <- target
   }
 
-  if (!is.numeric(horizon)) stop("Please provide an integer valued horizon.")
-  if (!all(horizon > 0)) stop("Please provide only positive horizon values.")
+  if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
+  if (!all(freqs > 0 & freqs < 2 * pi)) {
+    stop("Please provide freqs between 0 and 2pi.")
+  }
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
   svar <- svars::id.chol(var)
   svar$B <- t(chol(cov(residuals(var))))
 
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
-  irf <- vars::irf(svar, n.ahead = max(horizon))[[1]][, -1] |>
+  irf <- vars::irf(svar, n.ahead = hmax)[[1]][, -1] |>
     apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
     simplify2array()
 
@@ -48,18 +50,30 @@ id_fevdtd <- function(var, target, horizon) {
   tm[ti, ti] <- 1
 
   ## Squared IRF contributions
-  irf2 <- array(0, dim = c(k, k, max(horizon)))
-  for (h in 1:(max(horizon))) {
-    h_weight <- max(horizon) + 1 - max(min(horizon), h)
-    irf2[, , h] <- h_weight * t(irf[, , h]) %*% tm %*% irf[, , h]
+  irf2 <- array(0, dim = c(k, k, hmax))
+  for (h in 1:hmax) {
+    irf2[, , h] <- t(irf[, , h]) %*% tm %*% irf[, , h]
   }
 
-  if (max(horizon) == 1) {
-    contributions <- irf2[, , 1]
-  } else {
-    contributions <- rowSums(irf2[, , 1:max(horizon)], dims = 2)
-  }
+  freq_grid <- 2 * pi * (0:(hmax - 1)) / hmax
+  freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
+  freq_keep2 <- freq_grid >=  2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+  freq_keep <- freq_keep1 | freq_keep2
 
+  contributions <- matrix(0, k, k)
+  for (i in 1:k) {
+    for (j in 1:k) {
+        td_vals <- irf2[i, j, ]
+
+        fd_vals <- fft(td_vals)
+
+        fd_keep <- fd_vals * as.integer(freq_keep)
+
+        td_keep <- Re(pracma::ifft(fd_keep))
+
+        contributions[i, j] <- td_keep[1]
+    }
+  }
 
   ## Max eigen value
   e <- eigen(contributions)
@@ -74,7 +88,7 @@ id_fevdtd <- function(var, target, horizon) {
   ## Insert resulting matrix into var
   mvar <- svar
   mvar$B <- svar$B %*% q
-  mvar$method <- "fevdtd"
+  mvar$method <- "fevdfd"
 
   return(mvar)
 }
