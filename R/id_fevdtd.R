@@ -48,18 +48,12 @@ id_fevdtd <- function(var, target, horizon) {
   tm[ti, ti] <- 1
 
   ## Squared IRF contributions
-  irf2 <- array(0, dim = c(k, k, max(horizon)))
-  for (h in 1:(max(horizon))) {
-    h_weight <- max(horizon) + 1 - max(min(horizon), h)
-    irf2[, , h] <- h_weight * t(irf[, , h]) %*% tm %*% irf[, , h]
+  contributions <- array(0, dim = c(k, k))
+  for (h in min(horizon):max(horizon)) {
+    for (i in 1:h) {
+      contributions <- contributions + t(irf[, , i]) %*% tm %*% irf[, , i]
+    }
   }
-
-  if (max(horizon) == 1) {
-    contributions <- irf2[, , 1]
-  } else {
-    contributions <- rowSums(irf2[, , 1:max(horizon)], dims = 2)
-  }
-
 
   ## Max eigen value
   e <- eigen(contributions)

@@ -72,3 +72,7 @@ Jean-Paul Renne and Kenza Benhima.
 
 Explains and codes up an example of identifying a shock that maximizes
 forecast error variance contribution.
+
+“[What moves real
+GNP?](http://fmwww.bc.edu/repec/esNAWM04/up.2923.1054309431.pdf)”.
+Harlad Uhlig. (2003).

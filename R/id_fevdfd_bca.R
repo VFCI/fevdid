@@ -49,7 +49,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
   MY <- cbind(diag(k), matrix(0, k, k))
   MX <- rbind(A_hat, MY)
   ME <- rbind(svar$B, matrix(0, k, k))
-  
+
   nx <- dim(MX)[[2]]
 
   gl <- 1024
