@@ -48,37 +48,37 @@ id_fevdfd_approx <- function(var, target, freqs, hmax = 1000) {
   irf2 <- array(0, dim = c(k, k, hmax))
   irf2[, , 1] <- t(irf[, , 1]) %*% tm %*% irf[, , 1]
   for (h in 2:hmax) {
-    irf2[, , h] <-  t(irf[, , h]) %*% tm %*% irf[, , h]
+    irf2[, , h] <- t(irf[, , h]) %*% tm %*% irf[, , h]
   }
 
   freq_grid <- 2 * pi * (0:(hmax - 1)) / hmax
   freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
-  freq_keep2 <- freq_grid >=  2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+  freq_keep2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
   freq_keep <- freq_keep1 | freq_keep2
 
   ## Convert to Freq Domain
   fd_irf <- array(0, dim = c(k, k, hmax))
   for (i in 1:k) {
     for (j in 1:k) {
-        td_vals <- irf[i, j, ]
+      td_vals <- irf[i, j, ]
 
-        fd_vals <- stats::fft(td_vals)
+      fd_vals <- stats::fft(td_vals)
 
-        fd_keep <- fd_vals * as.integer(freq_keep)
+      fd_keep <- fd_vals * as.integer(freq_keep)
 
-        fd_irf[i, j, ] <- fd_keep
+      fd_irf[i, j, ] <- fd_keep
     }
   }
 
   ## Get squareds
   fd_irf_sq <- array(0, dim = c(k, k, hmax))
-  for(t in 1:hmax) {
-    fd_irf_sq[,,t] <- fd_irf[ti, , t] %*% Conj(t(fd_irf[ti, , t]))
+  for (t in 1:hmax) {
+    fd_irf_sq[, , t] <- fd_irf[ti, , t] %*% Conj(t(fd_irf[ti, , t]))
   }
 
-  contributions <- matrix(0, k, k) 
-  for(t in 1:hmax) {
-    contributions <- contributions + Re(fd_irf_sq[,,t])
+  contributions <- matrix(0, k, k)
+  for (t in 1:hmax) {
+    contributions <- contributions + Re(fd_irf_sq[, , t])
   }
 
   ## Max eigen value

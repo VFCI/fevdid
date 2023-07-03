@@ -58,7 +58,7 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
 
   freq_grid <- seq(0, 2 * pi, length.out = gl)
   freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
-  freq_keep2 <- freq_grid >=  2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+  freq_keep2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
   freq_keep <- freq_keep1 | freq_keep2
 
   zi <- exp(-1i * freq_grid)
@@ -68,10 +68,10 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
 
   for (gp in 1:gl) {
     if (freq_keep[gp] == 1) {
-        fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
-        tmp <- r2pi * (Conj(t(fom)) %*% fom)
-        tmp <- freq_keep[gp] * tmp
-        sp2[gp, ] <- Conj(t(c(tmp)))
+      fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
+      tmp <- r2pi * (Conj(t(fom)) %*% fom)
+      tmp <- freq_keep[gp] * tmp
+      sp2[gp, ] <- Conj(t(c(tmp)))
     }
   }
 

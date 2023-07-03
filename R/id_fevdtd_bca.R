@@ -42,7 +42,7 @@ id_fevdtd_bca <- function(var, target, horizon) {
   for (j in min(horizon):max(horizon)) {
     V0 <- matrix(0, k, k)
     V1 <- 0
-    for (i in 1:j){
+    for (i in 1:j) {
       V0 <- V0 + vtmp[i, ] %*% t(vtmp[i, ])
       V1 <- V1 + t(vtmp[i, ]) %*% vtmp[i, ]
     }

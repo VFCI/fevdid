@@ -49,7 +49,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
   gl <- 1000 # 1024
   freq_grid <- seq(0, 2 * pi, length.out = gl)
   freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
-  freq_keep2 <- freq_grid >=  2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+  freq_keep2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
   freq_keep <- freq_keep1 | freq_keep2
 
   zi <- exp(-1i * freq_grid)
@@ -60,20 +60,20 @@ id_fevdfd_bca <- function(var, target, freqs) {
 
   for (gp in 1:gl) {
     if (freq_keep[gp] == 1) {
-        fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
-        tmp <- r2pi * (fom %*% Conj(t(fom)))
-        tmp <- freq_keep[gp] * tmp
-        sp[gp] <- tmp
-        tmp <- r2pi * (Conj(t(fom)) %*% fom)
-        tmp <- freq_keep[gp] * tmp
-        sp2[gp, ] <- Conj(t(c(tmp)))
+      fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
+      tmp <- r2pi * (fom %*% Conj(t(fom)))
+      tmp <- freq_keep[gp] * tmp
+      sp[gp] <- tmp
+      tmp <- r2pi * (Conj(t(fom)) %*% fom)
+      tmp <- freq_keep[gp] * tmp
+      sp2[gp, ] <- Conj(t(c(tmp)))
     }
   }
 
-    VTtmp <- 2 * pi * Re(stats::fft(sp, inverse = TRUE) / gl)
-    VDtmp <- apply(sp2, 2, FUN = function(x) 2 * pi * Re(pracma::ifft(x)))
+  VTtmp <- 2 * pi * Re(stats::fft(sp, inverse = TRUE) / gl)
+  VDtmp <- apply(sp2, 2, FUN = function(x) 2 * pi * Re(pracma::ifft(x)))
 
-    contributions <- matrix(VDtmp[1, ] / VTtmp[1], k, k)
+  contributions <- matrix(VDtmp[1, ] / VTtmp[1], k, k)
 
   ## Max eigen value
   e <- eigen(contributions)
