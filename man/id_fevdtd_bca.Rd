@@ -19,9 +19,3 @@ structural var
 \description{
 Identify...
 }
-\examples{
-x <- svars::USA
-v <- vars::VAR(x, p = 2)
-mvar <- id_fevdtd(v, "pi", 4:10)
-
-}

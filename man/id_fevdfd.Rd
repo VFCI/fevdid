@@ -4,14 +4,16 @@
 \alias{id_fevdfd}
 \title{Identify...}
 \usage{
-id_fevdfd(var, target, freqs, hmax = 1000)
+id_fevdfd(var, target, freqs, grid_size = 1000)
 }
 \arguments{
 \item{var, }{vars::VAR object}
 
-\item{target, }{variable name or index to maximize its fevd}
+\item{target, }{variable name or index to maximize its fev}
 
-\item{horizon, }{integer vector (can be length 1) of the horizon to maximize}
+\item{freqs}{vector of length 2 of min and max frequencies (0:2pi)}
+
+\item{grid_size}{how fine the grid to approximate the frequency domain}
 }
 \value{
 structural var
@@ -22,6 +24,6 @@ Identify...
 \examples{
 x <- svars::USA
 v <- vars::VAR(x, p = 2)
-mvar <- id_fevdtd(v, "pi", 4:10)
+mvar <- id_fevdfd(v, "pi", c(2 * pi / 32, 2 * pi / 6))
 
 }

@@ -2,15 +2,9 @@
 #'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
-#' @param horizon, integer vector (can be length 1) of the horizon to maximize
+#' @param freqs vector of length 2 of min and max frequencies (0:2pi)
 #'
 #' @return structural var
-#' @export
-#'
-#' @examples
-#' x <- svars::USA
-#' v <- vars::VAR(x, p = 2)
-#' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
 id_fevdfd_bca <- function(var, target, freqs) {
   ## Check parameter values are what is expected
@@ -38,7 +32,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
   svar <- svars::id.chol(var)
-  svar$B <- t(chol(cov(residuals(var))))
+  svar$B <- t(chol(stats::cov(stats::residuals(var))))
 
   if (svar$type == "const") {
     A_hat <- svar$A_hat[, -1]
@@ -52,7 +46,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
 
   nx <- dim(MX)[[2]]
 
-  gl <- 1024
+  gl <- 1000 # 1024
   freq_grid <- seq(0, 2 * pi, length.out = gl)
   freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
   freq_keep2 <- freq_grid >=  2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
@@ -64,7 +58,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
   sp <- matrix(as.complex(0), gl, 1)
   sp2 <- matrix(as.complex(0), gl, k * k)
 
-  for (gp in 1:1024) {
+  for (gp in 1:gl) {
     if (freq_keep[gp] == 1) {
         fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
         tmp <- r2pi * (fom %*% Conj(t(fom)))
@@ -76,7 +70,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
     }
   }
 
-    VTtmp <- 2 * pi * Re(fft(sp, inverse = TRUE) / gl)
+    VTtmp <- 2 * pi * Re(stats::fft(sp, inverse = TRUE) / gl)
     VDtmp <- apply(sp2, 2, FUN = function(x) 2 * pi * Re(pracma::ifft(x)))
 
     contributions <- matrix(VDtmp[1, ] / VTtmp[1], k, k)

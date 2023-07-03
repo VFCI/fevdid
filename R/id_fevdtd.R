@@ -36,7 +36,7 @@ id_fevdtd <- function(var, target, horizon) {
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
   svar <- svars::id.chol(var)
-  svar$B <- t(chol(cov(residuals(var))))
+  svar$B <- t(chol(stats::cov(stats::residuals(var))))
 
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
   irf <- vars::irf(svar, n.ahead = max(horizon))[[1]][, -1] |>

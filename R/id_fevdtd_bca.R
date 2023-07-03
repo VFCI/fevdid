@@ -5,12 +5,6 @@
 #' @param horizon, integer vector (can be length 1) of the horizon to maximize
 #'
 #' @return structural var
-#' @export
-#'
-#' @examples
-#' x <- svars::USA
-#' v <- vars::VAR(x, p = 2)
-#' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
 id_fevdtd_bca <- function(var, target, horizon) {
   ## Check parameter values are what is expected
@@ -36,7 +30,7 @@ id_fevdtd_bca <- function(var, target, horizon) {
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
   svar <- svars::id.chol(var)
-  svar$B <- t(chol(cov(residuals(var))))
+  svar$B <- t(chol(stats::cov(stats::residuals(var))))
 
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
   irf <- vars::irf(svar, n.ahead = max(horizon))[[1]][, -1] |>

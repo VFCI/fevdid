@@ -1,19 +1,13 @@
 #' Identify...
 #'
 #' @param var, vars::VAR object
-#' @param target, variable name or index to maximize its fev
+#' @param target, variable name or index to maximize its fevd
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
-#' @param grid_size how fine the grid to approximate the frequency domain
+#' @param hmax length of irfs to calculate, longer for better approximation
 #'
 #' @return structural var
-#' @export
 #'
-#' @examples
-#' x <- svars::USA
-#' v <- vars::VAR(x, p = 2)
-#' mvar <- id_fevdfd(v, "pi", c(2 * pi / 32, 2 * pi / 6))
-#'
-id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
+id_fevdfd_approx <- function(var, target, freqs, hmax = 1000) {
   ## Check parameter values are what is expected
   if (!inherits(var, "varest")) stop("Please pass a VAR from 'vars::VAR'.")
 
@@ -41,41 +35,51 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
   svar <- svars::id.chol(var)
   svar$B <- t(chol(stats::cov(stats::residuals(var))))
 
-  if (svar$type == "const") {
-    A_hat <- svar$A_hat[, -1]
-  } else {
-    A_hat <- svar$A_hat
+  ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
+  irf <- vars::irf(svar, n.ahead = hmax)[[1]][, -1] |>
+    apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
+    simplify2array()
+
+  ## Target matrix
+  tm <- matrix(0, k, k)
+  tm[ti, ti] <- 1
+
+  ## Squared IRF contributions
+  irf2 <- array(0, dim = c(k, k, hmax))
+  irf2[, , 1] <- t(irf[, , 1]) %*% tm %*% irf[, , 1]
+  for (h in 2:hmax) {
+    irf2[, , h] <-  t(irf[, , h]) %*% tm %*% irf[, , h]
   }
 
-  ## Contstruct VAR(1) objects
-  MY <- cbind(diag(k), matrix(0, k, k))
-  MX <- rbind(A_hat, MY)
-  ME <- rbind(svar$B, matrix(0, k, k))
-
-  nx <- dim(MX)[[2]]
-
-  gl <- grid_size
-
-  freq_grid <- seq(0, 2 * pi, length.out = gl)
+  freq_grid <- 2 * pi * (0:(hmax - 1)) / hmax
   freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
   freq_keep2 <- freq_grid >=  2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
   freq_keep <- freq_keep1 | freq_keep2
 
-  zi <- exp(-1i * freq_grid)
-  r2pi <- 1 / (2 * pi)
+  ## Convert to Freq Domain
+  fd_irf <- array(0, dim = c(k, k, hmax))
+  for (i in 1:k) {
+    for (j in 1:k) {
+        td_vals <- irf[i, j, ]
 
-  sp2 <- matrix(as.complex(0), gl, k * k)
+        fd_vals <- stats::fft(td_vals)
 
-  for (gp in 1:gl) {
-    if (freq_keep[gp] == 1) {
-        fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
-        tmp <- r2pi * (Conj(t(fom)) %*% fom)
-        tmp <- freq_keep[gp] * tmp
-        sp2[gp, ] <- Conj(t(c(tmp)))
+        fd_keep <- fd_vals * as.integer(freq_keep)
+
+        fd_irf[i, j, ] <- fd_keep
     }
   }
 
-  contributions <- matrix(colSums(Re(sp2)), k, k)
+  ## Get squareds
+  fd_irf_sq <- array(0, dim = c(k, k, hmax))
+  for(t in 1:hmax) {
+    fd_irf_sq[,,t] <- fd_irf[ti, , t] %*% Conj(t(fd_irf[ti, , t]))
+  }
+
+  contributions <- matrix(0, k, k) 
+  for(t in 1:hmax) {
+    contributions <- contributions + Re(fd_irf_sq[,,t])
+  }
 
   ## Max eigen value
   e <- eigen(contributions)
