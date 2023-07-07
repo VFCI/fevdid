@@ -25,6 +25,8 @@ devtools::install_github("VFCI/fevdid")
 
 ## Usage
 
+### Main Shock in the Time Domain
+
 Example of identifying the main shock along the time domain. Here the
 target variable is inflation over four to ten quarters out. The figure
 compares the identified main shock to the Choleskey shock for inflation,
@@ -59,7 +61,46 @@ cbind(h = 1:20, fevdsv, fevdmv) |>
   geom_line()
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-example_td-1.png" width="100%" />
+
+### Main Shock in the Frequency Domain
+
+Example of identifying the main shock along the frequency domain. Here
+the target variable is inflation between ($\frac{2\pi}{32}$, ). The
+figure compares the identified main shock to the Choleskey shock for
+inflation, which already explains most of the variation in this simple
+3-variable VAR. The contribution from the Main shock is higher over the
+targeted frequency period.
+
+``` r
+library(fevdid)
+
+## US data on inflation (pi), output (x), and federal funds rate (i)
+x <- svars::USA
+v <- vars::VAR(x, p = 2)
+sv <- svars::id.chol(v, order_k = c("x", "pi", "i"))
+
+## Find shock that maximizes forecast error variance for inflation (pi)
+## in the "business cycle" frequencies
+bc_freqs <- c(2 * pi / 32, 2 * pi / 6)
+mfv <- id_fevdfd(v, target = "pi", freqs = bc_freqs)
+
+## Comparing fevds
+fevdsv <- fevdfd(sv)[, 2, 2]
+fevdmv <- fevdfd(mfv)[, 2, 1]
+
+## Plotting
+require(ggplot2)
+cbind(f = seq(0, 2 * pi, length.out = 1000), pi = fevdsv, Main = fevdmv) |> 
+  dplyr::as_tibble() |>
+  tidyr::pivot_longer(cols = !f) |>
+  dplyr::filter(name %in% c("Main", "pi")) |>
+  ggplot(aes(x = f, y = value, color = name)) +
+  geom_vline(xintercept = bc_freqs) +
+  geom_line()
+```
+
+<img src="man/figures/README-example_fd-1.png" width="100%" />
 
 ## References
 

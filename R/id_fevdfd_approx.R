@@ -51,10 +51,10 @@ id_fevdfd_approx <- function(var, target, freqs, hmax = 1000) {
     irf2[, , h] <- t(irf[, , h]) %*% tm %*% irf[, , h]
   }
 
-  freq_grid <- 2 * pi * (0:(hmax - 1)) / hmax
-  freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
-  freq_keep2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
-  freq_keep <- freq_keep1 | freq_keep2
+  freq_grid <- seq(0, 2 * pi, length.out = hmax)
+  f1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
+  f2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+  freq_keep <- f1 | f2
 
   ## Convert to Freq Domain
   fd_irf <- array(0, dim = c(k, k, hmax))

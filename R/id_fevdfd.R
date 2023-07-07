@@ -41,41 +41,35 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
   svar <- svars::id.chol(var)
   svar$B <- t(chol(stats::cov(stats::residuals(var))))
 
-  if (svar$type == "const") {
-    A_hat <- svar$A_hat[, -1]
-  } else {
-    A_hat <- svar$A_hat
-  }
-
   ## Contstruct VAR(1) objects
-  MY <- cbind(diag(k), matrix(0, k, k))
-  MX <- rbind(A_hat, MY)
-  ME <- rbind(svar$B, matrix(0, k, k))
+  svar1 <- svar_to_svar1(svar)
 
-  nx <- dim(MX)[[2]]
+  nx <- dim(svar1$mx)[[2]]
 
   gl <- grid_size
 
+  ## Create grid of frequencies, set to True those to target
   freq_grid <- seq(0, 2 * pi, length.out = gl)
-  freq_keep1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
-  freq_keep2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
-  freq_keep <- freq_keep1 | freq_keep2
+  f1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
+  f2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+  freq_keep <- f1 | f2
 
   zi <- exp(-1i * freq_grid)
   r2pi <- 1 / (2 * pi)
 
-  sp2 <- matrix(as.complex(0), gl, k * k)
+  freq_fev <- matrix(as.complex(0), gl, k * k)
 
   for (gp in 1:gl) {
     if (freq_keep[gp] == 1) {
-      fom <- t(MY[ti, ]) %*% (solve(diag(nx) - MX * zi[gp]) %*% ME)
-      tmp <- r2pi * (Conj(t(fom)) %*% fom)
-      tmp <- freq_keep[gp] * tmp
-      sp2[gp, ] <- Conj(t(c(tmp)))
+      x <-
+        t(svar1$my[ti, ]) %*% (solve(diag(nx) - svar1$mx * zi[gp]) %*% svar1$me)
+      x_sq <- r2pi * Conj(t(x)) %*% x
+      x_sq <- freq_keep[gp] * x_sq
+      freq_fev[gp, ] <- Conj(t(c(x_sq)))
     }
   }
 
-  contributions <- matrix(colSums(Re(sp2)), k, k)
+  contributions <- matrix(colSums(Re(freq_fev)), k, k)
 
   ## Max eigen value
   e <- eigen(contributions)
