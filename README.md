@@ -66,11 +66,12 @@ cbind(h = 1:20, fevdsv, fevdmv) |>
 ### Main Shock in the Frequency Domain
 
 Example of identifying the main shock along the frequency domain. Here
-the target variable is inflation between ($\frac{2\pi}{32}$, ). The
-figure compares the identified main shock to the Choleskey shock for
-inflation, which already explains most of the variation in this simple
-3-variable VAR. The contribution from the Main shock is higher over the
-targeted frequency period.
+the target variable is inflation between $\frac{2\pi}{32}$ and
+$\frac{2\pi}{6}$, the “business cycle” frequencies. The figure compares
+the identified main shock to the Choleskey shock for inflation, which
+already explains most of the variation in this simple 3-variable VAR.
+The contribution from the Main shock is higher over the targeted
+frequency period.
 
 ``` r
 library(fevdid)
