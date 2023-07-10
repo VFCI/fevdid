@@ -2,7 +2,10 @@
 % Please edit documentation in R/id_fevdfd_approx.R
 \name{id_fevdfd_approx}
 \alias{id_fevdfd_approx}
-\title{Identify...}
+\title{Identify the main shock by targetting the forecast error
+variance contribution in the frequency domain.
+Approximates the frequency fev by iterating out a length of
+'hmax' in time domain first.}
 \usage{
 id_fevdfd_approx(var, target, freqs, hmax = 1000)
 }
@@ -16,8 +19,11 @@ id_fevdfd_approx(var, target, freqs, hmax = 1000)
 \item{hmax}{length of irfs to calculate, longer for better approximation}
 }
 \value{
-structural var
+main shock var
 }
 \description{
-Identify...
+Identify the main shock by targetting the forecast error
+variance contribution in the frequency domain.
+Approximates the frequency fev by iterating out a length of
+'hmax' in time domain first.
 }

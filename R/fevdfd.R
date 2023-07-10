@@ -1,25 +1,26 @@
-#' Identify...
+#' Calculate the forecast error variance in the frequency domain.
 #'
 #' @param var, vars::VAR object
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
 #' @param grid_size how fine the grid to approximate the frequency domain
-#' @param fev Boolean, true to return fev not fevd
+#' @param fev Boolean true to return fev not fevd
 #'
-#' @return forecast error variance decomposition in frequency domain
+#' @return Matrix of forecast error variance decomposition in frequency domain
+#' Indexed: frequencies, variables, shocks
 #' @export
 #'
 #' @examples
 #' x <- svars::USA
 #' v <- vars::VAR(x, p = 2)
-#' fevd <- fevdfd(v)
+#' sv <- svars::id.chol(v)
+#' fevd <- fevdfd(sv)
 #'
 fevdfd <- function(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE) {
   ## Check parameter values are what is expected
-  if (!inherits(var, "svars")) stop("Please pass a VAR from 'vars::VAR'.")
+  if (!inherits(var, "svars")) stop("Please pass a SVAR.")
 
   n <- colnames(var$y)
   k <- length(n)
-  ni <- 1:k
 
   if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
   if (!all(freqs >= 0 & freqs <= 2 * pi)) {

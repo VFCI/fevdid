@@ -64,6 +64,7 @@ cbind(h = 1:20, fevdsv, fevdmv) |>
   tidyr::pivot_longer(cols = !h) |>
   dplyr::filter(name %in% c("Main", "pi")) |>
   ggplot(aes(x = h, y = value, color = name)) +
+  geom_vline(xintercept = c(4, 10)) +
   geom_line()
 ```
 

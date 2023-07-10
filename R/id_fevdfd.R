@@ -1,5 +1,6 @@
-#' Identify...
-#'
+#' Identify the main shock by targetting the forecast error
+#' variance contribution in the frequency domain.
+#' 
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fev
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)

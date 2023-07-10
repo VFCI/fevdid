@@ -2,7 +2,7 @@
 % Please edit documentation in R/fevdfd.R
 \name{fevdfd}
 \alias{fevdfd}
-\title{Identify...}
+\title{Calculate the forecast error variance in the frequency domain.}
 \usage{
 fevdfd(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE)
 }
@@ -13,17 +13,19 @@ fevdfd(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE)
 
 \item{grid_size}{how fine the grid to approximate the frequency domain}
 
-\item{fev}{Boolean, true to return fev not fevd}
+\item{fev}{Boolean true to return fev not fevd}
 }
 \value{
-forecast error variance decomposition in frequency domain
+Matrix of forecast error variance decomposition in frequency domain
+Indexed: frequencies, variables, shocks
 }
 \description{
-Identify...
+Calculate the forecast error variance in the frequency domain.
 }
 \examples{
 x <- svars::USA
 v <- vars::VAR(x, p = 2)
-fevd <- fevdfd(v)
+sv <- svars::id.chol(v)
+fevd <- fevdfd(sv)
 
 }

@@ -1,10 +1,9 @@
 Package: fevdid
-Title: What the Package Does (One Line, Title Case)
+Title: Main Shock Forecast Error Variance Identification
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Matthew", "DeHaven", , "matthew_dehaven@brown.edu", role = c("aut", "cre"))
+Description: Identify VAR models by finding one shock that explains most of the forecast error variance contribution for a targetted variable.  Implemented for both the frequency and time domain.  Also provides functions for looking at the forecast error variance decomposition in the frequency domain.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -1,4 +1,5 @@
-#' Identify...
+#' Identify the main shock by targetting the forecast error
+#' variance contribution in the time domain.
 #'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd

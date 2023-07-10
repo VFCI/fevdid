@@ -2,7 +2,8 @@
 % Please edit documentation in R/id_fevdtd_bca.R
 \name{id_fevdtd_bca}
 \alias{id_fevdtd_bca}
-\title{Identify...}
+\title{Translation from the Business Cycle Anatomy replication code,
+used to verify the output of id_fevdtd.}
 \usage{
 id_fevdtd_bca(var, target, horizon)
 }
@@ -17,5 +18,6 @@ id_fevdtd_bca(var, target, horizon)
 structural var
 }
 \description{
-Identify...
+Translation from the Business Cycle Anatomy replication code,
+used to verify the output of id_fevdtd.
 }

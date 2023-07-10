@@ -1,11 +1,14 @@
-#' Identify...
+#' Identify the main shock by targetting the forecast error
+#' variance contribution in the frequency domain.
+#' Approximates the frequency fev by iterating out a length of
+#' 'hmax' in time domain first.
 #'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
 #' @param hmax length of irfs to calculate, longer for better approximation
 #'
-#' @return structural var
+#' @return main shock var
 #'
 id_fevdfd_approx <- function(var, target, freqs, hmax = 1000) {
   ## Check parameter values are what is expected

@@ -2,7 +2,8 @@
 % Please edit documentation in R/id_fevdtd.R
 \name{id_fevdtd}
 \alias{id_fevdtd}
-\title{Identify...}
+\title{Identify the main shock by targetting the forecast error
+variance contribution in the time domain.}
 \usage{
 id_fevdtd(var, target, horizon)
 }
@@ -17,7 +18,8 @@ id_fevdtd(var, target, horizon)
 structural var
 }
 \description{
-Identify...
+Identify the main shock by targetting the forecast error
+variance contribution in the time domain.
 }
 \examples{
 x <- svars::USA

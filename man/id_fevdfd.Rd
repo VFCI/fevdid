@@ -2,7 +2,8 @@
 % Please edit documentation in R/id_fevdfd.R
 \name{id_fevdfd}
 \alias{id_fevdfd}
-\title{Identify...}
+\title{Identify the main shock by targetting the forecast error
+variance contribution in the frequency domain.}
 \usage{
 id_fevdfd(var, target, freqs, grid_size = 1000)
 }
@@ -19,7 +20,8 @@ id_fevdfd(var, target, freqs, grid_size = 1000)
 structural var
 }
 \description{
-Identify...
+Identify the main shock by targetting the forecast error
+variance contribution in the frequency domain.
 }
 \examples{
 x <- svars::USA

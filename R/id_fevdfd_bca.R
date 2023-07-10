@@ -1,4 +1,5 @@
-#' Identify...
+#' Translation from the Business Cycle Anatomy replication code,
+#' used to verify the output of id_fevdfd.
 #'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd

@@ -59,6 +59,25 @@ Taking $Q = I$ uses the Choleskey decomposition for identification and relies up
 Sign restriction identification involes drawing many possible matrices $Q$ and keeping only the set that have the required signs on impact.
 The Angeletos, Collard, and Dellas (2020) paper and this package instead identify the $Q$ matrix that leads to one structural shock explaining the largest portion of the forecast error variance for a targetted variable, either in the time or frequency domain.
 
+# Moving Average (Wold) Representation
+
+The moving average representation of the VAR is given by
+
+$$
+X_t = B(L) \upsilon_t
+$$
+
+where $B(L) = A(L)^{-1} = \sum_{T=0}^{\infty}B_TL^T$ and is an infinite matrix polynomial.
+
+With this, it is easy to rewrite our model as
+
+$$
+X_t = C(L) Q \epsilon_t = \Gamma(L) \epsilon_t
+$$
+
+where $C(L) = = \sum_{T=0}^{\infty}C_TL^T$ with $C_T \equiv B_T \tilde{S}$ and 
+$\Gamma(L) = = \sum_{T=0}^{\infty}\Gamma_TL^T$ with $\Gamma_T \equiv B_T \tilde{S} Q$.
+
 # Targetting the Time Domain
 
 # Targetting the Frequency Domain
