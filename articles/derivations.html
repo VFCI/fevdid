@@ -124,6 +124,25 @@ shock explaining the largest portion of the forecast error variance for
 a targetted variable, either in the time or frequency domain.</p>
 </div>
 <div class="section level2">
+<h2 id="moving-average-wold-representation">Moving Average (Wold) Representation<a class="anchor" aria-label="anchor" href="#moving-average-wold-representation"></a>
+</h2>
+<p>The moving average representation of the VAR is given by</p>
+<p><span class="math display">\[
+X_t = B(L) \upsilon_t
+\]</span></p>
+<p>where <span class="math inline">\(B(L) = A(L)^{-1} =
+\sum_{T=0}^{\infty}B_TL^T\)</span> and is an infinite matrix
+polynomial.</p>
+<p>With this, it is easy to rewrite our model as</p>
+<p><span class="math display">\[
+X_t = C(L) Q \epsilon_t = \Gamma(L) \epsilon_t
+\]</span></p>
+<p>where <span class="math inline">\(C(L) = =
+\sum_{T=0}^{\infty}C_TL^T\)</span> with <span class="math inline">\(C_T
+\equiv B_T \tilde{S}\)</span> and <span class="math inline">\(\Gamma(L)
+= = \sum_{T=0}^{\infty}\Gamma_TL^T\)</span> with <span class="math inline">\(\Gamma_T \equiv B_T \tilde{S} Q\)</span>.</p>
+</div>
+<div class="section level2">
 <h2 id="targetting-the-time-domain">Targetting the Time Domain<a class="anchor" aria-label="anchor" href="#targetting-the-time-domain"></a>
 </h2>
 </div>
@@ -160,7 +179,7 @@ VAR(1) process.</p></li>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by First Last.</p>
+<p>Developed by Matthew DeHaven.</p>
 </div>
 
 <div class="pkgdown-footer-right">
