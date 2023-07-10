@@ -57,7 +57,9 @@ fevdfd <- function(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE) {
     }
   }
 
-  if (fev == TRUE) return(freq_fev)
+  if (fev == TRUE) {
+    return(freq_fev)
+  }
 
   freq_fevd <- array(0, dim = c(gl, k, k))
   for (gp in 1:gl) {
