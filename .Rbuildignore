@@ -7,3 +7,7 @@
 ^README\.Rmd$
 ^data-raw$
 ^temp\.R$
+^vignettes/articles$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

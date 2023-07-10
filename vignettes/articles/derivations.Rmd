@@ -1,0 +1,77 @@
+---
+title: "Derivations for Frequnecy Domain FEV"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Vector Autoregression (VAR)
+
+Assume a VAR(p) process with the following form:
+
+$$
+A(L) X_t = \upsilon_t
+$$
+
+where 
+
+- $X_t$ is an $N \times 1$ vector of the data
+
+- $A(L)$ is a matrix polynomial with the lag operator, $L$
+
+- $\upsilon_t$ is a vector of residuals, i.e. reduced-form shocks
+
+- $p$ represents the number of lags of the data included in the VAR
+
+- $E[\upsilon_t \upsilon_t'] = \Sigma$, so $\Sigma$ is the variance-covariance matrix of the residuals
+
+with the lag matrix having the following structure:
+
+$$
+A(L) \equiv \sum_{T=0}^{p} A_T L^T
+\\
+A(0) = A_0 = I
+$$
+
+# Structural shocks
+
+Assume there is a linear mapping, $S$, between $v_t$ and some independent structural shocks, $\epsilon_t$.
+
+$$
+\upsilon_t = S \epsilon_t
+$$
+
+with $E[\epsilon_t \epsilon_t'] = I$.
+
+It is convenient to represent $S$ as a rotation of the Choleskey decomposition, $\tilde{S}$, of $\Sigma$.
+$$
+S = \tilde{S}Q
+$$
+where $Q$ is an orthonormal matrix ($Q^{-1} = Q'$) so that it represents a rotation.
+
+There are infinitely many possible rotations $Q$ to satisfy the linear mapping.
+Taking $Q = I$ uses the Choleskey decomposition for identification and relies upon the ordering of the variables.
+Sign restriction identification involes drawing many possible matrices $Q$ and keeping only the set that have the required signs on impact.
+The Angeletos, Collard, and Dellas (2020) paper and this package instead identify the $Q$ matrix that leads to one structural shock explaining the largest portion of the forecast error variance for a targetted variable, either in the time or frequency domain.
+
+# Targetting the Time Domain
+
+# Targetting the Frequency Domain
+
+# Representing a VAR(p) as a VAR(1)
+
+
+---
+
+# Sources
+
+- Hamilton, James D. *Time Series Analsysis*. Chapter 6: Spectral Analysis. Pg 152 - 172.  In particular, page 154 for deriving the population spectrum for a MA(infinity) process.
+
+- Kilian, Lutz and Lutekepohl Helmut. *Structural Vector Autoregressive Analysis*. Chapter 2: Vector Autoregressive Models. Pg 19 - .  In particular, page 25 for representing a VAR(p) process as a VAR(1) process.
+
+- Angeletos, George-Marios, Fabrice Collard, and Harris Dellas. (2020). "Businsess Cycle Anatomy". American Economic Review, 110(10): 3030 - 3070.  In particular, pages 3036 - 3037 for derivations.
