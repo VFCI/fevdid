@@ -92,7 +92,6 @@
 <span><span class="co">## Comparing fevds</span></span>
 <span><span class="va">fevdsv</span> <span class="op">&lt;-</span> <span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/fevd.html" class="external-link">fevd</a></span><span class="op">(</span><span class="va">sv</span>, n.ahead <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">$</span><span class="va">pi</span></span>
 <span><span class="va">fevdmv</span> <span class="op">&lt;-</span> <span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/fevd.html" class="external-link">fevd</a></span><span class="op">(</span><span class="va">mv</span>, n.ahead <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">$</span><span class="va">pi</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">fevdmv</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Main"</span>, <span class="st">"orth1"</span>, <span class="st">"orth2"</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## Plotting</span></span>
@@ -104,12 +103,20 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example_td-1.png" width="100%"></p>
+<p>Getting impulse responses from the identified main shock VARs is handled by the usual <code>irf</code> function.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">irfsv</span> <span class="op">&lt;-</span> <span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/irf.html" class="external-link">irf</a></span><span class="op">(</span><span class="va">sv</span><span class="op">)</span></span>
+<span><span class="va">irfmv</span> <span class="op">&lt;-</span> <span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/irf.html" class="external-link">irf</a></span><span class="op">(</span><span class="va">mv</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu">plot_grid</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">irfsv</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">irfmv</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-exanmple_td_irf-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="main-shock-in-the-frequency-domain">Main Shock in the Frequency Domain<a class="anchor" aria-label="anchor" href="#main-shock-in-the-frequency-domain"></a>
 </h3>
 <p>Example of identifying the main shock along the frequency domain. Here the target variable is inflation between <span class="math inline">$\frac{2\pi}{32}$</span> and <span class="math inline">$\frac{2\pi}{6}$</span>, the “business cycle” frequencies. The figure compares the identified main shock to the Choleskey shock for inflation, which already explains most of the variation in this simple 3-variable VAR. The contribution from the Main shock is higher over the targeted frequency period.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vfci.github.io/fevdid/">fevdid</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## US data on inflation (pi), output (x), and federal funds rate (i)</span></span>
