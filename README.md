@@ -49,7 +49,6 @@ mv <- id_fevdtd(v, target = "pi", horizon = 4:10)
 ## Comparing fevds
 fevdsv <- vars::fevd(sv, n.ahead = 20)$pi
 fevdmv <- vars::fevd(mv, n.ahead = 20)$pi
-colnames(fevdmv) <- c("Main", "orth1", "orth2")
 
 
 ## Plotting
@@ -63,6 +62,19 @@ cbind(h = 1:20, fevdsv, fevdmv) |>
 ```
 
 <img src="man/figures/README-example_td-1.png" width="100%" />
+
+Getting impulse responses from the identified main shock VARs is handled
+by the usual `irf` function.
+
+``` r
+
+irfsv <- vars::irf(sv)
+irfmv <- vars::irf(mv)
+
+cowplot::plot_grid(plot(irfsv), plot(irfmv), nrow = 1)
+```
+
+<img src="man/figures/README-exanmple_td_irf-1.png" width="100%" />
 
 ### Main Shock in the Frequency Domain
 

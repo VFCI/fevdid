@@ -30,7 +30,9 @@ fevd.fevdvar <- function(x, n.ahead = 10, ...) {
     k <- x$K
     fevd <- vars::fevd(x, n.ahead = n.ahead, ...)
 
-    names(fevd) <- c("Main", paste0("Orth_", 2:k))
+    for (i in seq_along(fevd)) {
+        colnames(fevd[[i]]) <- c("Main", paste0("Orth_", 2:k))
+    }
 
     return(fevd)
 }
