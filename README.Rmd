@@ -98,12 +98,12 @@ bc_freqs <- c(2 * pi / 32, 2 * pi / 6)
 mfv <- id_fevdfd(v, target = "pi", freqs = bc_freqs)
 
 ## Comparing fevds
-fevdsv <- fevdfd(sv)[, 2, 2]
-fevdmv <- fevdfd(mfv)[, 2, 1]
+fevdsv <- fevdfd(sv)$pi
+fevdmv <- fevdfd(mfv)$pi
 
 ## Plotting
 require(ggplot2)
-cbind(f = seq(0, 2 * pi, length.out = 1000), pi = fevdsv, Main = fevdmv) |> 
+dplyr::full_join(fevdsv, fevdmv, by = "f") |>
   dplyr::as_tibble() |>
   tidyr::pivot_longer(cols = !f) |>
   dplyr::filter(name %in% c("Main", "pi")) |>

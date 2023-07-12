@@ -1,6 +1,6 @@
-#' Plot the forecast variance decomposition in frequency domain.
+#' Plot the forecast variance decomposition.
 #'
-#' Alias for the function plot.
+#' Alias for the function plot in frequency domain.
 #'
 #' @param x object of class "fevdfd"
 #' @param y Not used.
@@ -63,10 +63,8 @@ plot.fevdfd <- function(x, y, stacked = FALSE, vlines = NULL, ...) {
     return(plot)
 }
 
-
-#' Plot the forecast variance decomposition in time domain.
 #'
-#' Alias for the function plot.
+#' Plot the forecast variance decomposition in time domain.
 #'
 #' @param x object of class "svarfevd"
 #' @param y Not used.
