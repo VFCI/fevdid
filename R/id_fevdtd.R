@@ -69,7 +69,7 @@ id_fevdtd <- function(var, target, horizon) {
   ## Insert resulting matrix into var
   mvar <- svar
   mvar$B <- svar$B %*% q
-  mvar$method <- "fevdtd"
+  mvar$method <- "id_fevdtd"
 
   class(mvar) <- c("fevdvar", "svars")
 

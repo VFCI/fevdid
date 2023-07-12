@@ -97,7 +97,8 @@ id_fevdfd_approx <- function(var, target, freqs, hmax = 1000) {
   ## Insert resulting matrix into var
   mvar <- svar
   mvar$B <- svar$B %*% q
-  mvar$method <- "fevdfd"
+  mvar$method <- "id_fevdfd"
+  class(mvar) <- c("fevdvar", "svars")
 
   return(mvar)
 }

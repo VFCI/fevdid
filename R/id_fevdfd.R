@@ -85,7 +85,8 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
   ## Insert resulting matrix into var
   mvar <- svar
   mvar$B <- svar$B %*% q
-  mvar$method <- c("fevdvar", "svars")
+  mvar$method <- "id_fevdfd"
+  class(mvar) <- c("fevdvar", "svars")
 
   return(mvar)
 }

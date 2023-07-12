@@ -2,12 +2,20 @@
 % Please edit documentation in R/fevdfd.R
 \name{fevdfd}
 \alias{fevdfd}
+\alias{fevdfd.svars}
+\alias{fevdfd.fevdvar}
 \title{Calculate the forecast error variance in the frequency domain.}
 \usage{
-fevdfd(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE)
+fevdfd(var, ...)
+
+\method{fevdfd}{svars}(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...)
+
+\method{fevdfd}{fevdvar}(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...)
 }
 \arguments{
-\item{var, }{vars::VAR object}
+\item{var}{A VAR. Currently supports either a 'svars' or 'fevdvar' object.}
+
+\item{...}{Used to pass arguments to fevdfd.svars and fevdfd.fevdvar.}
 
 \item{freqs}{vector of length 2 of min and max frequencies (0:2pi)}
 
@@ -16,11 +24,16 @@ fevdfd(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE)
 \item{fev}{Boolean true to return fev not fevd}
 }
 \value{
-Matrix of forecast error variance decomposition in frequency domain
-Indexed: frequencies, variables, shocks
+List of forecast error variance decomposition in frequency domain
+List of variables, each with a dataframe of shocks,
+column 'f' are the frequencies.
 }
 \description{
 Calculate the forecast error variance in the frequency domain.
+
+Method to calculate fevdfd for svars (id.chol)
+
+Method to calculate fevdfd for svars (id.chol)
 }
 \examples{
 x <- svars::USA

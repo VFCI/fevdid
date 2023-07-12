@@ -1,12 +1,11 @@
 #' Calculate the forecast error variance in the frequency domain.
 #'
-#' @param var, vars::VAR object
-#' @param freqs vector of length 2 of min and max frequencies (0:2pi)
-#' @param grid_size how fine the grid to approximate the frequency domain
-#' @param fev Boolean true to return fev not fevd
+#' @param var A VAR. Currently supports either a 'svars' or 'fevdvar' object.
+#' @param ... Used to pass arguments to fevdfd.svars and fevdfd.fevdvar.
 #'
-#' @return Matrix of forecast error variance decomposition in frequency domain
-#' Indexed: frequencies, variables, shocks
+#' @return List of forecast error variance decomposition in frequency domain
+#' List of variables, each with a dataframe of shocks, 
+#' column 'f' are the frequencies.
 #' @export
 #'
 #' @examples
@@ -15,7 +14,24 @@
 #' sv <- svars::id.chol(v)
 #' fevd <- fevdfd(sv)
 #'
-fevdfd <- function(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE) {
+fevdfd <- function(var, ...) {
+  UseMethod("fevdfd")
+}
+
+#' Method to calculate fevdfd for svars (id.chol)
+#'
+#' @param freqs vector of length 2 of min and max frequencies (0:2pi)
+#' @param grid_size how fine the grid to approximate the frequency domain
+#' @param fev Boolean true to return fev not fevd
+#'
+#' @rdname fevdfd
+#' @name fevdfd
+#' @aliases fevdfd.svars
+#' @export
+#'
+fevdfd.svars <- function(
+  var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...
+  ) {
   ## Check parameter values are what is expected
   if (!inherits(var, "svars")) stop("Please pass a SVAR.")
 
@@ -66,5 +82,44 @@ fevdfd <- function(var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE) {
     freq_fevd[gp, , ] <- freq_fev[gp, , ] / freq_totvar[gp, ]
   }
 
-  return(freq_fevd)
+  ## Reformat, list of variables, each with a dataframe of shocks
+  fevd_list <- list()
+  for (i in seq_along(n)) {
+    fevds <- as.data.frame(freq_fevd[, i, ])
+    names(fevds) <- n
+
+    fevd_list[[n[[i]]]] <- cbind(f = freq_grid, fevds)
+  }
+
+  class(fevd_list) <- "fevdfd"
+
+  return(fevd_list)
+}
+
+#' Method to calculate fevdfd for svars (id.chol)
+#'
+#' @param freqs vector of length 2 of min and max frequencies (0:2pi)
+#' @param grid_size how fine the grid to approximate the frequency domain
+#' @param fev Boolean true to return fev not fevd
+#'
+#' @rdname fevdfd
+#' @name fevdfd
+#' @aliases fevdfd.fevdvar
+#' @export
+#'
+fevdfd.fevdvar <- function(
+  var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...
+  ) {
+
+    class(var) <- "svars"
+
+    k <- var$K
+    fevdfd <- fevdfd(var, freqs, grid_size, fev, ...)
+
+    for (i in seq_along(fevdfd)) {
+        colnames(fevdfd[[i]]) <- c("f", "Main", paste0("Orth_", 2:k))
+    }
+
+    return(fevdfd)
+
 }
