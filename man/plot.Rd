@@ -3,16 +3,12 @@
 \name{plot}
 \alias{plot}
 \alias{plot.fevdfd}
-<<<<<<< HEAD
 \alias{plot.fevdvarfevd}
-=======
-\alias{plot.svarfevd}
->>>>>>> 483e469c89172a85f5e014d1366c1b3e1b4311f7
 \title{Plot the forecast variance decomposition.}
 \usage{
-\method{plot}{fevdfd}(x, y, stacked = FALSE, vlines = NULL, ...)
+\method{plot}{fevdfd}(x, y, stacked = TRUE, vlines = NULL, ...)
 
-\method{plot}{fevdvarfevd}(x, y, stacked = FALSE, vlines = NULL, ...)
+\method{plot}{fevdvarfevd}(x, y, stacked = TRUE, vlines = NULL, ...)
 }
 \arguments{
 \item{x}{object of class "svarfevd"}
