@@ -24,15 +24,14 @@
 #' vars::fevd(mvar)
 #'
 fevd.fevdvar <- function(x, n.ahead = 10, ...) {
+  class(x) <- "svars"
 
-    class(x) <- "svars"
+  k <- x$K
+  fevd <- vars::fevd(x, n.ahead = n.ahead, ...)
 
-    k <- x$K
-    fevd <- vars::fevd(x, n.ahead = n.ahead, ...)
+  for (i in seq_along(fevd)) {
+    colnames(fevd[[i]]) <- c("Main", paste0("Orth_", 2:k))
+  }
 
-    for (i in seq_along(fevd)) {
-        colnames(fevd[[i]]) <- c("Main", paste0("Orth_", 2:k))
-    }
-
-    return(fevd)
+  return(fevd)
 }
