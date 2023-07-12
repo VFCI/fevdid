@@ -35,40 +35,39 @@
 irf.fevdvar <- function(
     x, impulse = NULL, response = NULL, n.ahead = 10,
     ortho = TRUE, cumulative = FALSE, boot = TRUE,
-    ci = 0.95, runs = 100, seed = NULL, ...
-    ) {
+    ci = 0.95, runs = 100, seed = NULL, ...) {
+  class(x) <- "svars"
 
-    class(x) <- "svars"
+  k <- x$K
+  variable_names <- colnames(x$y)
+  shock_names <- c("Main", paste0("Orth_", 2:k))
+  shock_labels <- paste0("epsilon[ ", shock_names, " ]%->%")
 
-    k <- x$K
-    variable_names <- colnames(x$y)
-    shock_names <- c("Main", paste0("Orth_", 2:k))
-    shock_labels <- paste0("epsilon[ ", shock_names, " ]%->%")
+  irf <- vars::irf(x, n.ahead = n.ahead, ...)
 
-    irf <- vars::irf(x, n.ahead = n.ahead, ...)
+  ## Rename the shocks
+  names(irf$irf) <- c("V1", apply(
+    expand.grid(shock_labels, variable_names),
+    1,
+    paste0,
+    collapse = ""
+  ))
 
-    ## Rename the shocks
-    names(irf$irf) <- c("V1", apply(
-        expand.grid(shock_labels, variable_names),
-        1,
-        paste0, collapse = "")
-        )
+  ## Select only the impulses and responses requested
+  if (is.null(impulse)) {
+    impulse_keep <- rep(TRUE, k)
+  } else {
+    impulse_keep <- shock_names %in% impulse
+  }
+  if (is.null(response)) {
+    response_keep <- rep(TRUE, k)
+  } else {
+    response_keep <- variable_names %in% response
+  }
 
-    ## Select only the impulses and responses requested
-    if (is.null(impulse)) {
-        impulse_keep <- rep(TRUE, k)
-    } else {
-        impulse_keep <- shock_names %in% impulse
-    }
-    if (is.null(response)) {
-        response_keep <- rep(TRUE, k)
-    } else {
-        response_keep <- variable_names %in% response
-    }
+  keep <- apply(expand.grid(impulse_keep, response_keep), 1, all)
 
-    keep <- apply(expand.grid(impulse_keep, response_keep), 1, all)
+  irf$irf <- irf$irf[, c(TRUE, keep)]
 
-    irf$irf <- irf$irf[, c(TRUE, keep)]
-
-    return(irf)
+  return(irf)
 }
