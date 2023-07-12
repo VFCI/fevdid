@@ -4,7 +4,7 @@
 \alias{plot}
 \alias{plot.fevdfd}
 \alias{plot.svarfevd}
-\title{Plot the forecast variance decomposition in frequency domain.}
+\title{Plot the forecast variance decomposition.}
 \usage{
 \method{plot}{fevdfd}(x, y, stacked = FALSE, vlines = NULL, ...)
 
@@ -29,7 +29,5 @@ ggplot of fevdfd
 ggplot of fevdfd
 }
 \description{
-Alias for the function plot.
-
-Alias for the function plot.
+Alias for the function plot in frequency domain.
 }
