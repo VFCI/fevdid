@@ -4,7 +4,7 @@
 #' @param ... Used to pass arguments to fevdfd.svars and fevdfd.fevdvar.
 #'
 #' @return List of forecast error variance decomposition in frequency domain
-#' List of variables, each with a dataframe of shocks, 
+#' List of variables, each with a dataframe of shocks,
 #' column 'f' are the frequencies.
 #' @export
 #'
@@ -30,8 +30,7 @@ fevdfd <- function(var, ...) {
 #' @export
 #'
 fevdfd.svars <- function(
-  var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...
-  ) {
+    var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...) {
   ## Check parameter values are what is expected
   if (!inherits(var, "svars")) stop("Please pass a SVAR.")
 
@@ -108,18 +107,15 @@ fevdfd.svars <- function(
 #' @export
 #'
 fevdfd.fevdvar <- function(
-  var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...
-  ) {
+    var, freqs = c(0, 2 * pi), grid_size = 1000, fev = FALSE, ...) {
+  class(var) <- "svars"
 
-    class(var) <- "svars"
+  k <- var$K
+  fevdfd <- fevdfd(var, freqs, grid_size, fev, ...)
 
-    k <- var$K
-    fevdfd <- fevdfd(var, freqs, grid_size, fev, ...)
+  for (i in seq_along(fevdfd)) {
+    colnames(fevdfd[[i]]) <- c("f", "Main", paste0("Orth_", 2:k))
+  }
 
-    for (i in seq_along(fevdfd)) {
-        colnames(fevdfd[[i]]) <- c("f", "Main", paste0("Orth_", 2:k))
-    }
-
-    return(fevdfd)
-
+  return(fevdfd)
 }
