@@ -5,12 +5,41 @@
 \alias{irf.fevdvar}
 \title{Impulse Responses.}
 \usage{
-\method{irf}{fevdvar}(x, n.ahead = 20, ...)
+\method{irf}{fevdvar}(
+  x,
+  impulse = NULL,
+  response = NULL,
+  n.ahead = 10,
+  ortho = TRUE,
+  cumulative = FALSE,
+  boot = TRUE,
+  ci = 0.95,
+  runs = 100,
+  seed = NULL,
+  ...
+)
 }
 \arguments{
-\item{x}{SVAR object of class "fevdvar"}
+\item{x}{SVAR object of class "fevdvar".}
+
+\item{impulse}{A character vector of the impulses, default is all variables.}
+
+\item{response}{A character vector of the responses,
+default is all variables.}
 
 \item{n.ahead}{Integer specifying the steps.}
+
+\item{ortho}{Not used. Here to match generic vars::irf.}
+
+\item{cumulative}{Not used. Here to match generic vars::irf.}
+
+\item{boot}{Not used. Here to match generic vars::irf.}
+
+\item{ci}{Not used. Here to match generic vars::irf.}
+
+\item{runs}{Not used. Here to match generic vars::irf.}
+
+\item{seed}{Not used. Here to match generic vars::irf.}
 
 \item{...}{Currently not used.}
 }
