@@ -35,7 +35,7 @@ VAR. Clearly, however, the contribution from the Main shock is higher
 over the targeted time period.
 
 ``` r
-library(fevdid)
+require(fevdid)
 
 ## US data on inflation (pi), output (x), and federal funds rate (i)
 x <- svars::USA
@@ -76,6 +76,19 @@ cowplot::plot_grid(plot(irfsv), plot(irfmv), nrow = 1)
 
 <img src="man/figures/README-exanmple_td_irf-1.png" width="100%" />
 
+Plotting all of the forecast variance decompositions is equally
+straightforward (above the code is used to compare two separate fevds).
+
+``` r
+
+fevdsv <- vars::fevd(sv, n.ahead = 20)
+fevdmv <- vars::fevd(mv, n.ahead = 20)
+
+cowplot::plot_grid(plot(fevdsv), plot(fevdmv), nrow = 1)
+```
+
+<img src="man/figures/README-exanmple_td_fevd-1.png" width="100%" />
+
 ### Main Shock in the Frequency Domain
 
 Example of identifying the main shock along the frequency domain. Here
@@ -87,7 +100,7 @@ The contribution from the Main shock is higher over the targeted
 frequency period.
 
 ``` r
-library(fevdid)
+require(fevdid)
 
 ## US data on inflation (pi), output (x), and federal funds rate (i)
 x <- svars::USA
@@ -115,6 +128,19 @@ dplyr::full_join(fevdsv, fevdmv, by = "f") |>
 ```
 
 <img src="man/figures/README-example_fd-1.png" width="100%" />
+
+There is also a generic plot function for all of the frequency domain
+fevds.
+
+``` r
+
+fevdsv <- fevdfd(sv)
+fevdmv <- fevdfd(mv)
+
+cowplot::plot_grid(plot(fevdsv), plot(fevdmv), nrow = 1)
+```
+
+<img src="man/figures/README-exanmple_fd_fevd-1.png" width="100%" />
 
 ## References
 

@@ -33,5 +33,7 @@ fevd.fevdvar <- function(x, n.ahead = 10, ...) {
     colnames(fevd[[i]]) <- c("Main", paste0("Orth_", 2:k))
   }
 
+  class(fevd) <- c("fevdvarfevd", "svarfevd")
+
   return(fevd)
 }

@@ -18,7 +18,7 @@
 #'
 #' @export
 #'
-plot.fevdfd <- function(x, y, stacked = FALSE, vlines = NULL, ...) {
+plot.fevdfd <- function(x, y, stacked = TRUE, vlines = NULL, ...) {
   ## Declare data.frame variables so check() doesn't complain
   f <- shocks <- variable <- value <- NULL
 
@@ -75,15 +75,15 @@ plot.fevdfd <- function(x, y, stacked = FALSE, vlines = NULL, ...) {
 #' Useful for highlighting areas.
 #' @param ... Currently not used.
 #'
-#' @return ggplot of fevdfd
+#' @return ggplot of fevd
 #'
 #' @rdname plot
 #' @name plot
-#' @aliases plot.svarfevd
+#' @aliases plot.fevdvarfevd
 #'
 #' @export
 #'
-plot.svarfevd <- function(x, y, stacked = FALSE, vlines = NULL, ...) {
+plot.fevdvarfevd <- function(x, y, stacked = TRUE, vlines = NULL, ...) {
   ## Declare data.frame variables so check() doesn't complain
   h <- shocks <- variable <- value <- NULL
 

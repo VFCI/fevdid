@@ -3,12 +3,12 @@
 \name{plot}
 \alias{plot}
 \alias{plot.fevdfd}
-\alias{plot.svarfevd}
-\title{Plot the forecast variance decomposition in frequency domain.}
+\alias{plot.fevdvarfevd}
+\title{Plot the forecast variance decomposition.}
 \usage{
 \method{plot}{fevdfd}(x, y, stacked = FALSE, vlines = NULL, ...)
 
-\method{plot}{svarfevd}(x, y, stacked = FALSE, vlines = NULL, ...)
+\method{plot}{fevdvarfevd}(x, y, stacked = FALSE, vlines = NULL, ...)
 }
 \arguments{
 \item{x}{object of class "svarfevd"}
@@ -26,10 +26,8 @@ Useful for highlighting areas.}
 \value{
 ggplot of fevdfd
 
-ggplot of fevdfd
+ggplot of fevd
 }
 \description{
-Alias for the function plot.
-
-Alias for the function plot.
+Alias for the function plot in frequency domain.
 }
