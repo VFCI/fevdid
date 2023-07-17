@@ -33,7 +33,7 @@
 #' vars::irf(mvar)
 #'
 irf.fevdvar <- function(
-    x, impulse = NULL, response = NULL, n.ahead = 10,
+    x, impulse = NULL, response = NULL, n.ahead = 20,
     ortho = TRUE, cumulative = FALSE, boot = TRUE,
     ci = 0.95, runs = 100, seed = NULL, ...) {
   class(x) <- "svars"
