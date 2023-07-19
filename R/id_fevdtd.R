@@ -71,6 +71,8 @@ id_fevdtd <- function(var, target, horizon) {
   mvar$Q <- q
   mvar$B <- svar$B %*% q
   mvar$method <- "id_fevdtd"
+  mvar$target <- target
+  mvar$horizon <- horizon
 
   class(mvar) <- c("fevdvar", "svars")
 

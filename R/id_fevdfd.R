@@ -87,6 +87,9 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
   mvar$Q <- q
   mvar$B <- svar$B %*% q
   mvar$method <- "id_fevdfd"
+  mvar$target <- target
+  mvar$freqs <- freqs
+
   class(mvar) <- c("fevdvar", "svars")
 
   return(mvar)

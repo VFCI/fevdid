@@ -98,6 +98,9 @@ id_fevdfd_approx <- function(var, target, freqs, hmax = 1000) {
   mvar <- svar
   mvar$B <- svar$B %*% q
   mvar$method <- "id_fevdfd"
+  mvar$target <- target
+  mvar$freqs <- freqs
+
   class(mvar) <- c("fevdvar", "svars")
 
   return(mvar)
