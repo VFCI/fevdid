@@ -68,8 +68,8 @@ by the usual `irf` function.
 
 ``` r
 
-irfsv <- vars::irf(sv)
-irfmv <- vars::irf(mv)
+irfsv <- vars::irf(sv, n.ahead = 20)
+irfmv <- vars::irf(mv, n.ahead = 20)
 
 cowplot::plot_grid(plot(irfsv), plot(irfmv), nrow = 1)
 ```
