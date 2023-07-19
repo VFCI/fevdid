@@ -16,7 +16,9 @@
 #'
 id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
   ## Check parameter values are what is expected
-  if (!inherits(var, "varest")) stop("Please pass a VAR from 'vars::VAR'.")
+  if (!(inherits(var, "varest") || inherits(var, "var.boot"))) {
+    stop("Please pass a VAR from 'vars::VAR'.")
+  }
 
   n <- colnames(var$y)
   k <- length(n)

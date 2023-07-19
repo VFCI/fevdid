@@ -15,7 +15,9 @@
 #'
 id_fevdtd <- function(var, target, horizon) {
   ## Check parameter values are what is expected
-  if (!inherits(var, "varest")) stop("Please pass a VAR from 'vars::VAR'.")
+  if (!(inherits(var, "varest") || inherits(var, "var.boot"))) {
+    stop("Please pass a VAR from 'vars::VAR'.")
+  }
 
   n <- colnames(var$y)
   k <- length(n)
