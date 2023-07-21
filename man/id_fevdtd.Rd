@@ -5,7 +5,7 @@
 \title{Identify the main shock by targetting the forecast error
 variance contribution in the time domain.}
 \usage{
-id_fevdtd(var, target, horizon)
+id_fevdtd(var, target, horizon, sign = "positive")
 }
 \arguments{
 \item{var, }{vars::VAR object}
@@ -13,6 +13,10 @@ id_fevdtd(var, target, horizon)
 \item{target, }{variable name or index to maximize its fevd}
 
 \item{horizon, }{integer vector (can be length 1) of the horizon to maximize}
+
+\item{sign}{Default to "positive". Can be "negative".  Ensures the impact
+of the main shock on the target variable is the given sign. Set to NA for
+for the default sign.}
 }
 \value{
 structural var

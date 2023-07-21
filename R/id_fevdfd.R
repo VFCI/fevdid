@@ -5,6 +5,9 @@
 #' @param target, variable name or index to maximize its fev
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
 #' @param grid_size how fine the grid to approximate the frequency domain
+#' @param sign Default to "positive". Can be "negative".  Ensures the impact
+#' of the main shock on the target variable is the given sign. Set to NA for
+#' for the default sign.
 #'
 #' @return structural var
 #' @export
@@ -14,7 +17,7 @@
 #' v <- vars::VAR(x, p = 2)
 #' mvar <- id_fevdfd(v, "pi", c(2 * pi / 32, 2 * pi / 6))
 #'
-id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
+id_fevdfd <- function(var, target, freqs, grid_size = 1000, sign = "positive") {
   ## Check parameter values are what is expected
   if (!(inherits(var, "varest") || inherits(var, "var.boot"))) {
     stop("Please pass a VAR from 'vars::VAR'.")
@@ -83,6 +86,14 @@ id_fevdfd <- function(var, target, freqs, grid_size = 1000) {
   q <- matrix(0, k, k)
   q[, 1] <- evec
   q[, 2:k] <- pracma::nullspace(t(evec))
+
+  ## Insure the sign is as expected
+  impact <- svar$B %*% q
+  if (sign == "positive" || sign == "pos") {
+    if (impact[ti, 1] < 0) q <- -1 * q
+  } else if (sign == "negative" || sign == "neg") {
+    if (impact[ti, 1] > 0) q <- -1 * q
+  }
 
   ## Insert resulting matrix into var
   mvar <- svar

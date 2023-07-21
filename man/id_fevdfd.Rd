@@ -5,7 +5,7 @@
 \title{Identify the main shock by targetting the forecast error
 variance contribution in the frequency domain.}
 \usage{
-id_fevdfd(var, target, freqs, grid_size = 1000)
+id_fevdfd(var, target, freqs, grid_size = 1000, sign = "positive")
 }
 \arguments{
 \item{var, }{vars::VAR object}
@@ -15,6 +15,10 @@ id_fevdfd(var, target, freqs, grid_size = 1000)
 \item{freqs}{vector of length 2 of min and max frequencies (0:2pi)}
 
 \item{grid_size}{how fine the grid to approximate the frequency domain}
+
+\item{sign}{Default to "positive". Can be "negative".  Ensures the impact
+of the main shock on the target variable is the given sign. Set to NA for
+for the default sign.}
 }
 \value{
 structural var
