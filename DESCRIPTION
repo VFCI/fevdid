@@ -9,10 +9,13 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
+    dplyr,
     ggplot2,
     pracma,
     stats,
+    stringr,
     svars,
+    tidyr,
     vars
 Suggests: 
     rmarkdown,
