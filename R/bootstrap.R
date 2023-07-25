@@ -10,6 +10,8 @@
 #' @param method "resample" or "wild"
 #' @param wild_distr distribution used for "wild" boostrap method.
 #' Either "gaussian", "rademacher", or "mammen".
+#' @param bias_adjust Boolean.  Set to TRUE to calculate the bias
+#' and run the bootstrap again.
 #' @param lower_pctl lower percentile of bootstraps returned in summary.
 #' Defaults to 0.16 (for 68% CI).
 #' @param upper_pctl upper percentile of bootstraps returned in summary.
@@ -28,6 +30,7 @@ bootstrap <- function(
     design = "recursive",
     method = "resample",
     wild_distr = "gaussian",
+    bias_adjust = FALSE,
     lower_pctl = 0.16,
     upper_pctl = 0.84,
     ...) {
@@ -57,21 +60,30 @@ bootstrap <- function(
 
   ## Bootstrap the errors
   if (method == "resample") {
+
     resample <- sample(1:(n - p), size = (n - p) * nboot, replace = TRUE) |>
       matrix(nrow = n - p, ncol = nboot)
 
     boot_errors <- array(u[, resample], dim = c(k, n - p, nboot))
+
   } else if (method == "wild") {
+
     if (wild_distr == "gaussian") {
+
       adjust <- stats::rnorm(n = (n - p) * nboot)
+
     } else if (wild_distr == "rademacher") {
+
       adjust <- sample(c(-1, 1), size = (n - p) * nboot, replace = TRUE)
+
     } else if (wild_distr == "mammen") {
+
       cutoff <- (sqrt(5) + 1) / (2 * sqrt(5))
       uniform_draw <- stats::runif(n = (n - p) * nboot, min = 0, max = 1)
       adjust <- ifelse(
         uniform_draw > cutoff, (sqrt(5) + 1) / 2, -(sqrt(5) - 1) / 2
       )
+
     } else {
       stop("Unsupported wild_distr: ", wild_distr)
     }
@@ -82,6 +94,7 @@ bootstrap <- function(
     for (i in 1:nboot) {
       boot_errors[, , i] <- u * adjust[, i]
     }
+
   } else {
     stop("Unsupported method.")
   }
@@ -177,20 +190,44 @@ bootstrap <- function(
       upper = stats::quantile(value, upper_pctl)
     )
 
+    a_mean <- rowMeans(aboots, dims = 2)
+    b_mean <- rowMeans(bboots, dims = 2)
+
   ## Return bootstrap results
   bootstrap <- list(
     VAR = var,
-    A_boots = aboots,
-    B_boots = bboots,
     IRF = irf_summarized,
-    all_IRF_boots = irfboots,
+    all_IRF_boots = irf_df,
+    A_boots = aboots,
+    A_mean = a_mean,
+    B_boots = bboots,
+    B_mean = b_mean,
     id_method = id_method,
     nboot = nboot,
     horizon = horizon,
     design = design,
     method = method,
-    wild_distr = wild_distr
+    wild_distr = wild_distr,
+    bias_adjust = bias_adjust,
+    lower_pctl = lower_pctl,
+    upper_pctl = upper_pctl
   )
+
+  if (bias_adjust == TRUE) {
+    bias <- a_mean - var$A_hat
+
+    var$A_hat <- var$A_hat - bias
+
+    bootstrap <- bootstrap(
+        var = var, id_method = id_method, nboot = nboot, horizon = horizon,
+        design = design, method = method, wild_distr = wild_distr,
+        bias_adjust = FALSE,
+        lower_pctl = lower_pctl, upper_pctl = upper_pctl, ...
+    )
+
+    bootstrap$bias_adjust <- TRUE
+    bootstrap$bias <- bias
+  }
 
   return(bootstrap)
 }
