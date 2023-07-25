@@ -62,6 +62,7 @@ variance contribution in the frequency domain.</p>
 <span>  design <span class="op">=</span> <span class="st">"recursive"</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"resample"</span>,</span>
 <span>  wild_distr <span class="op">=</span> <span class="st">"gaussian"</span>,</span>
+<span>  bias_adjust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  lower_pctl <span class="op">=</span> <span class="fl">0.16</span>,</span>
 <span>  upper_pctl <span class="op">=</span> <span class="fl">0.84</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -98,6 +99,11 @@ Controls how samples of the data are constructed.</p></dd>
 <dt>wild_distr</dt>
 <dd><p>distribution used for "wild" boostrap method.
 Either "gaussian", "rademacher", or "mammen".</p></dd>
+
+
+<dt>bias_adjust</dt>
+<dd><p>Boolean.  Set to TRUE to calculate the bias
+and run the bootstrap again.</p></dd>
 
 
 <dt>lower_pctl</dt>
