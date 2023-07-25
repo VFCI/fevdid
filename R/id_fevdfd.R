@@ -6,7 +6,7 @@
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
 #' @param grid_size how fine the grid to approximate the frequency domain
 #' @param sign Default to "positive". Can be "negative".  Ensures the
-#' cummulative impact of the main shock on the target variable is the 
+#' cummulative impact of the main shock on the target variable is the
 #' given sign.
 #' @param sign_horizon Default to 1. The horizon through which to accumulate the
 #' impact of the shock.
@@ -20,8 +20,7 @@
 #' mvar <- id_fevdfd(v, "pi", c(2 * pi / 32, 2 * pi / 6))
 #'
 id_fevdfd <- function(
-  var, target, freqs, grid_size = 1000, sign = "positive", sign_horizon = 1
-  ) {
+    var, target, freqs, grid_size = 1000, sign = "positive", sign_horizon = 1) {
   ## Check parameter values are what is expected
   if (!(inherits(var, "varest") || inherits(var, "var.boot"))) {
     stop("Please pass a VAR from 'vars::VAR'.")

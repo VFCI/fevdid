@@ -5,7 +5,7 @@
 #' @param target, variable name or index to maximize its fevd
 #' @param horizon, integer vector (can be length 1) of the horizon to maximize
 #' @param sign Default to "positive". Can be "negative".  Ensures the
-#' cummulative impact of the main shock on the target variable is the 
+#' cummulative impact of the main shock on the target variable is the
 #' given sign.
 #' @param sign_horizon Default to 1. The horizon through which to accumulate the
 #' impact of the shock.
@@ -19,8 +19,7 @@
 #' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
 id_fevdtd <- function(
-  var, target, horizon, sign = "positive", sign_horizon = 1
-  ) {
+    var, target, horizon, sign = "positive", sign_horizon = 1) {
   ## Check parameter values are what is expected
   if (!(inherits(var, "varest") || inherits(var, "var.boot"))) {
     stop("Please pass a VAR from 'vars::VAR'.")
