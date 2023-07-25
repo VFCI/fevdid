@@ -13,6 +13,7 @@ bootstrap(
   design = "recursive",
   method = "resample",
   wild_distr = "gaussian",
+  bias_adjust = FALSE,
   lower_pctl = 0.16,
   upper_pctl = 0.84,
   ...
@@ -34,6 +35,9 @@ Controls how samples of the data are constructed.}
 
 \item{wild_distr}{distribution used for "wild" boostrap method.
 Either "gaussian", "rademacher", or "mammen".}
+
+\item{bias_adjust}{Boolean.  Set to TRUE to calculate the bias
+and run the bootstrap again.}
 
 \item{lower_pctl}{lower percentile of bootstraps returned in summary.
 Defaults to 0.16 (for 68\% CI).}

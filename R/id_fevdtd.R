@@ -4,9 +4,11 @@
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param horizon, integer vector (can be length 1) of the horizon to maximize
-#' @param sign Default to "positive". Can be "negative".  Ensures the impact
-#' of the main shock on the target variable is the given sign. Set to NA for
-#' for the default sign.
+#' @param sign Default to "positive". Can be "negative".  Ensures the
+#' cummulative impact of the main shock on the target variable is the 
+#' given sign.
+#' @param sign_horizon Default to 1. The horizon through which to accumulate the
+#' impact of the shock.
 #'
 #' @return structural var
 #' @export
@@ -16,7 +18,9 @@
 #' v <- vars::VAR(x, p = 2)
 #' mvar <- id_fevdtd(v, "pi", 4:10)
 #'
-id_fevdtd <- function(var, target, horizon, sign = "positive") {
+id_fevdtd <- function(
+  var, target, horizon, sign = "positive", sign_horizon = 1
+  ) {
   ## Check parameter values are what is expected
   if (!(inherits(var, "varest") || inherits(var, "var.boot"))) {
     stop("Please pass a VAR from 'vars::VAR'.")
@@ -71,14 +75,6 @@ id_fevdtd <- function(var, target, horizon, sign = "positive") {
   q[, 1] <- evec
   q[, 2:k] <- pracma::nullspace(t(evec))
 
-  ## Insure the sign is as expected
-  impact <- svar$B %*% q
-  if (sign == "positive" || sign == "pos") {
-    if (impact[ti, 1] < 0) q <- -1 * q
-  } else if (sign == "negative" || sign == "neg") {
-    if (impact[ti, 1] > 0) q <- -1 * q
-  }
-
   ## Insert resulting matrix into var
   mvar <- svar
   mvar$Q <- q
@@ -88,6 +84,21 @@ id_fevdtd <- function(var, target, horizon, sign = "positive") {
   mvar$horizon <- horizon
 
   class(mvar) <- c("fevdvar", "svars")
+
+  ## Insure the sign is as expected
+  irf <-
+    vars::irf(mvar, impulse = "Main", response = t, n.ahead = sign_horizon)[[1]]
+  if (sign == "positive" || sign == "pos") {
+    if (sum(irf[1:sign_horizon, 2]) < 0) {
+      mvar$Q <- -1 * mvar$Q
+      mvar$B <- -1 * mvar$B
+    }
+  } else if (sign == "negative" || sign == "neg") {
+    if (sum(irf[1:sign_horizon, 2]) > 0) {
+      mvar$Q <- -1 * mvar$Q
+      mvar$B <- -1 * mvar$B
+    }
+  }
 
   return(mvar)
 }
