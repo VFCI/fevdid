@@ -30,7 +30,7 @@ plot.fevdfd <- function(x, y, stacked = TRUE, vlines = NULL, ...) {
     data.frame(
       f = rep(f, length(shocks)),
       shocks = rep(shocks, each = length(f)),
-      variable = n,
+      variable = factor(n, levels = n, ordered = TRUE),
       value = data
     )
   }))
@@ -95,7 +95,7 @@ plot.fevdvarfevd <- function(x, y, stacked = TRUE, vlines = NULL, ...) {
     data.frame(
       h = rep(h, length(shocks)),
       shocks = rep(shocks, each = length(h)),
-      variable = n,
+      variable = factor(n, levels = n, ordered = TRUE),
       value = data
     )
   }))
