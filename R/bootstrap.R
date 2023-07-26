@@ -92,7 +92,7 @@ bootstrap <- function(
   ## Initialize empty arrays to store bootstrap results
   aboots <- array(0, dim = c(dim(a), nboot))
   bboots <- array(0, dim = c(dim(b), nboot))
-  irfboots <- list()
+  irfboots <- array(0, dim = c(k, k, horizon, nboot))
 
   ## Bootsrap Progress Bar
   tick <- 0
@@ -147,47 +147,31 @@ bootstrap <- function(
     if (!is.null(id_method)) {
       bootsvar <- id_method(bootvar, ...)
     } else {
-      bootsvar <- svars::id.chol(bootvar)
+      bootsvar <- bootvar
     }
 
     ## Construct bootstrapped IRFs
-    bootirf <- irf(bootsvar, n.ahead = horizon)
-    bootirf[[1]]$boot <- nb
+    bootirf_df <- irf(bootsvar, n.ahead = horizon)[[1]]
+    bootirf <- array(unlist(t(bootirf_df[, -1])), dim = c(k, k, horizon))
+    bootirf <- aperm(bootirf, c(2, 1, 3))
 
     ## Store results
     aboots[, , nb] <- bootsvar$A_hat
     bboots[, , nb] <- bootsvar$B
-    irfboots[nb] <- bootirf
+    irfboots[, , , nb] <- bootirf
   }
   cat("\n")
 
   ## Calculate summary stats for IRFs
-  boot <- h <- name <- variable <- shock <- value <- NULL
-
-  irf_df <- Reduce(rbind, irfboots) |>
-    dplyr::rename(h = "V1") |>
-    tidyr::pivot_longer(-c(boot, h)) |>
-    dplyr::mutate(variable = stringr::str_extract(name, "(?<=%->%).*$")) |>
-    dplyr::mutate(shock = stringr::str_extract(name, "(?<= ).*(?= )")) |>
-    dplyr::select(!name)
-
-  irf_summarized <- irf_df |>
-    dplyr::group_by(h, variable, shock) |>
-    dplyr::summarize(
-      mean = mean(value),
-      median = stats::median(value),
-      lower = stats::quantile(value, lower_pctl),
-      upper = stats::quantile(value, upper_pctl)
-    )
-
+  irf_mean <- rowMeans(irfboots, dims = 3)
   a_mean <- rowMeans(aboots, dims = 2)
   b_mean <- rowMeans(bboots, dims = 2)
 
   ## Return bootstrap results
   bootstrap <- list(
     VAR = var,
-    IRF = irf_summarized,
-    all_IRF_boots = irf_df,
+    IRF_boots = irfboots,
+    IRF_mean = irf_mean,
     A_boots = aboots,
     A_mean = a_mean,
     B_boots = bboots,
