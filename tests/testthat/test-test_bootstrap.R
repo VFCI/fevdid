@@ -30,7 +30,7 @@ compare_boots <- function(bv, bv2, tols) {
   bv2_mean_boot <- bv2$IRF_mean
 
   bv_mean_boot <- array(aperm(bv_mean_boot, c(3, 2, 1)), dim = c(10, 9))
-  bv2_mean_boot <- array(aperm(bv2_mean_boot, c(3, 2, 1)), dim = c(10, 9))
+  bv2_mean_boot <- array(aperm(bv2_mean_boot, c(3, 1, 2)), dim = c(10, 9))
 
   expect_equal(bv_mean_boot, bv2_mean_boot, tolerance = tols[2])
 }
