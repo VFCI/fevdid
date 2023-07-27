@@ -45,8 +45,8 @@ bootstrap <- function(
 
   ## Variable and Shock names
   variable_names <- colnames(y)
-  if (inherits(var, "fevdvar")){
-    shock_names <-  c("Main", paste0("Orth_", 2:k))
+  if (inherits(var, "fevdvar")) {
+    shock_names <- c("Main", paste0("Orth_", 2:k))
   } else {
     shock_names <- colnames(y)
   }
