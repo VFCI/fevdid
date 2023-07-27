@@ -160,7 +160,6 @@ bootstrap <- function(
     ## Construct bootstrapped IRFs
     bootirf_df <- irf(bootsvar, n.ahead = n_ahead)[[1]]
     bootirf <- array(unlist(t(bootirf_df[, -1])), dim = c(k, k, n_ahead))
-    bootirf <- aperm(bootirf, c(2, 1, 3))
 
     ## Store results
     aboots[, , nb] <- bootsvar$A_hat
