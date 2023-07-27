@@ -9,7 +9,7 @@ bootstrap(
   var,
   id_method = NULL,
   nboot = 500,
-  horizon = 20,
+  n_ahead = 20,
   design = "recursive",
   method = "resample",
   wild_distr = "gaussian",
@@ -26,7 +26,7 @@ bootstrap(
 
 \item{nboot}{number of bootstrap iteratons}
 
-\item{horizon}{length of IRF horizon}
+\item{n_ahead}{length of IRF horizon}
 
 \item{design}{"recursive" or "fixed".
 Controls how samples of the data are constructed.}

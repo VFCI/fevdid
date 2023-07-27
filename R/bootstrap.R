@@ -4,7 +4,7 @@
 #' @param var VAR to bootstrap
 #' @param id_method function that identifies the Structural VAR
 #' @param nboot number of bootstrap iteratons
-#' @param horizon length of IRF horizon
+#' @param n_ahead length of IRF horizon
 #' @param design "recursive" or "fixed".
 #' Controls how samples of the data are constructed.
 #' @param method "resample" or "wild"
@@ -26,7 +26,7 @@ bootstrap <- function(
     var,
     id_method = NULL,
     nboot = 500,
-    horizon = 20,
+    n_ahead = 20,
     design = "recursive",
     method = "resample",
     wild_distr = "gaussian",
@@ -43,6 +43,13 @@ bootstrap <- function(
   n <- nrow(y)
   u <- t(stats::resid(var$VAR))
 
+  ## Variable and Shock names
+  variable_names <- colnames(y)
+  if (inherits(var, "fevdvar")){
+    shock_names <-  c("Main", paste0("Orth_", 2:k))
+  } else {
+    shock_names <- colnames(y)
+  }
 
   ## Construct z: stacked y's for statespace var
   z <- t(Reduce(cbind, lapply(1:p, function(l) y[(p + 1 - l):(n - l), ])))
@@ -92,7 +99,7 @@ bootstrap <- function(
   ## Initialize empty arrays to store bootstrap results
   aboots <- array(0, dim = c(dim(a), nboot))
   bboots <- array(0, dim = c(dim(b), nboot))
-  irfboots <- array(0, dim = c(k, k, horizon, nboot))
+  irfboots <- array(0, dim = c(k, k, n_ahead, nboot))
 
   ## Bootsrap Progress Bar
   tick <- 0
@@ -151,8 +158,8 @@ bootstrap <- function(
     }
 
     ## Construct bootstrapped IRFs
-    bootirf_df <- irf(bootsvar, n.ahead = horizon)[[1]]
-    bootirf <- array(unlist(t(bootirf_df[, -1])), dim = c(k, k, horizon))
+    bootirf_df <- irf(bootsvar, n.ahead = n_ahead)[[1]]
+    bootirf <- array(unlist(t(bootirf_df[, -1])), dim = c(k, k, n_ahead))
     bootirf <- aperm(bootirf, c(2, 1, 3))
 
     ## Store results
@@ -163,13 +170,28 @@ bootstrap <- function(
   cat("\n")
 
   ## Calculate summary stats for IRFs
-  irf_mean <- rowMeans(irfboots, dims = 3)
   a_mean <- rowMeans(aboots, dims = 2)
   b_mean <- rowMeans(bboots, dims = 2)
+
+  irf_mean <- rowMeans(irfboots, dims = 3)
+  irf_median <- apply(irfboots, c(1, 2, 3), stats::median)
+  irf_lower <- apply(irfboots, c(1, 2, 3), stats::quantile, probs = lower_pctl)
+  irf_upper <- apply(irfboots, c(1, 2, 3), stats::quantile, probs = upper_pctl)
+
+  irf_df <- data.frame(
+    h = rep(1:n_ahead, each = k * k),
+    shock = rep(shock_names, times = k * n_ahead),
+    variable = rep(variable_names, each = k, times = n_ahead),
+    mean = c(irf_mean),
+    median = c(irf_median),
+    lower = c(irf_lower),
+    upper = c(irf_upper)
+  )
 
   ## Return bootstrap results
   bootstrap <- list(
     VAR = var,
+    IRF_df = irf_df,
     IRF_boots = irfboots,
     IRF_mean = irf_mean,
     A_boots = aboots,
@@ -178,7 +200,7 @@ bootstrap <- function(
     B_mean = b_mean,
     id_method = id_method,
     nboot = nboot,
-    horizon = horizon,
+    n_ahead = n_ahead,
     design = design,
     method = method,
     wild_distr = wild_distr,
@@ -193,7 +215,7 @@ bootstrap <- function(
     var$A_hat <- var$A_hat - bias
 
     bootstrap <- bootstrap(
-      var = var, id_method = id_method, nboot = nboot, horizon = horizon,
+      var = var, id_method = id_method, nboot = nboot, n_ahead = n_ahead,
       design = design, method = method, wild_distr = wild_distr,
       bias_adjust = FALSE,
       lower_pctl = lower_pctl, upper_pctl = upper_pctl, ...

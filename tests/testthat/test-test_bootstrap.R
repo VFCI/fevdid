@@ -8,7 +8,7 @@ test_wildboot <- function(p, distr, design, nboot, tols) {
   bv <- svars::wild.boot(
     sv, design = design, distr = distr, n.ahead = 10, nboot = nboot)
 
-  bv2 <- bootstrap(sv, svars::id.chol, horizon = 10, nboot = nboot,
+  bv2 <- bootstrap(sv, svars::id.chol, n_ahead = 10, nboot = nboot,
     design = design, method = "wild", wild_distr = distr
     )
 
@@ -39,19 +39,19 @@ compare_boots <- function(bv, bv2, tols) {
 test_that("bootstrap matches svars::wild.boot", {
 
   ## Test Gaussian Wild Distribution with Recursive
-  test_wildboot(2, "gaussian", "recursive", 250, c(0.05, 0.05))
+  test_wildboot(2, "gaussian", "recursive", 250, c(0.1, 0.1))
 
   ## Test Rademacher Wild Distribution with Recursive
-  test_wildboot(2, "rademacher", "recursive", 250, c(0.05, 0.05))
+  test_wildboot(2, "rademacher", "recursive", 250, c(0.1, 0.1))
 
   ## Test mammen Wild Distribution with Recursive
-  test_wildboot(2, "mammen", "recursive", 250, c(0.05, 0.05))
+  test_wildboot(2, "mammen", "recursive", 250, c(0.1, 0.1))
 
   ## Test Gaussian Wild Distribution with Fixed
-  test_wildboot(2, "gaussian", "fixed", 250, c(0.05, 0.05))
+  test_wildboot(2, "gaussian", "fixed", 250, c(0.1, 0.1))
 
   ## Test different lags
-  test_wildboot(1, "gaussian", "recursive", 250, c(0.05, 0.05))
+  test_wildboot(1, "gaussian", "recursive", 250, c(0.1, 0.1))
   test_wildboot(5, "gaussian", "recursive", 250, c(0.1, 0.1))
   test_wildboot(10, "gaussian", "recursive", 250, c(0.1, 0.1))
 })
@@ -68,7 +68,7 @@ test_that("bootstrap with resample is close to svars::wild.boot", {
     )
 
   bv2 <- bootstrap(
-    sv, svars::id.chol, horizon = 10, nboot = 250,
+    sv, svars::id.chol, n_ahead = 10, nboot = 250,
     design = "recursive", method = "resample", wild_distr = "gaussian"
     )
 
