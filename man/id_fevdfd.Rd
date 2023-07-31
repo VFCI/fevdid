@@ -2,11 +2,41 @@
 % Please edit documentation in R/id_fevdfd.R
 \name{id_fevdfd}
 \alias{id_fevdfd}
+\alias{id_fevdfd.varest}
+\alias{id_fevdfd.varboot}
+\alias{id_fevdfd.bvar}
 \title{Identify the main shock by targetting the forecast error
 variance contribution in the frequency domain.}
 \usage{
 id_fevdfd(
-  var,
+  x,
+  target,
+  freqs,
+  grid_size = 1000,
+  sign = "positive",
+  sign_horizon = 1
+)
+
+\method{id_fevdfd}{varest}(
+  x,
+  target,
+  freqs,
+  grid_size = 1000,
+  sign = "positive",
+  sign_horizon = 1
+)
+
+\method{id_fevdfd}{varboot}(
+  x,
+  target,
+  freqs,
+  grid_size = 1000,
+  sign = "positive",
+  sign_horizon = 1
+)
+
+\method{id_fevdfd}{bvar}(
+  x,
   target,
   freqs,
   grid_size = 1000,
@@ -15,7 +45,7 @@ id_fevdfd(
 )
 }
 \arguments{
-\item{var, }{vars::VAR object}
+\item{x}{either a \code{vars::VARS} or a \code{BVAR::bvar} object}
 
 \item{target, }{variable name or index to maximize its fev}
 

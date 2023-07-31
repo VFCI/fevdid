@@ -23,6 +23,7 @@
 #' @name irf
 #' @aliases irf.fevdvar
 #' @importFrom  vars irf
+#' @importFrom  expm %^%
 #'
 #' @export
 #'
@@ -33,9 +34,18 @@
 #' vars::irf(mvar)
 #'
 irf.fevdvar <- function(
-    x, impulse = NULL, response = NULL, n.ahead = 10,
-    ortho = TRUE, cumulative = FALSE, boot = TRUE,
-    ci = 0.95, runs = 100, seed = NULL, ...) {
+    x,
+    impulse = NULL,
+    response = NULL,
+    n.ahead = 10,
+    ortho = TRUE,
+    cumulative = FALSE,
+    boot = TRUE,
+    ci = 0.95,
+    runs = 100,
+    seed = NULL,
+    ...
+    ) {
   class(x) <- "svars"
 
   k <- x$K
@@ -68,6 +78,27 @@ irf.fevdvar <- function(
   keep <- apply(expand.grid(impulse_keep, response_keep), 1, all)
 
   irf$irf <- irf$irf[, c(TRUE, keep)]
+
+  return(irf)
+}
+
+#'
+#' Simple IRF function for statespace VARs
+#'
+#' @param ssv Statespace VAR class.
+#' @param n_ahead integer. How far out to calculate the impulse response.
+#'
+irf_ssv <- function(
+  ssv,
+  n_ahead = 10
+  ){
+  k <- nrow(ssv$my)
+
+  irf <- array(0, dim = c(k, k, n_ahead))
+
+  for (h in seq_len(n_ahead)) {
+    irf[, , h] <- ssv$my %*% (ssv$mx %^% (h - 1) %*% ssv$me)
+  }
 
   return(irf)
 }

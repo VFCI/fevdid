@@ -28,3 +28,34 @@ svar_to_svar1 <- function(svar) {
 
   return(list(my = my, mx = mx, me = me))
 }
+
+
+as_statespace_var <- function(betas, sigma) {
+
+  k <- nrow(sigma)
+  p <- floor(ncol(betas) / k)
+
+  ## Get coeefficient matrix, ignore constant
+  if ((p * k) + 1 == ncol(betas)) {
+    a <- betas[, -1]
+  } else if (p * k == ncol(betas)) {
+    a <- betas
+  } else {
+    stop("Betas have the wrong dimensions.")
+  }
+
+  ## Create Var(1) objects
+  my <- cbind(diag(k * (p - 1)), matrix(0, k * (p - 1), k))
+  mx <- rbind(a, my)
+  me <- rbind(sigma, matrix(0, k * (p - 1), k))
+
+  ssv <- list(
+    my = my,
+    mx = mx,
+    me = me
+    )
+
+  class(ssv) <- "statespacevar"
+
+  return(ssv)
+}

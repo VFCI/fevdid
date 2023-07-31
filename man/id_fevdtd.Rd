@@ -2,17 +2,26 @@
 % Please edit documentation in R/id_fevdtd.R
 \name{id_fevdtd}
 \alias{id_fevdtd}
+\alias{id_fevdtd.varest}
+\alias{id_fevdtd.varboot}
+\alias{id_fevdtd.bvar}
 \title{Identify the main shock by targetting the forecast error
 variance contribution in the time domain.}
 \usage{
-id_fevdtd(var, target, horizon, sign = "positive", sign_horizon = 1)
+id_fevdtd(x, target, horizon, sign = "positive", sign_horizon = 1)
+
+\method{id_fevdtd}{varest}(x, target, horizon, sign = "positive", sign_horizon = 1)
+
+\method{id_fevdtd}{varboot}(x, target, horizon, sign = "positive", sign_horizon = 1)
+
+\method{id_fevdtd}{bvar}(x, target, horizon, sign = "positive", sign_horizon = 1)
 }
 \arguments{
-\item{var, }{vars::VAR object}
+\item{x}{vars::VAR object}
 
-\item{target, }{variable name or index to maximize its fevd}
+\item{target}{variable name or index to maximize its fevd}
 
-\item{horizon, }{integer vector (can be length 1) of the horizon to maximize}
+\item{horizon}{integer vector (can be length 1) of the horizon to maximize}
 
 \item{sign}{Default to "positive". Can be "negative".  Ensures the
 cummulative impact of the main shock on the target variable is the
