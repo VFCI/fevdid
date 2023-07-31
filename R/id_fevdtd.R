@@ -23,11 +23,8 @@ id_fevdtd <- function(
     target,
     horizon,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-
+    sign_horizon = 1) {
   UseMethod("id_fevdtd")
-
 }
 
 #' @rdname id_fevdtd
@@ -40,9 +37,7 @@ id_fevdtd.varest <- function(
     target,
     horizon,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-
+    sign_horizon = 1) {
   n <- colnames(x$y)
   k <- length(n)
   ni <- 1:k
@@ -106,9 +101,8 @@ id_fevdtd.varboot <- function(
     target,
     horizon,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-    id_fevdtd.varest(x, target, horizon, sign, sign_horizon)
+    sign_horizon = 1) {
+  id_fevdtd.varest(x, target, horizon, sign, sign_horizon)
 }
 
 
@@ -123,9 +117,7 @@ id_fevdtd.bvar <- function(
     target,
     horizon,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-
+    sign_horizon = 1) {
   n <- colnames(x$meta$Y)
   k <- length(n)
   ni <- 1:k
@@ -209,9 +201,7 @@ id_fevdtd_findq <- function(
     betas,
     sigma,
     target_index,
-    horizon
-    ) {
-
+    horizon) {
   k <- nrow(sigma)
   ti <- target_index
 

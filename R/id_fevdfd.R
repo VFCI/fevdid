@@ -25,11 +25,8 @@ id_fevdfd <- function(
     freqs,
     grid_size = 1000,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-
+    sign_horizon = 1) {
   UseMethod("id_fevdfd")
-
 }
 
 
@@ -44,9 +41,7 @@ id_fevdfd.varest <- function(
     freqs,
     grid_size = 1000,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-
+    sign_horizon = 1) {
   n <- colnames(x$y)
   k <- length(n)
   ni <- 1:k
@@ -115,9 +110,8 @@ id_fevdfd.varboot <- function(
     freqs,
     grid_size = 1000,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-    id_fevdfd.varest(x, target, freqs, grid_size, sign, sign_horizon)
+    sign_horizon = 1) {
+  id_fevdfd.varest(x, target, freqs, grid_size, sign, sign_horizon)
 }
 
 
@@ -133,9 +127,7 @@ id_fevdfd.bvar <- function(
     freqs,
     grid_size = 1000,
     sign = "positive",
-    sign_horizon = 1
-    ) {
-
+    sign_horizon = 1) {
   n <- colnames(x$meta$Y)
   k <- length(n)
   ni <- 1:k
@@ -223,9 +215,7 @@ id_fevdfd_findq <- function(
     sigma,
     target_index,
     freqs,
-    grid_size
-    ) {
-
+    grid_size) {
   ## Construct Objects
   k <- nrow(sigma)
   ti <- target_index

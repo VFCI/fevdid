@@ -44,8 +44,7 @@ irf.fevdvar <- function(
     ci = 0.95,
     runs = 100,
     seed = NULL,
-    ...
-    ) {
+    ...) {
   class(x) <- "svars"
 
   k <- x$K
@@ -89,9 +88,8 @@ irf.fevdvar <- function(
 #' @param n_ahead integer. How far out to calculate the impulse response.
 #'
 irf_ssv <- function(
-  ssv,
-  n_ahead = 10
-  ){
+    ssv,
+    n_ahead = 10) {
   k <- nrow(ssv$my)
 
   irf <- array(0, dim = c(k, k, n_ahead))

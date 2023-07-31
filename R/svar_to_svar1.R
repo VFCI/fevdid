@@ -31,7 +31,6 @@ svar_to_svar1 <- function(svar) {
 
 
 as_statespace_var <- function(betas, sigma) {
-
   k <- nrow(sigma)
   p <- floor(ncol(betas) / k)
 
@@ -53,7 +52,7 @@ as_statespace_var <- function(betas, sigma) {
     my = my,
     mx = mx,
     me = me
-    )
+  )
 
   class(ssv) <- "statespacevar"
 
