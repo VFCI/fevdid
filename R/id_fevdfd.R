@@ -68,7 +68,7 @@ id_fevdfd.varest <- function(
   betas <- svar$A_hat
   svar$B <- t(chol(sigma))
 
-  q <- id_fevdfd_findq(betas, sigma, ti, freqs, grid_size)
+  q <- id_fevdfd_findq(betas, svar$B, ti, freqs, grid_size)
 
   ## Insert resulting matrix into var
   mvar <- svar
@@ -105,12 +105,13 @@ id_fevdfd.varest <- function(
 #'
 #' @export
 id_fevdfd.varboot <- function(
-    x,
-    target,
-    freqs,
-    grid_size = 1000,
-    sign = "positive",
-    sign_horizon = 1) {
+  x,
+  target,
+  freqs,
+  grid_size = 1000,
+  sign = "positive",
+  sign_horizon = 1
+  ) {
   id_fevdfd.varest(x, target, freqs, grid_size, sign, sign_horizon)
 }
 
@@ -215,7 +216,8 @@ id_fevdfd_findq <- function(
     sigma,
     target_index,
     freqs,
-    grid_size) {
+    grid_size
+    ) {
   ## Construct Objects
   k <- nrow(sigma)
   ti <- target_index
@@ -238,8 +240,7 @@ id_fevdfd_findq <- function(
 
   for (gp in 1:grid_size) {
     if (freq_keep[gp] == 1) {
-      x <-
-        t(ssv$my[ti, ]) %*% (solve(diag(nx) - ssv$mx * zi[gp]) %*% ssv$me)
+      x <- t(ssv$my[ti, ]) %*% (solve(diag(nx) - ssv$mx * zi[gp]) %*% ssv$me)
       x_sq <- r2pi * Conj(t(x)) %*% x
       x_sq <- freq_keep[gp] * x_sq
       freq_fev[gp, ] <- Conj(t(c(x_sq)))
