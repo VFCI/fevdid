@@ -105,13 +105,12 @@ id_fevdfd.varest <- function(
 #'
 #' @export
 id_fevdfd.varboot <- function(
-  x,
-  target,
-  freqs,
-  grid_size = 1000,
-  sign = "positive",
-  sign_horizon = 1
-  ) {
+    x,
+    target,
+    freqs,
+    grid_size = 1000,
+    sign = "positive",
+    sign_horizon = 1) {
   id_fevdfd.varest(x, target, freqs, grid_size, sign, sign_horizon)
 }
 
@@ -216,8 +215,7 @@ id_fevdfd_findq <- function(
     sigma,
     target_index,
     freqs,
-    grid_size
-    ) {
+    grid_size) {
   ## Construct Objects
   k <- nrow(sigma)
   ti <- target_index
