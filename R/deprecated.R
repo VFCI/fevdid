@@ -2,7 +2,7 @@
 #' used to verify the output of id_fevdtd.
 #'
 #' @noRd
-#' 
+#'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param horizon, integer vector (can be length 1) of the horizon to maximize
@@ -75,7 +75,7 @@ id_fevdtd_bca <- function(var, target, horizon) {
 #' used to verify the output of id_fevdfd.
 #'
 #' @noRd
-#' 
+#'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
@@ -171,7 +171,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
 #' 'hmax' in time domain first.
 #'
 #' @noRd
-#' 
+#'
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
