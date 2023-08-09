@@ -4,6 +4,7 @@
 \alias{id_fevdtd}
 \alias{id_fevdtd.varest}
 \alias{id_fevdtd.varboot}
+\alias{id_fevdtd.bvartools}
 \alias{id_fevdtd.bvar}
 \title{Identify the main shock by targetting the forecast error
 variance contribution in the time domain.}
@@ -13,6 +14,8 @@ id_fevdtd(x, target, horizon, sign = "positive", sign_horizon = 1)
 \method{id_fevdtd}{varest}(x, target, horizon, sign = "positive", sign_horizon = 1)
 
 \method{id_fevdtd}{varboot}(x, target, horizon, sign = "positive", sign_horizon = 1)
+
+\method{id_fevdtd}{bvartools}(x, target, horizon, sign = "positive", sign_horizon = 1)
 
 \method{id_fevdtd}{bvar}(x, target, horizon, sign = "positive", sign_horizon = 1)
 }

@@ -117,6 +117,56 @@ id_fevdfd.varboot <- function(
 
 #' @rdname id_fevdfd
 #' @name id_fevdfd
+#' @aliases id_fevdfd.bvartools
+#'
+#' @export
+id_fevdfd.bvartools <- function(
+  x,
+  target,
+  freqs,
+  grid_size = 1000,
+  sign = "positive",
+  sign_horizon = 1
+  ) {
+    k <- nrow(x$y)
+    p <- ncol(x$A[, 1]) %% k
+    var_names <- rownames(x$y)
+    iterations <- ncol(x$Sigma)
+
+    ti <- which(var_names == target)
+
+    rots_sigma <- matrix(NA, k^2, iterations)
+
+    ## Find the main shock rotation matrices, q, and rotate the sigma matrix
+    for (i in 1:iterations) {
+        if (i %% 10^2 == 0) print(i)
+        a <- matrix(x$A[, i], k)
+        c <- matrix(x$C[, i], k, 1)
+
+        a_hat <- cbind(c, a)
+
+        sigma <- matrix(x$Sigma[, i], k, k)
+        b <- t(chol(sigma))
+
+        q <- id_fevdfd_findq(a_hat, b, ti, freqs, grid_size)
+
+        impulse <- b %*% q
+        if (impulse[ti, 1] < 0) impulse <- impulse * -1
+
+        rots_sigma[, i] <- c(impulse)
+    }
+
+    mvar <- x
+    mvar$method <- "id_fevdfd"
+    mvar$Sigma <- rots_sigma
+
+    return(mvar)
+  }
+
+
+
+#' @rdname id_fevdfd
+#' @name id_fevdfd
 #' @aliases id_fevdfd.bvar
 #'
 #' @export

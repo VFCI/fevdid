@@ -1,6 +1,8 @@
 #' Translation from the Business Cycle Anatomy replication code,
 #' used to verify the output of id_fevdtd.
 #'
+#' @noRd
+#' 
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param horizon, integer vector (can be length 1) of the horizon to maximize
@@ -72,6 +74,8 @@ id_fevdtd_bca <- function(var, target, horizon) {
 #' Translation from the Business Cycle Anatomy replication code,
 #' used to verify the output of id_fevdfd.
 #'
+#' @noRd
+#' 
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
@@ -107,7 +111,7 @@ id_fevdfd_bca <- function(var, target, freqs) {
   svar$B <- t(chol(stats::cov(stats::residuals(var))))
 
   ## Contstruct VAR(1) objects
-  svar1 <- svar_to_svar1(svar)
+  svar1 <- as_statespace_var(svar$A_hat, svar$B)
 
   nx <- dim(svar1$mx)[[2]]
 
@@ -166,6 +170,8 @@ id_fevdfd_bca <- function(var, target, freqs) {
 #' Approximates the frequency fev by iterating out a length of
 #' 'hmax' in time domain first.
 #'
+#' @noRd
+#' 
 #' @param var, vars::VAR object
 #' @param target, variable name or index to maximize its fevd
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)

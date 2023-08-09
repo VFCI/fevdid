@@ -43,7 +43,7 @@ fevdfd.svars <- function(
   }
 
   ## Contstruct VAR(1) objects
-  svar1 <- svar_to_svar1(var)
+  svar1 <- as_statespace_var(var$A_hat, var$B)
 
   nx <- dim(svar1$mx)[[2]]
 

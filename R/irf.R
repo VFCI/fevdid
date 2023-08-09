@@ -44,7 +44,8 @@ irf.fevdvar <- function(
     ci = 0.95,
     runs = 100,
     seed = NULL,
-    ...) {
+    ...
+    ) {
   class(x) <- "svars"
 
   k <- x$K
@@ -80,6 +81,67 @@ irf.fevdvar <- function(
 
   return(irf)
 }
+
+
+#' @rdname irf
+#' @name irf
+#' @aliases irf.bvartools
+#'
+#' @export
+#'
+irf.bvartools <- function(
+    x,
+    impulse = NULL,
+    response = NULL,
+    n.ahead = 10,
+    ortho = TRUE,
+    cumulative = FALSE,
+    boot = TRUE,
+    ci = 0.95,
+    runs = 100,
+    seed = NULL,
+    ...
+) {
+
+    k <- nrow(x$y)
+    var_names <- rownames(x$y)
+    iterations <- ncol(x$Sigma)
+
+    if (x$method %in% c("id_fevdfd", "id_fevdtd")) {
+        shock_names <- c("Main", paste0("Orth_", 2:k))
+    } else {
+        shock_names <- paste0("V", 1:k)
+    }
+
+    iter_irfs <- array(NA, dim = c(k, k, n.ahead, iterations))
+
+    for (i in 1:iterations) {
+        a <- matrix(x$A[, i], k)
+        c <- matrix(x$C[, i], k, 1)
+
+        a_hat <- cbind(c, a)
+
+        sig <- matrix(x$Sigma[, i], k, k)
+
+        ssv <- as_statespace_var(a_hat, sig)
+
+        iter_irfs[, , , i] <- irf_ssv(ssv, n_ahead = n.ahead)
+    }
+
+    ## Create tidy IRF DF
+    irf_df <- data.frame(
+        h = rep(1:n.ahead, each = k * k),
+        shock = rep(shock_names, each = k, times = n.ahead),
+        variable = rep(var_names, times = k * n.ahead),
+        mean = c(rowMeans(iter_irfs, dims = 3)),
+        median = c(apply(iter_irfs, c(1, 2, 3), stats::median)),
+        lower = c(apply(iter_irfs, c(1, 2, 3), stats::quantile, probs = 0.16)),
+        upper = c(apply(iter_irfs, c(1, 2, 3), stats::quantile, probs = 0.84))
+        )
+
+    return(irf_df)
+}
+
 
 #'
 #' Simple IRF function for statespace VARs

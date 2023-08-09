@@ -4,6 +4,7 @@
 \alias{id_fevdfd}
 \alias{id_fevdfd.varest}
 \alias{id_fevdfd.varboot}
+\alias{id_fevdfd.bvartools}
 \alias{id_fevdfd.bvar}
 \title{Identify the main shock by targetting the forecast error
 variance contribution in the frequency domain.}
@@ -27,6 +28,15 @@ id_fevdfd(
 )
 
 \method{id_fevdfd}{varboot}(
+  x,
+  target,
+  freqs,
+  grid_size = 1000,
+  sign = "positive",
+  sign_horizon = 1
+)
+
+\method{id_fevdfd}{bvartools}(
   x,
   target,
   freqs,

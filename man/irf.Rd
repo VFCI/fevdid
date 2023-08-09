@@ -3,9 +3,24 @@
 \name{irf}
 \alias{irf}
 \alias{irf.fevdvar}
+\alias{irf.bvartools}
 \title{Impulse Responses.}
 \usage{
 \method{irf}{fevdvar}(
+  x,
+  impulse = NULL,
+  response = NULL,
+  n.ahead = 10,
+  ortho = TRUE,
+  cumulative = FALSE,
+  boot = TRUE,
+  ci = 0.95,
+  runs = 100,
+  seed = NULL,
+  ...
+)
+
+\method{irf}{bvartools}(
   x,
   impulse = NULL,
   response = NULL,

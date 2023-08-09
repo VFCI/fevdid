@@ -37,7 +37,8 @@ id_fevdtd.varest <- function(
     target,
     horizon,
     sign = "positive",
-    sign_horizon = 1) {
+    sign_horizon = 1
+    ) {
   n <- colnames(x$y)
   k <- length(n)
   ni <- 1:k
@@ -104,6 +105,57 @@ id_fevdtd.varboot <- function(
     sign_horizon = 1) {
   id_fevdtd.varest(x, target, horizon, sign, sign_horizon)
 }
+
+
+#' @rdname id_fevdtd
+#' @name id_fevdtd
+#' @aliases id_fevdtd.bvartools
+#'
+#' @export
+#'
+id_fevdtd.bvartools <- function(
+  x,
+  target,
+  horizon,
+  sign = "positive",
+  sign_horizon = 1
+  ) {
+
+    k <- nrow(x$y)
+    p <- ncol(x$A[, 1]) %% k
+    var_names <- rownames(x$y)
+    iterations <- ncol(x$Sigma)
+
+    ti <- which(var_names == target)
+
+    rots_sigma <- matrix(NA, k^2, iterations)
+
+    ## Find the main shock rotation matrices, q, and rotate the sigma matrix
+    for (i in 1:iterations) {
+        if (i %% 10^2 == 0) print(i)
+        a <- matrix(x$A[, i], k)
+        c <- matrix(x$C[, i], k, 1)
+
+        a_hat <- cbind(c, a)
+
+        sigma <- matrix(x$Sigma[, i], k, k)
+        b <- t(chol(sigma))
+
+        q <- id_fevdtd_findq(a_hat, b, ti, horizon)
+
+        impulse <- b %*% q
+        if (impulse[ti, 1] < 0) impulse <- impulse * -1
+
+        rots_sigma[, i] <- c(impulse)
+    }
+
+    mvar <- x
+    mvar$method <- "id_fevdtd"
+    mvar$Sigma <- rots_sigma
+
+    return(mvar)
+}
+
 
 
 #' @rdname id_fevdtd
