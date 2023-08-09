@@ -22,6 +22,9 @@
     <loc>https://vfci.github.io/fevdid/index.html</loc>
   </url>
   <url>
+    <loc>https://vfci.github.io/fevdid/reference/as_statespace_var.html</loc>
+  </url>
+  <url>
     <loc>https://vfci.github.io/fevdid/reference/bootstrap.html</loc>
   </url>
   <url>
@@ -37,19 +40,10 @@
     <loc>https://vfci.github.io/fevdid/reference/id_fevdfd.html</loc>
   </url>
   <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdfd_approx.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdfd_bca.html</loc>
-  </url>
-  <url>
     <loc>https://vfci.github.io/fevdid/reference/id_fevdfd_findq.html</loc>
   </url>
   <url>
     <loc>https://vfci.github.io/fevdid/reference/id_fevdtd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdtd_bca.html</loc>
   </url>
   <url>
     <loc>https://vfci.github.io/fevdid/reference/id_fevdtd_findq.html</loc>
@@ -65,8 +59,5 @@
   </url>
   <url>
     <loc>https://vfci.github.io/fevdid/reference/plot.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/svar_to_svar1.html</loc>
   </url>
 </urlset>
