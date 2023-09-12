@@ -14,8 +14,8 @@ fev <- function(var, h) {
     irf <- vars::irf(var, n.ahead = h, as_matrix = TRUE)
   } else {
     irf <- vars::irf(var, n.ahead = h)[[1]][, -1] |>
-        apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
-        simplify2array()
+      apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
+      simplify2array()
   }
 
 

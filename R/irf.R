@@ -14,7 +14,7 @@
 #' @param ci Not used. Here to match generic vars::irf.
 #' @param runs Not used. Here to match generic vars::irf.
 #' @param seed Not used. Here to match generic vars::irf.
-#' @param as_matrix Default to False. 
+#' @param as_matrix Default to False.
 #' Set to true to return a 3D matrix instead of a data.frame.
 #' @param ... Currently not used.
 #'
@@ -58,7 +58,9 @@ irf.fevdvar <- function(
   ssv <- as_statespace_var(x$A_hat, x$B)
   irf <- irf_ssv(ssv, n_ahead = n.ahead)
 
-  if (as_matrix) return(irf)
+  if (as_matrix) {
+    return(irf)
+  }
 
   ## Create data.frame
   irf_df <- data.frame(
