@@ -63,6 +63,7 @@ so that the shock names are correct.</p>
 <span>  ci <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  runs <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  as_matrix <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -125,6 +126,11 @@ default is all variables.</p></dd>
 <dd><p>Not used. Here to match generic vars::irf.</p></dd>
 
 
+<dt>as_matrix</dt>
+<dd><p>Default to False.
+Set to true to return a 3D matrix instead of a data.frame.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Currently not used.</p></dd>
 
@@ -143,41 +149,97 @@ Indexed: frequencies, variables, shocks</p>
 <span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/VAR.html" class="external-link">VAR</a></span><span class="op">(</span><span class="va">x</span>, p <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mvar</span> <span class="op">&lt;-</span> <span class="fu"><a href="id_fevdtd.html">id_fevdtd</a></span><span class="op">(</span><span class="va">v</span>, <span class="st">"pi"</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/irf.html" class="external-link">irf</a></span><span class="op">(</span><span class="va">mvar</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Impulse response coefficients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    V1 epsilon[ Main ]%-&gt;%x epsilon[ Orth_2 ]%-&gt;%x epsilon[ Orth_3 ]%-&gt;%x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0           0.06778726             0.71291235             0.08827537</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1           0.09962456             0.80865766             0.04477040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   2           0.06889548             0.74259796             0.09282645</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   3           0.02815543             0.61125699             0.16134435</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   4          -0.02473531             0.47068765             0.22229865</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   5          -0.08041218             0.34340869             0.26958530</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   6          -0.13571717             0.23639103             0.30106211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   7          -0.18797320             0.14994059             0.31833927</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   8          -0.23567840             0.08167321             0.32377205</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  9          -0.27791359             0.02851285             0.31986174</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    epsilon[ Main ]%-&gt;%pi epsilon[ Orth_2 ]%-&gt;%pi epsilon[ Orth_3 ]%-&gt;%pi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1              1.0641672             -0.18342601             0.111448857</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              0.7153101             -0.07757648            -0.092187863</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              0.7588303              0.00572451            -0.031024691</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4              0.7031149              0.05600512            -0.042662458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5              0.6692832              0.09303648            -0.025868304</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6              0.6283811              0.11558081            -0.010405058</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7              0.5871757              0.12832824             0.008532501</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8              0.5444260              0.13353568             0.027944614</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9              0.5008284              0.13330069             0.047148780</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10             0.4567058              0.12913928             0.065326409</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    epsilon[ Main ]%-&gt;%i epsilon[ Orth_2 ]%-&gt;%i epsilon[ Orth_3 ]%-&gt;%i</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1             0.2729854              0.3480848             -0.8051429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2             0.3715669              0.6264262             -0.7947887</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3             0.4911181              0.6596073             -0.7260503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4             0.5544104              0.6126489             -0.6355488</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5             0.5988322              0.5402418             -0.5361566</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6             0.6232267              0.4669393             -0.4443058</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7             0.6336541              0.4024302             -0.3620567</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8             0.6327544              0.3488524             -0.2902260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9             0.6229053              0.3054276             -0.2278422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10            0.6058520              0.2703395             -0.1736920</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     h impulse response          irf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1    Main        x  0.067787261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1    Main       pi  1.064167220</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1    Main        i  0.272985376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   1  Orth_2        x  0.712912349</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   1  Orth_2       pi -0.183426009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   1  Orth_2        i  0.348084767</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   1  Orth_3        x  0.088275371</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   1  Orth_3       pi  0.111448857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   1  Orth_3        i -0.805142889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  2    Main        x  0.099624559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  2    Main       pi  0.715310130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  2    Main        i  0.371566912</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  2  Orth_2        x  0.808657657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  2  Orth_2       pi -0.077576485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15  2  Orth_2        i  0.626426159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  2  Orth_3        x  0.044770396</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  2  Orth_3       pi -0.092187863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  2  Orth_3        i -0.794788673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  3    Main        x  0.068895477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  3    Main       pi  0.758830339</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21  3    Main        i  0.491118102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  3  Orth_2        x  0.742597957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23  3  Orth_2       pi  0.005724510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  3  Orth_2        i  0.659607290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25  3  Orth_3        x  0.092826448</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26  3  Orth_3       pi -0.031024691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27  3  Orth_3        i -0.726050307</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28  4    Main        x  0.028155426</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29  4    Main       pi  0.703114881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30  4    Main        i  0.554410409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31  4  Orth_2        x  0.611256994</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32  4  Orth_2       pi  0.056005124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33  4  Orth_2        i  0.612648879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34  4  Orth_3        x  0.161344352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35  4  Orth_3       pi -0.042662458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36  4  Orth_3        i -0.635548847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37  5    Main        x -0.024735313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38  5    Main       pi  0.669283235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39  5    Main        i  0.598832154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40  5  Orth_2        x  0.470687648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41  5  Orth_2       pi  0.093036484</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42  5  Orth_2        i  0.540241779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43  5  Orth_3        x  0.222298650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44  5  Orth_3       pi -0.025868304</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45  5  Orth_3        i -0.536156578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46  6    Main        x -0.080412175</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47  6    Main       pi  0.628381133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48  6    Main        i  0.623226723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49  6  Orth_2        x  0.343408691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50  6  Orth_2       pi  0.115580811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51  6  Orth_2        i  0.466939339</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52  6  Orth_3        x  0.269585303</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53  6  Orth_3       pi -0.010405058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54  6  Orth_3        i -0.444305757</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55  7    Main        x -0.135717174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56  7    Main       pi  0.587175705</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57  7    Main        i  0.633654075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58  7  Orth_2        x  0.236391029</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59  7  Orth_2       pi  0.128328241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60  7  Orth_2        i  0.402430235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61  7  Orth_3        x  0.301062110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62  7  Orth_3       pi  0.008532501</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63  7  Orth_3        i -0.362056711</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64  8    Main        x -0.187973205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65  8    Main       pi  0.544426035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66  8    Main        i  0.632754410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67  8  Orth_2        x  0.149940594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68  8  Orth_2       pi  0.133535680</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69  8  Orth_2        i  0.348852398</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70  8  Orth_3        x  0.318339266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71  8  Orth_3       pi  0.027944614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72  8  Orth_3        i -0.290225971</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73  9    Main        x -0.235678404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74  9    Main       pi  0.500828421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75  9    Main        i  0.622905312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76  9  Orth_2        x  0.081673205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77  9  Orth_2       pi  0.133300686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78  9  Orth_2        i  0.305427595</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79  9  Orth_3        x  0.323772055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80  9  Orth_3       pi  0.047148780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81  9  Orth_3        i -0.227842236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82 10    Main        x -0.277913586</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83 10    Main       pi  0.456705816</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84 10    Main        i  0.605852010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85 10  Orth_2        x  0.028512851</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86 10  Orth_2       pi  0.129139282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87 10  Orth_2        i  0.270339476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88 10  Orth_3        x  0.319861737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89 10  Orth_3       pi  0.065326409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90 10  Orth_3        i -0.173692001</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
