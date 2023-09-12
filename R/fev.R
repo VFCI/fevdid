@@ -10,9 +10,14 @@ fev <- function(var, h) {
   k <- length(n)
 
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
-  irf <- vars::irf(var, n.ahead = h)[[1]][, -1] |>
-    apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
-    simplify2array()
+  if (inherits(var, "fevdvar")) {
+    irf <- vars::irf(var, n.ahead = h, as_matrix = TRUE)
+  } else {
+    irf <- vars::irf(var, n.ahead = h)[[1]][, -1] |>
+        apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
+        simplify2array()
+  }
+
 
   # Forecast Error Variance calculation
   fe <- list()

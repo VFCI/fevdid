@@ -82,14 +82,14 @@ id_fevdfd.varest <- function(
 
   ## Insure the sign is as expected
   irf <-
-    vars::irf(mvar, impulse = "Main", response = t, n.ahead = sign_horizon)[[1]]
+    vars::irf(mvar, impulse = "Main", response = t, n.ahead = sign_horizon)
   if (sign == "positive" || sign == "pos") {
-    if (sum(irf[1:sign_horizon, 2]) < 0) {
+    if (sum(irf[1:sign_horizon, "irf"]) < 0) {
       mvar$Q <- -1 * mvar$Q
       mvar$B <- -1 * mvar$B
     }
   } else if (sign == "negative" || sign == "neg") {
-    if (sum(irf[1:sign_horizon, 2]) > 0) {
+    if (sum(irf[1:sign_horizon, "irf"]) > 0) {
       mvar$Q <- -1 * mvar$Q
       mvar$B <- -1 * mvar$B
     }

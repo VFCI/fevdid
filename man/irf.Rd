@@ -17,6 +17,7 @@
   ci = 0.95,
   runs = 100,
   seed = NULL,
+  as_matrix = FALSE,
   ...
 )
 
@@ -55,6 +56,9 @@ default is all variables.}
 \item{runs}{Not used. Here to match generic vars::irf.}
 
 \item{seed}{Not used. Here to match generic vars::irf.}
+
+\item{as_matrix}{Default to False.
+Set to true to return a 3D matrix instead of a data.frame.}
 
 \item{...}{Currently not used.}
 }

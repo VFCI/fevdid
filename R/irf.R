@@ -14,6 +14,8 @@
 #' @param ci Not used. Here to match generic vars::irf.
 #' @param runs Not used. Here to match generic vars::irf.
 #' @param seed Not used. Here to match generic vars::irf.
+#' @param as_matrix Default to False. 
+#' Set to true to return a 3D matrix instead of a data.frame.
 #' @param ... Currently not used.
 #'
 #' @return Matrix of forecast error variance decomposition in frequency domain
@@ -44,41 +46,37 @@ irf.fevdvar <- function(
     ci = 0.95,
     runs = 100,
     seed = NULL,
+    as_matrix = FALSE,
     ...) {
   class(x) <- "svars"
 
   k <- x$K
-  variable_names <- colnames(x$y)
-  shock_names <- c("Main", paste0("Orth_", 2:k))
-  shock_labels <- paste0("epsilon[ ", shock_names, " ]%->%")
+  response_names <- colnames(x$y)
+  impulse_names <- c("Main", paste0("Orth_", 2:k))
 
-  irf <- vars::irf(x, n.ahead = n.ahead, ...)
+  ## Represent as state space var
+  ssv <- as_statespace_var(x$A_hat, x$B)
+  irf <- irf_ssv(ssv, n_ahead = n.ahead)
 
-  ## Rename the shocks
-  names(irf$irf) <- c("V1", apply(
-    expand.grid(shock_labels, variable_names),
-    1,
-    paste0,
-    collapse = ""
-  ))
+  if (as_matrix) return(irf)
+
+  ## Create data.frame
+  irf_df <- data.frame(
+    h = rep(1:n.ahead, each = k * k),
+    impulse = rep(impulse_names, each = k, times = n.ahead),
+    response = rep(response_names, times = k * n.ahead),
+    irf = c(irf)
+  )
 
   ## Select only the impulses and responses requested
-  if (is.null(impulse)) {
-    impulse_keep <- rep(TRUE, k)
-  } else {
-    impulse_keep <- shock_names %in% impulse
+  if (!is.null(impulse)) {
+    irf_df <- irf_df[irf_df$impulse %in% impulse, ]
   }
-  if (is.null(response)) {
-    response_keep <- rep(TRUE, k)
-  } else {
-    response_keep <- variable_names %in% response
+  if (!is.null(response)) {
+    irf_df <- irf_df[irf_df$response %in% response, ]
   }
 
-  keep <- apply(expand.grid(impulse_keep, response_keep), 1, all)
-
-  irf$irf <- irf$irf[, c(TRUE, keep)]
-
-  return(irf)
+  return(irf_df)
 }
 
 
