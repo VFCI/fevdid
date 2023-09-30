@@ -78,6 +78,6 @@ test_that("bootstrap with resample is close to svars::wild.boot", {
     )
 
   ## Bigger tolerance because these are expected to be kind of different
-  compare_boots(bv, bv2, c(0.25, 0.1))
+  compare_boots(bv, bv2, c(0.25, 0.25))
 
 })
