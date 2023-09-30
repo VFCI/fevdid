@@ -16,14 +16,22 @@ test_that("Check that fevdtd > id.chol shocks", {
 
     mvar <- id_fevdtd(v, ti, hi)
 
-    fevdm <- fev(mvar, h = max(hi))
-    fevds <- fev(svar, h = max(hi))
+    fevm <- fev(mvar, max(hi))
+    fevs <- fev(svar, max(hi))
 
-    m <- sum(fevdm[[ti]][, 1][hi])
-    m2 <- colSums(fevds[[ti]][hi, ])
+    m <-
+      fevm[
+        fevm$impulse == "Main" &
+        fevm$response == ti &
+        fevm$h %in% hi,
+        "fev"] |>
+      sum()
+    m2 <-
+      fevm[fevm$impulse == ti & fevm$response == ti & fevm$h %in% hi, "fev"] |>
+      sum()
 
     expect_true(
-      all(m >= m2),
+      m >= m2,
       label = paste0("Iter: ", i, "\n", m, "\n", paste(m2, collapse = ", "))
       )
   }
