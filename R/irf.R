@@ -128,8 +128,8 @@ irf.bvartools <- function(
   ## Create tidy IRF DF
   irf_df <- data.frame(
     h = rep(1:n.ahead, each = k * k),
-    shock = rep(shock_names, each = k, times = n.ahead),
-    variable = rep(var_names, times = k * n.ahead),
+    impulse = rep(shock_names, each = k, times = n.ahead),
+    response = rep(var_names, times = k * n.ahead),
     mean = c(rowMeans(iter_irfs, dims = 3)),
     median = c(apply(iter_irfs, c(1, 2, 3), stats::median)),
     lower = c(apply(iter_irfs, c(1, 2, 3), stats::quantile, probs = 0.16)),
