@@ -23,9 +23,11 @@ as_statespace_var <- function(betas, sigma) {
   }
 
   ## Create Var(1) objects
-  my <- cbind(diag(k * (p - 1)), matrix(0, k * (p - 1), k))
-  mx <- rbind(a, my)
+  my <- cbind(diag(k), matrix(0, k, k * (p - 1)))
+  mx <- rbind(a,  cbind(diag(k * (p - 1)), matrix(0, k * (p - 1), k)))
   me <- rbind(sigma, matrix(0, k * (p - 1), k))
+
+  if (p == 1) my <- diag(k)
 
   ssv <- list(
     my = my,

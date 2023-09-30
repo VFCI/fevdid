@@ -133,6 +133,7 @@ bootstrap <- function(
       ystar <- ystar[-c(1:p), ]
 
       bootvar <- vars::VAR(ystar, p = p, type = var$type)
+
     } else if (design == "fixed") {
       ystar <- y_pred + t(boot_errors[, , nb])
       bstar <- t(ystar) %*% t(z) %*% solve(z %*% t(z))
@@ -158,8 +159,8 @@ bootstrap <- function(
     }
 
     ## Construct bootstrapped IRFs
-    bootirf_df <- irf(bootsvar, n.ahead = n_ahead)[[1]]
-    bootirf <- array(unlist(t(bootirf_df[, -1])), dim = c(k, k, n_ahead))
+    bootssv <- as_statespace_var(bootsvar$A_hat, bootsvar$B)
+    bootirf <- irf_ssv(bootssv, n_ahead)
 
     ## Store results
     aboots[, , nb] <- bootsvar$A_hat
@@ -179,8 +180,8 @@ bootstrap <- function(
 
   irf_df <- data.frame(
     h = rep(1:n_ahead, each = k * k),
-    shock = rep(shock_names, times = k * n_ahead),
-    variable = rep(variable_names, each = k, times = n_ahead),
+    impulse = rep(shock_names, times = k * n_ahead),
+    response = rep(variable_names, each = k, times = n_ahead),
     mean = c(irf_mean),
     median = c(irf_median),
     lower = c(irf_lower),

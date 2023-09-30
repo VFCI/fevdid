@@ -30,9 +30,14 @@ compare_boots <- function(bv, bv2, tols) {
   bv2_mean_boot <- bv2$IRF_mean
 
   bv_mean_boot <- array(aperm(bv_mean_boot, c(3, 2, 1)), dim = c(10, 9))
-  bv2_mean_boot <- array(aperm(bv2_mean_boot, c(3, 1, 2)), dim = c(10, 9))
+  bv2_mean_boot <- array(aperm(bv2_mean_boot, c(3, 2, 1)), dim = c(10, 9))
 
-  expect_equal(bv_mean_boot, bv2_mean_boot, tolerance = tols[2])
+  ## Compare equality IRF by IRF
+  expect_equal(
+    bv_mean_boot,
+    bv2_mean_boot,
+    tolerance = tols[2]
+    )
 }
 
 
@@ -73,6 +78,6 @@ test_that("bootstrap with resample is close to svars::wild.boot", {
     )
 
   ## Bigger tolerance because these are expected to be kind of different
-  compare_boots(bv, bv2, c(0.25, 0.25))
+  compare_boots(bv, bv2, c(0.25, 0.1))
 
 })
