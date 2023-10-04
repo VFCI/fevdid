@@ -204,26 +204,26 @@ plot.fevdirf <- function(x, y = NULL, impulse_as = "colors", ...) {
     ggplot2::scale_color_hue() +
     ggplot2::scale_fill_hue()
 
-    if (impulse_as == "colors") {
-      plot <- plot +
+  if (impulse_as == "colors") {
+    plot <- plot +
       ggplot2::geom_line(
         ggplot2::aes(color = impulse)
       ) +
       ggplot2::facet_wrap(
-      ggplot2::vars(response),
-      ncol = 1, scales = "free_y"
+        ggplot2::vars(response),
+        ncol = 1, scales = "free_y"
       )
-    } else if (impulse_as == "cols") {
-      plot <- plot +
+  } else if (impulse_as == "cols") {
+    plot <- plot +
       ggplot2::geom_line() +
       ggplot2::facet_grid(
         rows = ggplot2::vars(response),
         cols = ggplot2::vars(impulse),
         scales = "free_y"
       )
-    } else {
-      stop("Please set imuplse to 'colors' or 'cols'.")
-    }
+  } else {
+    stop("Please set imuplse to 'colors' or 'cols'.")
+  }
 
   return(plot)
 }
@@ -261,25 +261,25 @@ plot.fevdfev <- function(x, y = NULL, impulse_as = "colors", ...) {
     ggplot2::scale_color_hue() +
     ggplot2::scale_fill_hue()
 
-    if (impulse_as == "colors") {
-      plot <- plot +
+  if (impulse_as == "colors") {
+    plot <- plot +
       ggplot2::geom_line(
         ggplot2::aes(color = impulse)
       ) +
       ggplot2::facet_wrap(
-      ggplot2::vars(response),
-      ncol = 1, scales = "free_y"
+        ggplot2::vars(response),
+        ncol = 1, scales = "free_y"
       )
-    } else if (impulse_as == "cols") {
-      plot <- plot +
+  } else if (impulse_as == "cols") {
+    plot <- plot +
       ggplot2::geom_line() +
       ggplot2::facet_grid(
         rows = ggplot2::vars(response),
         cols = ggplot2::vars(impulse)
       )
-    } else {
-      stop("Please set imuplse to 'colors' or 'cols'.")
-    }
+  } else {
+    stop("Please set imuplse to 'colors' or 'cols'.")
+  }
 
   return(plot)
 }
