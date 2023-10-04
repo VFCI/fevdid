@@ -138,7 +138,6 @@ bootstrap <- function(
       ystar <- ystar[-c(1:p), ]
 
       bootvar <- vars::VAR(ystar, p = p, type = var$type)
-
     } else if (design == "fixed") {
       ystar <- y_pred + t(boot_errors[, , nb])
       bstar <- t(ystar) %*% t(z) %*% solve(z %*% t(z))
