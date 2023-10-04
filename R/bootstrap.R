@@ -22,6 +22,11 @@
 #' @export
 #'
 #' @examples
+#' x <- svars::USA
+#' v <- vars::VAR(x, p = 2)
+#' mvar <- id_fevdtd(v, "pi", 4:10)
+#' bmvar <- bootstrap(mvar, id_fevdtd, target = "pi", horizon = 4:10)
+#' 
 bootstrap <- function(
     var,
     id_method = NULL,

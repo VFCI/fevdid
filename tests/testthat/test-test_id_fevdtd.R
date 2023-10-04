@@ -11,13 +11,13 @@ test_that("Check that fevdtd > id.chol shocks", {
   iter <- expand.grid(t = t, h = h)
 
   for (i in seq_len(nrow(iter))) {
-    ti <- iter[[i, "t"]]
+    ti <- iter[[i, "t"]] |> as.character()
     hi <- iter[[i, "h"]]
 
     mvar <- id_fevdtd(v, ti, hi)
 
-    fevm <- fev(mvar, max(hi))
-    fevs <- fev(svar, max(hi))
+    fevm <- fev(mvar, max(hi))$fev
+    fevs <- fev(svar, max(hi))$fev
 
     m <-
       fevm[

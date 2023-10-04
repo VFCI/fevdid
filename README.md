@@ -48,14 +48,14 @@ mv <- id_fevdtd(v, target = "pi", horizon = 4:10)
 
 ## Comparing fevds
 fevdsv <- vars::fevd(sv, n.ahead = 20)$pi
-fevdmv <- vars::fevd(mv, n.ahead = 20)$pi
+fevdmv <- vars::fevd(mv, n.ahead = 20)$fevd |>
+  dplyr::filter(impulse == "Main" & response == "pi")
 
 
 ## Plotting
 require(ggplot2)
-cbind(h = 1:20, fevdsv, fevdmv) |>
-  tidyr::pivot_longer(cols = !h) |>
-  dplyr::filter(name %in% c("Main", "pi")) |>
+data.frame(h = 1:20, pi = fevdsv$pi, Main = fevdmv$fevd) |>
+  tidyr::pivot_longer(-h) |>
   ggplot(aes(x = h, y = value, color = name)) +
   geom_vline(xintercept = c(4, 10)) +
   geom_line()
@@ -71,7 +71,7 @@ by the usual `irf` function.
 irfsv <- vars::irf(sv, n.ahead = 20)
 irfmv <- vars::irf(mv, n.ahead = 20)
 
-cowplot::plot_grid(plot(irfsv), plot(irfmv), nrow = 1)
+cowplot::plot_grid(plot(irfsv), plot(irfmv, impulse_as = "cols"), nrow = 1)
 ```
 
 <img src="man/figures/README-exanmple_td_irf-1.png" width="100%" />
@@ -113,18 +113,20 @@ bc_freqs <- c(2 * pi / 32, 2 * pi / 6)
 mfv <- id_fevdfd(v, target = "pi", freqs = bc_freqs)
 
 ## Comparing fevds
-fevdsv <- fevdfd(sv)$pi
-fevdmv <- fevdfd(mfv)$pi
+fevdsv <- fevdfd(sv)$fevd
+fevdmv <- fevdfd(mfv)$fevd
 
 ## Plotting
 require(ggplot2)
-dplyr::full_join(fevdsv, fevdmv, by = "f") |>
-  dplyr::as_tibble() |>
-  tidyr::pivot_longer(cols = !f) |>
-  dplyr::filter(name %in% c("Main", "pi")) |>
-  ggplot(aes(x = f, y = value, color = name)) +
+rbind(fevdsv, fevdmv) |>
+  dplyr::filter(impulse %in% c("Main", "pi")) |>
+  dplyr::filter(response == "pi") |>
+  ggplot(aes(x = f, y = fevdfd, color = impulse)) +
   geom_vline(xintercept = bc_freqs) +
-  geom_line()
+  geom_line() +
+  scale_x_continuous(limits = c(0, pi)) +
+  scale_color_hue()
+#> Warning: Removed 1000 rows containing missing values (`geom_line()`).
 ```
 
 <img src="man/figures/README-example_fd-1.png" width="100%" />
@@ -138,6 +140,10 @@ fevdsv <- fevdfd(sv)
 fevdmv <- fevdfd(mv)
 
 cowplot::plot_grid(plot(fevdsv), plot(fevdmv), nrow = 1)
+#> Warning: Removed 4500 rows containing missing values (`position_stack()`).
+#> Warning: Removed 9 rows containing missing values (`geom_col()`).
+#> Warning: Removed 4500 rows containing missing values (`position_stack()`).
+#> Warning: Removed 9 rows containing missing values (`geom_col()`).
 ```
 
 <img src="man/figures/README-exanmple_fd_fevd-1.png" width="100%" />

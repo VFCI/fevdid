@@ -4,7 +4,8 @@
 \alias{fevdfd}
 \alias{fevdfd.svars}
 \alias{fevdfd.fevdvar}
-\title{Calculate the forecast error variance in the frequency domain.}
+\title{Calculate either the forecast error variance or fevd (default)
+in the frequency domain.}
 \usage{
 fevdfd(var, ...)
 
@@ -15,7 +16,7 @@ fevdfd(var, ...)
 \arguments{
 \item{var}{A VAR. Currently supports either a 'svars' or 'fevdvar' object.}
 
-\item{...}{Used to pass arguments to fevdfd.svars and fevdfd.fevdvar.}
+\item{...}{Not currently used.}
 
 \item{freqs}{vector of length 2 of min and max frequencies (0:2pi)}
 
@@ -29,7 +30,8 @@ List of variables, each with a dataframe of shocks,
 column 'f' are the frequencies.
 }
 \description{
-Calculate the forecast error variance in the frequency domain.
+Calculate either the forecast error variance or fevd (default)
+in the frequency domain.
 
 Method to calculate fevdfd for svars (id.chol)
 

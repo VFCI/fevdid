@@ -1,7 +1,8 @@
-#' Calculate the forecast error variance in the frequency domain.
+#' Calculate either the forecast error variance or fevd (default)
+#' in the frequency domain.
 #'
 #' @param var A VAR. Currently supports either a 'svars' or 'fevdvar' object.
-#' @param ... Used to pass arguments to fevdfd.svars and fevdfd.fevdvar.
+#' @param ... Not currently used.
 #'
 #' @return List of forecast error variance decomposition in frequency domain
 #' List of variables, each with a dataframe of shocks,
@@ -36,6 +37,15 @@ fevdfd.svars <- function(
 
   n <- colnames(var$y)
   k <- length(n)
+
+  impulse_names <- n
+  response_names <- n
+
+  ## Set as factors
+  impulse_names <-
+    factor(impulse_names, levels = impulse_names, ordered = TRUE)
+  response_names <-
+    factor(response_names, levels = response_names, ordered = TRUE)
 
   if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
   if (!all(freqs >= 0 & freqs <= 2 * pi)) {
@@ -73,26 +83,37 @@ fevdfd.svars <- function(
   }
 
   if (fev == TRUE) {
-    return(freq_fev)
+    df <- data.frame(
+      f = rep(freq_grid, times = k * k),
+      impulse = rep(impulse_names, each = grid_size * k),
+      response = rep(response_names, each = grid_size, times = k),
+      fevfd = c(freq_fev)
+    )
+
+    fevfd <- list(fevfd = df)
+    class(fevfd) <- "fevfd"
+
+    return(fevfd)
   }
 
+  ## Calculate the Decomposition (variance / total variance)
   freq_fevd <- array(0, dim = c(gl, k, k))
   for (gp in 1:gl) {
     freq_fevd[gp, , ] <- freq_fev[gp, , ] / freq_totvar[gp, ]
   }
 
   ## Reformat, list of variables, each with a dataframe of shocks
-  fevd_list <- list()
-  for (i in seq_along(n)) {
-    fevds <- as.data.frame(freq_fevd[, i, ])
-    names(fevds) <- n
+  df <- data.frame(
+    f = rep(freq_grid, times = k * k),
+    impulse = rep(impulse_names, each = grid_size * k),
+    response = rep(response_names, each = grid_size, times = k),
+    fevdfd = c(freq_fevd)
+  )
 
-    fevd_list[[n[[i]]]] <- cbind(f = freq_grid, fevds)
-  }
+  fevdfd <- list(fevdfd = df)
+  class(fevdfd) <- "fevdfd"
 
-  class(fevd_list) <- "fevdfd"
-
-  return(fevd_list)
+  return(fevdfd)
 }
 
 #' Method to calculate fevdfd for svars (id.chol)
@@ -113,9 +134,38 @@ fevdfd.fevdvar <- function(
   k <- var$K
   fevdfd <- fevdfd(var, freqs, grid_size, fev, ...)
 
-  for (i in seq_along(fevdfd)) {
-    colnames(fevdfd[[i]]) <- c("f", "Main", paste0("Orth_", 2:k))
-  }
+  impulse_names <- c("Main", paste0("Orth_", 2:k))
+  impulse_names <- factor(impulse_names, levels = impulse_names, ordered = TRUE)
+
+  fevdfd[[1]]$impulse <- rep(impulse_names, each = grid_size * k)
 
   return(fevdfd)
+}
+
+
+#' Wrapper for fevdfd that defaults to fev = TRUE.
+#'
+#' @param var A VAR. Currently supports either a 'svars' or 'fevdvar' object.
+#' @param freqs vector of length 2 of min and max frequencies (0:2pi)
+#' @param grid_size how fine the grid to approximate the frequency domain
+#' @param fev Boolean true to return fev not fevd
+#' @param ... Not currently used.
+#'
+#' @export
+#'
+fevfd <- function(
+  var,
+  freqs = c(0, 2 * pi),
+  grid_size = 1000,
+  fev = TRUE,
+  ...
+  ) {
+
+  if (inherits(var, "fevdvar")) {
+    fevfd <- fevdfd.fevdvar(var, freqs, grid_size, fev = TRUE, ...)
+  } else if (inherits(var, "svars")) {
+    fevfd <- fevdfd.svars(var, freqs, grid_size, fev = TRUE, ...)
+  }
+
+  return(fevfd)
 }

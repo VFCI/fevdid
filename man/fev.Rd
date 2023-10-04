@@ -4,7 +4,7 @@
 \alias{fev}
 \title{Calculate the forecast error variance for a VAR out to a specified horizon}
 \usage{
-fev(var, n_ahead)
+fev(var, n_ahead = 20)
 }
 \arguments{
 \item{var}{vars::VAR or svars object}

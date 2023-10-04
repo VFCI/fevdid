@@ -5,7 +5,7 @@
 #'
 #' @return forecast error variance
 #'
-fev <- function(var, n_ahead) {
+fev <- function(var, n_ahead = 20) {
   n <- colnames(var$y)
   k <- length(n)
 
@@ -15,6 +15,12 @@ fev <- function(var, n_ahead) {
   }
   response_names <- n
 
+  ## Set as factors
+  impulse_names <-
+    factor(impulse_names, levels = impulse_names, ordered = TRUE)
+  response_names <-
+    factor(response_names, levels = response_names, ordered = TRUE)
+
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
   if (inherits(var, "fevdvar")) {
     irf <- vars::irf(var, n.ahead = n_ahead, as_matrix = TRUE)
@@ -23,7 +29,6 @@ fev <- function(var, n_ahead) {
       apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
       simplify2array()
   }
-
 
   # Forecast Error Variance calculation
   fe <- list()
@@ -49,5 +54,8 @@ fev <- function(var, n_ahead) {
     row.names = NULL
   )
 
-  return(df)
+  fev <- list(fev = df)
+  class(fev) <- "fevdfev"
+
+  return(fev)
 }

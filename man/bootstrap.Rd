@@ -54,3 +54,10 @@ list of bootstrapped VARs and IRFs
 Identify the main shock by targetting the forecast error
 variance contribution in the frequency domain.
 }
+\examples{
+x <- svars::USA
+v <- vars::VAR(x, p = 2)
+mvar <- id_fevdtd(v, "pi", 4:10)
+bmvar <- bootstrap(mvar, id_fevdtd, target = "pi", horizon = 4:10)
+
+}

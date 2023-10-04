@@ -3,15 +3,24 @@
 \name{plot}
 \alias{plot}
 \alias{plot.fevdfd}
-\alias{plot.fevdvarfevd}
+\alias{plot.fevfd}
+\alias{plot.fevdfevd}
+\alias{plot.fevdirf}
+\alias{plot.fevdfev}
 \title{Plot the forecast variance decomposition.}
 \usage{
 \method{plot}{fevdfd}(x, y, stacked = TRUE, vlines = NULL, ...)
 
-\method{plot}{fevdvarfevd}(x, y, stacked = TRUE, vlines = NULL, ...)
+\method{plot}{fevfd}(x, y, stacked = TRUE, vlines = NULL, ...)
+
+\method{plot}{fevdfevd}(x, y, stacked = TRUE, vlines = NULL, ...)
+
+\method{plot}{fevdirf}(x, y = NULL, impulse_as = "colors", ...)
+
+\method{plot}{fevdfev}(x, y = NULL, impulse_as = "colors", ...)
 }
 \arguments{
-\item{x}{object of class "svarfevd"}
+\item{x}{object of class "fevdfev"}
 
 \item{y}{Not used.}
 
@@ -22,12 +31,23 @@ True for stacked columns, False (default) for unstacked line chart.}
 Useful for highlighting areas.}
 
 \item{...}{Currently not used.}
+
+\item{impulse_as}{Default to "colors", with all shocks on the same facet.
+Other option is "cols" which puts each shock as its own column facet.}
 }
 \value{
 ggplot of fevdfd
 
+ggplot of fevfd
+
 ggplot of fevd
+
+ggplot of irf
+
+ggplot of irf
 }
 \description{
+Alias for the function plot in frequency domain.
+
 Alias for the function plot in frequency domain.
 }
