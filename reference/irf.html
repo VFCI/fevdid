@@ -149,6 +149,7 @@ Indexed: frequencies, variables, shocks</p>
 <span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/VAR.html" class="external-link">VAR</a></span><span class="op">(</span><span class="va">x</span>, p <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mvar</span> <span class="op">&lt;-</span> <span class="fu"><a href="id_fevdtd.html">id_fevdtd</a></span><span class="op">(</span><span class="va">v</span>, <span class="st">"pi"</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">vars</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vars/man/irf.html" class="external-link">irf</a></span><span class="op">(</span><span class="va">mvar</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $irf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     h impulse response          irf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1    Main        x  0.067787261</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   1    Main       pi  1.064167220</span>
@@ -240,6 +241,9 @@ Indexed: frequencies, variables, shocks</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 88 10  Orth_3        x  0.319861737</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 89 10  Orth_3       pi  0.065326409</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 90 10  Orth_3        i -0.173692001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fevdirf"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
