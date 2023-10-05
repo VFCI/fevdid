@@ -154,13 +154,11 @@ fevdfd.fevdvar <- function(
 #' @export
 #'
 fevfd <- function(
-  var,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  fev = TRUE,
-  ...
-  ) {
-
+    var,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    fev = TRUE,
+    ...) {
   if (inherits(var, "fevdvar")) {
     fevfd <- fevdfd.fevdvar(var, freqs, grid_size, fev = TRUE, ...)
   } else if (inherits(var, "svars")) {

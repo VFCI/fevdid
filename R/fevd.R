@@ -24,11 +24,9 @@
 #' vars::fevd(mvar)
 #'
 fevd.fevdvar <- function(
-  x,
-  n.ahead = 10,
-  ...
-  ) {
-
+    x,
+    n.ahead = 10,
+    ...) {
   n <- colnames(x$y)
   k <- length(n)
 
@@ -45,7 +43,7 @@ fevd.fevdvar <- function(
     factor(response_names, levels = response_names, ordered = TRUE)
 
   class(x) <- "svars"
-  
+
   fevd <- vars::fevd(x, n.ahead = n.ahead, ...)
 
   df <- data.frame(
