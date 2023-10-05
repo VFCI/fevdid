@@ -371,6 +371,7 @@ plot.fevdhd <- function(x, y = NULL, ...) {
     )) +
     ggplot2::facet_wrap(
       ggplot2::vars(response),
+      scales = "free_y",
       ncol = 1
     ) +
     ggplot2::theme_bw() +

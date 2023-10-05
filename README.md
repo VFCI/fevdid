@@ -149,7 +149,7 @@ cowplot::plot_grid(plot(fevdsv), plot(fevdmv), nrow = 1)
 <img src="man/figures/README-exanmple_fd_fevd-1.png" width="100%" />
 
 There are also easy functions for looking at the historical shocks and
-the historical shock decompositions
+the historical shock decompositions.
 
 ``` r
 
