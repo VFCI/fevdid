@@ -132,6 +132,17 @@ fevdmv <- fevdfd(mv)
 cowplot::plot_grid(plot(fevdsv), plot(fevdmv), nrow = 1)
 ```
 
+There are also easy functions for looking at the historical shocks and the historical shock decompositions
+```{r exanmple_hs_hd, message = F}
+
+hs <- hs(mv)
+hs_cumulative <- hs(mv, cumulative = TRUE)
+hd <- hd(mv)
+
+cowplot::plot_grid(
+  cowplot::plot_grid(plot(hs), plot(hs_cumulative), ncol = 1),
+  plot(hd), nrow = 1)
+```
 
 ## References
 

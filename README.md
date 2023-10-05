@@ -148,6 +148,22 @@ cowplot::plot_grid(plot(fevdsv), plot(fevdmv), nrow = 1)
 
 <img src="man/figures/README-exanmple_fd_fevd-1.png" width="100%" />
 
+There are also easy functions for looking at the historical shocks and
+the historical shock decompositions
+
+``` r
+
+hs <- hs(mv)
+hs_cumulative <- hs(mv, cumulative = TRUE)
+hd <- hd(mv)
+
+cowplot::plot_grid(
+  cowplot::plot_grid(plot(hs), plot(hs_cumulative), ncol = 1),
+  plot(hd), nrow = 1)
+```
+
+<img src="man/figures/README-exanmple_hs_hd-1.png" width="100%" />
+
 ## References
 
 [Chapter 6: “Forecast error variance

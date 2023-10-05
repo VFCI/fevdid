@@ -7,6 +7,8 @@
 \alias{plot.fevdfevd}
 \alias{plot.fevdirf}
 \alias{plot.fevdfev}
+\alias{plot.fevdhs}
+\alias{plot.fevdhd}
 \title{Plot the forecast variance decomposition.}
 \usage{
 \method{plot}{fevdfd}(x, y, stacked = TRUE, vlines = NULL, ...)
@@ -18,9 +20,13 @@
 \method{plot}{fevdirf}(x, y = NULL, impulse_as = "colors", ...)
 
 \method{plot}{fevdfev}(x, y = NULL, impulse_as = "colors", ...)
+
+\method{plot}{fevdhs}(x, y = NULL, impulse_as = "colors", ...)
+
+\method{plot}{fevdhd}(x, y = NULL, ...)
 }
 \arguments{
-\item{x}{object of class "fevdfev"}
+\item{x}{object of class "fevdhd"}
 
 \item{y}{Not used.}
 
@@ -44,7 +50,11 @@ ggplot of fevd
 
 ggplot of irf
 
-ggplot of irf
+ggplot of fevdfev
+
+ggplot of hs
+
+ggplot of hd
 }
 \description{
 Alias for the function plot in frequency domain.

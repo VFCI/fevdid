@@ -238,11 +238,11 @@ plot.fevdirf <- function(x, y = NULL, impulse_as = "colors", ...) {
 #' Other option is "cols" which puts each shock as its own column facet.
 #' @param ... Currently not used.
 #'
-#' @return ggplot of irf
+#' @return ggplot of fevdfev
 #'
 #' @rdname plot
 #' @name plot
-#' @aliases plot.fevdirf
+#' @aliases plot.fevdfev
 #'
 #' @export
 #'
@@ -280,6 +280,105 @@ plot.fevdfev <- function(x, y = NULL, impulse_as = "colors", ...) {
     } else {
       stop("Please set imuplse to 'colors' or 'cols'.")
     }
+
+  return(plot)
+}
+
+#'
+#' Plot the historical shocks.
+#'
+#' @param x object of class "fevdhs"
+#' @param y Not used.
+#' @param impulse_as Default to "colors", with all shocks on the same facet.
+#' Other option is "cols" which puts each shock as its own column facet.
+#' @param ... Currently not used.
+#'
+#' @return ggplot of hs
+#'
+#' @rdname plot
+#' @name plot
+#' @aliases plot.fevdhs
+#'
+#' @export
+#'
+plot.fevdhs <- function(x, y = NULL, impulse_as = "colors", ...) {
+  ## Declare data.frame variables so check() doesn't complain
+  t <- hs <- impulse <- NULL
+
+  plot_data <- x$hs
+
+  plot <- plot_data |>
+    ggplot2::ggplot(ggplot2::aes(
+      x = t,
+      y = hs
+    )) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::theme_bw() +
+    ggplot2::scale_color_hue() +
+    ggplot2::scale_fill_hue()
+
+    if (impulse_as == "colors") {
+      plot <- plot +
+      ggplot2::geom_line(
+        ggplot2::aes(color = impulse)
+      )
+    } else if (impulse_as == "cols") {
+      plot <- plot +
+      ggplot2::geom_line() +
+      ggplot2::facet_wrap(
+        ggplot2::vars(impulse),
+        ncol = 1
+      )
+    } else {
+      stop("Please set imuplse to 'colors' or 'cols'.")
+    }
+
+  return(plot)
+}
+
+#'
+#' Plot the historical decomposition.
+#'
+#' @param x object of class "fevdhd"
+#' @param y Not used.
+#' @param ... Currently not used.
+#'
+#' @return ggplot of hd
+#'
+#' @rdname plot
+#' @name plot
+#' @aliases plot.fevdhd
+#'
+#' @export
+#'
+plot.fevdhd <- function(x, y = NULL, ...) {
+  ## Declare data.frame variables so check() doesn't complain
+  t <- hd <- impulse <- response <- total <- NULL
+
+  plot_data <- x$hd
+
+  plot <- plot_data |>
+    ggplot2::ggplot(ggplot2::aes(
+      x = t,
+    )) +
+    ggplot2::geom_col(ggplot2::aes(
+      y = hd,
+      fill = impulse
+    )) +
+    ggplot2::geom_line(ggplot2::aes(
+      y = total,
+      color = "Total"
+    )) +
+    ggplot2::facet_wrap(
+      ggplot2::vars(response),
+      ncol = 1
+    ) +
+    ggplot2::theme_bw() +
+    ggplot2::scale_fill_hue() +
+    ggplot2::scale_color_manual(
+      values = c(Total = "black")
+      ) +
+    ggplot2::labs(color = NULL)
 
   return(plot)
 }
