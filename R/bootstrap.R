@@ -173,10 +173,6 @@ bootstrap <- function(
   }
   cat("\n")
 
-  ## Calculate usual VAR irf
-  ssv <- as_statespace_var(var$A_hat, var$B)
-  irf <- irf_ssv(ssv, n_ahead)
-
   ## Calculate summary stats for IRFs
   a_mean <- rowMeans(aboots, dims = 2)
   b_mean <- rowMeans(bboots, dims = 2)
@@ -190,7 +186,6 @@ bootstrap <- function(
     h = rep(1:n_ahead, each = k * k),
     impulse = rep(shock_names, each = k, times = n_ahead),
     response = rep(variable_names, times = k * n_ahead),
-    irf = c(irf),
     mean = c(irf_mean),
     median = c(irf_median),
     lower = c(irf_lower),
