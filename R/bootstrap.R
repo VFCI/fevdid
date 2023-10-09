@@ -182,10 +182,13 @@ bootstrap <- function(
   irf_lower <- apply(irfboots, c(1, 2, 3), stats::quantile, probs = lower_pctl)
   irf_upper <- apply(irfboots, c(1, 2, 3), stats::quantile, probs = upper_pctl)
 
+  irf <- vars::irf(var, n.ahead = n_ahead)
+
   irf_df <- data.frame(
     h = rep(1:n_ahead, each = k * k),
     impulse = rep(shock_names, each = k, times = n_ahead),
     response = rep(variable_names, times = k * n_ahead),
+    irf = irf$irf$irf,
     mean = c(irf_mean),
     median = c(irf_median),
     lower = c(irf_lower),
