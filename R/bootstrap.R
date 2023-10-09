@@ -190,7 +190,7 @@ bootstrap <- function(
     h = rep(1:n_ahead, each = k * k),
     impulse = rep(shock_names, each = k, times = n_ahead),
     response = rep(variable_names, times = k * n_ahead),
-    irf = irf,
+    irf = c(irf),
     mean = c(irf_mean),
     median = c(irf_median),
     lower = c(irf_lower),
