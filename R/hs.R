@@ -14,8 +14,7 @@
 #'
 hs <- function(
     x,
-    ...
-    ) {
+    ...) {
   UseMethod("hs")
 }
 
@@ -32,44 +31,43 @@ hs <- function(
 hs.svars <- function(
     x,
     cumulative = FALSE,
-    ...
-) {
-    k <- x$K
+    ...) {
+  k <- x$K
 
-    ## Set shock names
-    impulse_names <- colnames(x$y)
+  ## Set shock names
+  impulse_names <- colnames(x$y)
 
-    ## Set as factors
-    impulse_names <-
-        factor(impulse_names, levels = impulse_names, ordered = TRUE)
+  ## Set as factors
+  impulse_names <-
+    factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
-    ## Get residuals and Sigma
-    residuals <- stats::resid(x$VAR)
-    sigma <- x$B
-    t <- nrow(residuals)
+  ## Get residuals and Sigma
+  residuals <- stats::resid(x$VAR)
+  sigma <- x$B
+  t <- nrow(residuals)
 
-    hs <- hist_shocks(residuals, sigma)
+  hs <- hist_shocks(residuals, sigma)
 
-    ## Tidy to DF
+  ## Tidy to DF
+  df <- data.frame(
+    t = rep(1:t, times = k),
+    impulse = rep(impulse_names, each = t),
+    hs = c(hs)
+  )
+
+  ## Cummulative shocks
+  if (cumulative == TRUE) {
     df <- data.frame(
-        t = rep(1:t, times = k),
-        impulse = rep(impulse_names, each = t),
-        hs = c(hs)
+      t = rep(1:t, times = k),
+      impulse = rep(impulse_names, each = t),
+      hs = c(apply(hs, 2, cumsum))
     )
+  }
 
-    ## Cummulative shocks
-    if (cumulative == TRUE) {
-        df <- data.frame(
-            t = rep(1:t, times = k),
-            impulse = rep(impulse_names, each = t),
-            hs = c(apply(hs, 2, cumsum))
-        )
-    }
+  hs <- list(hs = df)
+  class(hs) <- "fevdhs"
 
-    hs <- list(hs = df)
-    class(hs) <- "fevdhs"
-
-    return(hs)
+  return(hs)
 }
 
 #' Method to calculate hs for fevdvar (id_fevdfd or id_fevdtd)
@@ -85,44 +83,43 @@ hs.svars <- function(
 hs.fevdvar <- function(
     x,
     cumulative = FALSE,
-    ...
-) {
-    k <- x$K
+    ...) {
+  k <- x$K
 
-    ## Set shock names
-    impulse_names <-  c("Main", paste0("Orth_", 2:k))
+  ## Set shock names
+  impulse_names <- c("Main", paste0("Orth_", 2:k))
 
-    ## Set as factors
-    impulse_names <-
-        factor(impulse_names, levels = impulse_names, ordered = TRUE)
+  ## Set as factors
+  impulse_names <-
+    factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
-    ## Get residuals and Sigma
-    residuals <- stats::resid(x$VAR)
-    sigma <- x$B
-    t <- nrow(residuals)
+  ## Get residuals and Sigma
+  residuals <- stats::resid(x$VAR)
+  sigma <- x$B
+  t <- nrow(residuals)
 
-    hs <- hist_shocks(residuals, sigma)
+  hs <- hist_shocks(residuals, sigma)
 
-    ## Tidy to DF
+  ## Tidy to DF
+  df <- data.frame(
+    t = rep(1:t, times = k),
+    impulse = rep(impulse_names, each = t),
+    hs = c(hs)
+  )
+
+  ## Cummulative shocks
+  if (cumulative == TRUE) {
     df <- data.frame(
-        t = rep(1:t, times = k),
-        impulse = rep(impulse_names, each = t),
-        hs = c(hs)
+      t = rep(1:t, times = k),
+      impulse = rep(impulse_names, each = t),
+      hs = c(apply(hs, 2, cumsum))
     )
+  }
 
-    ## Cummulative shocks
-    if (cumulative == TRUE) {
-        df <- data.frame(
-            t = rep(1:t, times = k),
-            impulse = rep(impulse_names, each = t),
-            hs = c(apply(hs, 2, cumsum))
-        )
-    }
+  hs <- list(hs = df)
+  class(hs) <- "fevdhs"
 
-    hs <- list(hs = df)
-    class(hs) <- "fevdhs"
-
-    return(hs)
+  return(hs)
 }
 
 
@@ -135,9 +132,8 @@ hs.fevdvar <- function(
 #'
 hist_shocks <- function(
     residuals,
-    sigma
-) {
-    hs <- residuals %*% sigma
+    sigma) {
+  hs <- residuals %*% sigma
 
-    return(hs)
+  return(hs)
 }

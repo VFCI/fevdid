@@ -317,21 +317,21 @@ plot.fevdhs <- function(x, y = NULL, impulse_as = "colors", ...) {
     ggplot2::scale_color_hue() +
     ggplot2::scale_fill_hue()
 
-    if (impulse_as == "colors") {
-      plot <- plot +
+  if (impulse_as == "colors") {
+    plot <- plot +
       ggplot2::geom_line(
         ggplot2::aes(color = impulse)
       )
-    } else if (impulse_as == "cols") {
-      plot <- plot +
+  } else if (impulse_as == "cols") {
+    plot <- plot +
       ggplot2::geom_line() +
       ggplot2::facet_wrap(
         ggplot2::vars(impulse),
         ncol = 1
       )
-    } else {
-      stop("Please set imuplse to 'colors' or 'cols'.")
-    }
+  } else {
+    stop("Please set imuplse to 'colors' or 'cols'.")
+  }
 
   return(plot)
 }
@@ -378,7 +378,7 @@ plot.fevdhd <- function(x, y = NULL, ...) {
     ggplot2::scale_fill_hue() +
     ggplot2::scale_color_manual(
       values = c(Total = "black")
-      ) +
+    ) +
     ggplot2::labs(color = NULL)
 
   return(plot)
