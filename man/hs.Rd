@@ -11,9 +11,9 @@
 
 hs(x, ...)
 
-\method{hs}{svars}(x, cummulative = FALSE, ...)
+\method{hs}{svars}(x, cumulative = FALSE, ...)
 
-\method{hs}{fevdvar}(x, cummulative = FALSE, ...)
+\method{hs}{fevdvar}(x, cumulative = FALSE, ...)
 }
 \arguments{
 \item{x}{A VAR. Currently supports either a 'svars' or 'fevdvar' object.}
@@ -22,6 +22,9 @@ hs(x, ...)
 Default to False, set to True for cummulative shocks.}
 
 \item{...}{Not currently used.}
+
+\item{cumulative}{Boolean.
+Default to False, set to True for cummulative shocks.}
 }
 \value{
 Class 'fevdhs' list of historical shocks in a data.frame.

@@ -21,7 +21,7 @@ hs <- function(
 
 #' Method to calculate hs for svars (id.chol)
 #'
-#' @param cummulative Boolean.
+#' @param cumulative Boolean.
 #' Default to False, set to True for cummulative shocks.
 #'
 #' @rdname hs
@@ -44,7 +44,7 @@ hs.svars <- function(
         factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
     ## Get residuals and Sigma
-    residuals <- resid(x$VAR)
+    residuals <- stats::resid(x$VAR)
     sigma <- x$B
     t <- nrow(residuals)
 
@@ -74,7 +74,7 @@ hs.svars <- function(
 
 #' Method to calculate hs for fevdvar (id_fevdfd or id_fevdtd)
 #'
-#' @param cummulative Boolean.
+#' @param cumulative Boolean.
 #' Default to False, set to True for cummulative shocks.
 #'
 #' @rdname hs
@@ -97,7 +97,7 @@ hs.fevdvar <- function(
         factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
     ## Get residuals and Sigma
-    residuals <- resid(x$VAR)
+    residuals <- stats::resid(x$VAR)
     sigma <- x$B
     t <- nrow(residuals)
 
