@@ -365,10 +365,11 @@ plot.fevdhd <- function(x, y = NULL, ...) {
     ggplot2::ggplot(ggplot2::aes(
       x = t,
     )) +
-    ggplot2::geom_col(ggplot2::aes(
-      y = hd,
-      fill = impulse
-    ),
+    ggplot2::geom_col(
+      ggplot2::aes(
+        y = hd,
+        fill = impulse
+      ),
       position = ggplot2::position_stack(reverse = TRUE)
     ) +
     ggplot2::geom_line(ggplot2::aes(
@@ -389,7 +390,7 @@ plot.fevdhd <- function(x, y = NULL, ...) {
       y = "Historical Decomposition",
       x = "Time Periods",
       color = NULL
-      )
+    )
 
   return(plot)
 }

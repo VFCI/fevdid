@@ -78,7 +78,6 @@ hd.svars <- function(
 hd.fevdvar <- function(
     x,
     ...) {
-
   k <- x$K
   t <- x$n
 
@@ -95,7 +94,7 @@ hd.fevdvar <- function(
   ## Get historical decompositions
   hidec <- lapply(1:k, function(i) {
     hidec <- svars::hd(x, series = i)$hidec
-    if("V1" %in% names(hidec)) hidec$V1 <- NULL
+    if ("V1" %in% names(hidec)) hidec$V1 <- NULL
     return(hidec)
   })
 
