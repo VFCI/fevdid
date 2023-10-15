@@ -69,8 +69,6 @@ hd.svars <- function(
 
 #' Method to calculate fevdfd for fevdvar (id_fevdfd or id_fevdtd)
 #'
-#' @param cummulative Boolean.
-#' Default to False, set to True for cummulative shocks.
 #'
 #' @rdname hs
 #' @name hs
@@ -79,8 +77,8 @@ hd.svars <- function(
 #'
 hd.fevdvar <- function(
     x,
-    cummulative = FALSE,
     ...) {
+
   k <- x$K
   t <- x$n
 
@@ -96,7 +94,9 @@ hd.fevdvar <- function(
 
   ## Get historical decompositions
   hidec <- lapply(1:k, function(i) {
-    svars::hd(x, series = i)$hidec
+    hidec <- svars::hd(x, series = i)$hidec
+    if("V1" %in% names(hidec)) hidec$V1 <- NULL
+    return(hidec)
   })
 
   ## Pull out just each shock contribution
@@ -110,7 +110,7 @@ hd.fevdvar <- function(
     t = rep(1:t, times = k * k),
     impulse = rep(impulse_names, each = t, times = k),
     response = rep(response_names, each = t * k),
-    hd = hd,
+    hd = unname(hd),
     total = total
   )
 
