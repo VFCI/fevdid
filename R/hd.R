@@ -102,8 +102,8 @@ hd.fevdvar <- function(
   ## Pull out just each shock contribution
   hd <- unlist(lapply(hidec, function(i) i[, -(1:2)]))
 
-  ## Pull out the total variation
-  total <- unlist(lapply(hidec, function(i) rep(i[, 2], times = k)))
+  ## Sum shocks for the total variation
+  total <- unlist(lapply(hidec, function(i) rep(rowSums(i[, -(1:2)]), times = k)))
 
   ## Tidy to DF
   df <- data.frame(
