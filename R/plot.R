@@ -315,7 +315,11 @@ plot.fevdhs <- function(x, y = NULL, impulse_as = "colors", ...) {
     ggplot2::geom_hline(yintercept = 0) +
     ggplot2::theme_bw() +
     ggplot2::scale_color_hue() +
-    ggplot2::scale_fill_hue()
+    ggplot2::scale_fill_hue() +
+    ggplot2::labs(
+      x = "Time Periods",
+      y = "Historical Shocks"
+    )
 
   if (impulse_as == "colors") {
     plot <- plot +
@@ -364,7 +368,9 @@ plot.fevdhd <- function(x, y = NULL, ...) {
     ggplot2::geom_col(ggplot2::aes(
       y = hd,
       fill = impulse
-    )) +
+    ),
+      position = ggplot2::position_stack(reverse = TRUE)
+    ) +
     ggplot2::geom_line(ggplot2::aes(
       y = total,
       color = "Total"
@@ -379,7 +385,11 @@ plot.fevdhd <- function(x, y = NULL, ...) {
     ggplot2::scale_color_manual(
       values = c(Total = "black")
     ) +
-    ggplot2::labs(color = NULL)
+    ggplot2::labs(
+      y = "Historical Decomposition",
+      x = "Time Periods",
+      color = NULL
+      )
 
   return(plot)
 }
