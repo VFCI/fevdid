@@ -7,7 +7,7 @@
 \alias{hs.svars}
 \title{Method to calculate fevdfd for fevdvar (id_fevdfd or id_fevdtd)}
 \usage{
-\method{hd}{fevdvar}(x, cummulative = FALSE, ...)
+\method{hd}{fevdvar}(x, ...)
 
 hs(x, ...)
 
@@ -17,9 +17,6 @@ hs(x, ...)
 }
 \arguments{
 \item{x}{A VAR. Currently supports either a 'svars' or 'fevdvar' object.}
-
-\item{cummulative}{Boolean.
-Default to False, set to True for cummulative shocks.}
 
 \item{...}{Not currently used.}
 
