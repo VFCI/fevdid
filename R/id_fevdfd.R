@@ -23,14 +23,13 @@
 #' mvar <- id_fevdfd(v, "pi", c(2 * pi / 32, 2 * pi / 6))
 #'
 id_fevdfd <- function(
-  x,
-  target,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  freq_grid = NULL,
-  sign = "positive",
-  sign_horizon = 1
-) {
+    x,
+    target,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    freq_grid = NULL,
+    sign = "positive",
+    sign_horizon = 1) {
   UseMethod("id_fevdfd")
 }
 
@@ -41,14 +40,13 @@ id_fevdfd <- function(
 #'
 #' @export
 id_fevdfd.varest <- function(
-  x,
-  target,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  freq_grid = NULL,
-  sign = "positive",
-  sign_horizon = 1
-) {
+    x,
+    target,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    freq_grid = NULL,
+    sign = "positive",
+    sign_horizon = 1) {
   n <- colnames(x$y)
   k <- length(n)
   ni <- 1:k
@@ -114,14 +112,13 @@ id_fevdfd.varest <- function(
 #'
 #' @export
 id_fevdfd.varboot <- function(
-  x,
-  target,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  freq_grid = NULL,
-  sign = "positive",
-  sign_horizon = 1
-) {
+    x,
+    target,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    freq_grid = NULL,
+    sign = "positive",
+    sign_horizon = 1) {
   id_fevdfd.varest(x, target, freqs, grid_size, freq_grid, sign, sign_horizon)
 }
 
@@ -132,14 +129,13 @@ id_fevdfd.varboot <- function(
 #'
 #' @export
 id_fevdfd.bvartools <- function(
-  x,
-  target,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  freq_grid = NULL,
-  sign = "positive",
-  sign_horizon = 1
-) {
+    x,
+    target,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    freq_grid = NULL,
+    sign = "positive",
+    sign_horizon = 1) {
   k <- nrow(x$y)
   p <- ncol(x$A[, 1]) %% k
   var_names <- rownames(x$y)
@@ -184,14 +180,13 @@ id_fevdfd.bvartools <- function(
 #' @export
 #'
 id_fevdfd.bvar <- function(
-  x,
-  target,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  freq_grid = NULL,
-  sign = "positive",
-  sign_horizon = 1
-) {
+    x,
+    target,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    freq_grid = NULL,
+    sign = "positive",
+    sign_horizon = 1) {
   n <- colnames(x$meta$Y)
   k <- length(n)
   ni <- 1:k
@@ -280,13 +275,12 @@ id_fevdfd.bvar <- function(
 #' @return matrix q
 #'
 id_fevdfd_findq <- function(
-  betas,
-  sigma,
-  target_index,
-  freqs,
-  grid_size,
-  freq_grid = NULL
-) {
+    betas,
+    sigma,
+    target_index,
+    freqs,
+    grid_size,
+    freq_grid = NULL) {
   ## Construct Objects
   k <- nrow(sigma)
   ti <- target_index

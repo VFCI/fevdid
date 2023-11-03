@@ -26,10 +26,9 @@ irffd <- function(var, ...) {
 #' @return list with vector of frequencies and matrix of irf values
 #'
 irffd_generic <- function(
-  var,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000
-) {
+    var,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000) {
   n <- colnames(var$y)
   k <- length(n)
 
@@ -92,12 +91,10 @@ irffd_generic <- function(
 #' @export
 #'
 irffd.fevdvar <- function(
-  var,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  ...
-) {
-
+    var,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    ...) {
   k <- var$K
 
   irffd <- irffd_generic(var, freqs, grid_size)
@@ -131,12 +128,10 @@ irffd.fevdvar <- function(
 #' @export
 #'
 irffd.svars <- function(
-  var,
-  freqs = c(0, 2 * pi),
-  grid_size = 1000,
-  ...
-) {
-
+    var,
+    freqs = c(0, 2 * pi),
+    grid_size = 1000,
+    ...) {
   k <- var$K
 
   irffd <- irffd_generic(var, freqs, grid_size)
