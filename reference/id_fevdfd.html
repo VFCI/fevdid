@@ -57,8 +57,9 @@ variance contribution in the frequency domain.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">id_fevdfd</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">target</span>,</span>
-<span>  <span class="va">freqs</span>,</span>
+<span>  freqs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
 <span>  grid_size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  freq_grid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sign <span class="op">=</span> <span class="st">"positive"</span>,</span>
 <span>  sign_horizon <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
@@ -67,8 +68,9 @@ variance contribution in the frequency domain.</p>
 <span><span class="fu">id_fevdfd</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">target</span>,</span>
-<span>  <span class="va">freqs</span>,</span>
+<span>  freqs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
 <span>  grid_size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  freq_grid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sign <span class="op">=</span> <span class="st">"positive"</span>,</span>
 <span>  sign_horizon <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
@@ -77,8 +79,9 @@ variance contribution in the frequency domain.</p>
 <span><span class="fu">id_fevdfd</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">target</span>,</span>
-<span>  <span class="va">freqs</span>,</span>
+<span>  freqs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
 <span>  grid_size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  freq_grid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sign <span class="op">=</span> <span class="st">"positive"</span>,</span>
 <span>  sign_horizon <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
@@ -87,8 +90,9 @@ variance contribution in the frequency domain.</p>
 <span><span class="fu">id_fevdfd</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">target</span>,</span>
-<span>  <span class="va">freqs</span>,</span>
+<span>  freqs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
 <span>  grid_size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  freq_grid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sign <span class="op">=</span> <span class="st">"positive"</span>,</span>
 <span>  sign_horizon <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
@@ -97,8 +101,9 @@ variance contribution in the frequency domain.</p>
 <span><span class="fu">id_fevdfd</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">target</span>,</span>
-<span>  <span class="va">freqs</span>,</span>
+<span>  freqs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
 <span>  grid_size <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  freq_grid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sign <span class="op">=</span> <span class="st">"positive"</span>,</span>
 <span>  sign_horizon <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -120,6 +125,12 @@ variance contribution in the frequency domain.</p>
 
 <dt>grid_size</dt>
 <dd><p>how fine the grid to approximate the frequency domain</p></dd>
+
+
+<dt>freq_grid</dt>
+<dd><p>Default to NULL.
+Pass a vector of frequencies in c(0,2pi) to target those specific
+frequencies.  Overides <code>freqs</code> and <code>grid_size</code> arguments.</p></dd>
 
 
 <dt>sign</dt>

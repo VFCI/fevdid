@@ -54,7 +54,7 @@ the given frequencies for the target variable.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">id_fevdfd_findq</span><span class="op">(</span><span class="va">betas</span>, <span class="va">sigma</span>, <span class="va">target_index</span>, <span class="va">freqs</span>, <span class="va">grid_size</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">id_fevdfd_findq</span><span class="op">(</span><span class="va">betas</span>, <span class="va">sigma</span>, <span class="va">target_index</span>, <span class="va">freqs</span>, <span class="va">grid_size</span>, freq_grid <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,6 +77,12 @@ the given frequencies for the target variable.</p>
 
 <dt>grid_size</dt>
 <dd><p>how fine the grid to approximate the frequency domain</p></dd>
+
+
+<dt>freq_grid</dt>
+<dd><p>Default to NULL.
+Pass a vector of frequencies in c(0,2pi) to target those specific
+frequencies.  Overides <code>freqs</code> and <code>grid_size</code> arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
