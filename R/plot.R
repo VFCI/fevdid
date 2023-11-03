@@ -1,3 +1,60 @@
+#' Plot the IRF in frequency domain.
+#'
+#' Alias for the function plot in frequency domain.
+#'
+#' @param x object of class "irffd"
+#' @param y Not used.
+#' @param vlines Vector of x-axis points at which to draw a vline.
+#' Useful for highlighting areas.
+#' @param ... Currently not used.
+#'
+#' @return ggplot of irffd
+#'
+#' @rdname plot
+#' @name plot
+#' @aliases plot.irffd
+#'
+#' @export
+#'
+plot.irffd <- function(x, y, vlines = NULL, ...) {
+  ## Declare data.frame variables so check() doesn't complain
+  f <- impulse <- response <- irffd <- NULL
+
+  plot_data <- x$irffd
+
+  plot <- plot_data |>
+    ggplot2::ggplot(ggplot2::aes(
+      x = f,
+      y = irf,
+    )) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(
+      ggplot2::vars(paste0(
+        impulse,
+        " -> ",
+        response
+      )),
+      ncol = length(unique(plot_data$impulse)),
+      scales = "free_y"
+    ) +
+    ggplot2::theme_bw() +
+    ggplot2::scale_color_hue() +
+    ggplot2::scale_x_continuous(
+      breaks = seq(0, pi, length.out = 5),
+      labels = c("0", "2\u03c0/8", "2\u03c0/4", "2\u03c0/2.666", "2\u03c0/2"),
+      limits = c(0, pi)
+    )
+
+  if (!is.null(vlines)) {
+    plot <- plot +
+      ggplot2::geom_vline(xintercept = vlines)
+  }
+
+  return(plot)
+}
+
+
 #' Plot the forecast variance decomposition.
 #'
 #' Alias for the function plot in frequency domain.

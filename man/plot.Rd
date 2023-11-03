@@ -2,6 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot}
 \alias{plot}
+\alias{plot.irffd}
 \alias{plot.fevdfd}
 \alias{plot.fevfd}
 \alias{plot.fevdfevd}
@@ -9,8 +10,10 @@
 \alias{plot.fevdfev}
 \alias{plot.fevdhs}
 \alias{plot.fevdhd}
-\title{Plot the forecast variance decomposition.}
+\title{Plot the IRF in frequency domain.}
 \usage{
+\method{plot}{irffd}(x, y, vlines = NULL, ...)
+
 \method{plot}{fevdfd}(x, y, stacked = TRUE, vlines = NULL, ...)
 
 \method{plot}{fevfd}(x, y, stacked = TRUE, vlines = NULL, ...)
@@ -30,18 +33,20 @@
 
 \item{y}{Not used.}
 
-\item{stacked}{Boolean.
-True for stacked columns, False (default) for unstacked line chart.}
-
 \item{vlines}{Vector of x-axis points at which to draw a vline.
 Useful for highlighting areas.}
 
 \item{...}{Currently not used.}
 
+\item{stacked}{Boolean.
+True for stacked columns, False (default) for unstacked line chart.}
+
 \item{impulse_as}{Default to "colors", with all shocks on the same facet.
 Other option is "cols" which puts each shock as its own column facet.}
 }
 \value{
+ggplot of irffd
+
 ggplot of fevdfd
 
 ggplot of fevfd
@@ -57,6 +62,8 @@ ggplot of hs
 ggplot of hd
 }
 \description{
+Alias for the function plot in frequency domain.
+
 Alias for the function plot in frequency domain.
 
 Alias for the function plot in frequency domain.
