@@ -5,7 +5,7 @@
 \title{Find the rotation matrix Q that maximizes fevd over
 the given frequencies for the target variable.}
 \usage{
-id_fevdfd_findq(betas, sigma, target_index, freqs, grid_size)
+id_fevdfd_findq(betas, sigma, target_index, freqs, grid_size, freq_grid = NULL)
 }
 \arguments{
 \item{betas}{matrix of coeffecients from VAR}
@@ -17,6 +17,10 @@ id_fevdfd_findq(betas, sigma, target_index, freqs, grid_size)
 \item{freqs}{vector of length 2 of min and max frequencies (0:pi)}
 
 \item{grid_size}{how fine the grid to approximate the frequency domain}
+
+\item{freq_grid}{Default to NULL.
+Pass a vector of frequencies in c(0,2pi) to target those specific
+frequencies.  Overides \code{freqs} and \code{grid_size} arguments.}
 }
 \value{
 matrix q

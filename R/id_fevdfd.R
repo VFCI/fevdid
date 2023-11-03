@@ -5,6 +5,9 @@
 #' @param target, variable name or index to maximize its fev
 #' @param freqs vector of length 2 of min and max frequencies (0:2pi)
 #' @param grid_size how fine the grid to approximate the frequency domain
+#' @param freq_grid Default to NULL.
+#' Pass a vector of frequencies in c(0,2pi) to target those specific
+#' frequencies.  Overides `freqs` and `grid_size` arguments.
 #' @param sign Default to "positive". Can be "negative".  Ensures the
 #' cummulative impact of the main shock on the target variable is the
 #' given sign.
@@ -20,12 +23,14 @@
 #' mvar <- id_fevdfd(v, "pi", c(2 * pi / 32, 2 * pi / 6))
 #'
 id_fevdfd <- function(
-    x,
-    target,
-    freqs,
-    grid_size = 1000,
-    sign = "positive",
-    sign_horizon = 1) {
+  x,
+  target,
+  freqs = c(0, 2 * pi),
+  grid_size = 1000,
+  freq_grid = NULL,
+  sign = "positive",
+  sign_horizon = 1
+) {
   UseMethod("id_fevdfd")
 }
 
@@ -36,12 +41,14 @@ id_fevdfd <- function(
 #'
 #' @export
 id_fevdfd.varest <- function(
-    x,
-    target,
-    freqs,
-    grid_size = 1000,
-    sign = "positive",
-    sign_horizon = 1) {
+  x,
+  target,
+  freqs = c(0, 2 * pi),
+  grid_size = 1000,
+  freq_grid = NULL,
+  sign = "positive",
+  sign_horizon = 1
+) {
   n <- colnames(x$y)
   k <- length(n)
   ni <- 1:k
@@ -57,9 +64,11 @@ id_fevdfd.varest <- function(
     t <- target
   }
 
-  if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
-  if (!all(freqs > 0 & freqs < 2 * pi)) {
-    stop("Please provide freqs between 0 and 2pi.")
+  if (!is.null(freq_grid)) {
+    if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
+    if (!all(freqs >= 0 & freqs <= 2 * pi)) {
+      stop("Please provide freqs between 0 and 2pi.")
+    }
   }
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
@@ -68,7 +77,7 @@ id_fevdfd.varest <- function(
   betas <- svar$A_hat
   svar$B <- t(chol(sigma))
 
-  q <- id_fevdfd_findq(betas, svar$B, ti, freqs, grid_size)
+  q <- id_fevdfd_findq(betas, svar$B, ti, freqs, grid_size, freq_grid)
 
   ## Insert resulting matrix into var
   mvar <- svar
@@ -105,13 +114,15 @@ id_fevdfd.varest <- function(
 #'
 #' @export
 id_fevdfd.varboot <- function(
-    x,
-    target,
-    freqs,
-    grid_size = 1000,
-    sign = "positive",
-    sign_horizon = 1) {
-  id_fevdfd.varest(x, target, freqs, grid_size, sign, sign_horizon)
+  x,
+  target,
+  freqs = c(0, 2 * pi),
+  grid_size = 1000,
+  freq_grid = NULL,
+  sign = "positive",
+  sign_horizon = 1
+) {
+  id_fevdfd.varest(x, target, freqs, grid_size, freq_grid, sign, sign_horizon)
 }
 
 
@@ -121,12 +132,14 @@ id_fevdfd.varboot <- function(
 #'
 #' @export
 id_fevdfd.bvartools <- function(
-    x,
-    target,
-    freqs,
-    grid_size = 1000,
-    sign = "positive",
-    sign_horizon = 1) {
+  x,
+  target,
+  freqs = c(0, 2 * pi),
+  grid_size = 1000,
+  freq_grid = NULL,
+  sign = "positive",
+  sign_horizon = 1
+) {
   k <- nrow(x$y)
   p <- ncol(x$A[, 1]) %% k
   var_names <- rownames(x$y)
@@ -147,7 +160,7 @@ id_fevdfd.bvartools <- function(
     sigma <- matrix(x$Sigma[, i], k, k)
     b <- t(chol(sigma))
 
-    q <- id_fevdfd_findq(a_hat, b, ti, freqs, grid_size)
+    q <- id_fevdfd_findq(a_hat, b, ti, freqs, grid_size, freq_grid)
 
     impulse <- b %*% q
     if (impulse[ti, 1] < 0) impulse <- impulse * -1
@@ -171,12 +184,14 @@ id_fevdfd.bvartools <- function(
 #' @export
 #'
 id_fevdfd.bvar <- function(
-    x,
-    target,
-    freqs,
-    grid_size = 1000,
-    sign = "positive",
-    sign_horizon = 1) {
+  x,
+  target,
+  freqs = c(0, 2 * pi),
+  grid_size = 1000,
+  freq_grid = NULL,
+  sign = "positive",
+  sign_horizon = 1
+) {
   n <- colnames(x$meta$Y)
   k <- length(n)
   ni <- 1:k
@@ -193,9 +208,11 @@ id_fevdfd.bvar <- function(
     t <- target
   }
 
-  if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
-  if (!all(freqs > 0 & freqs < 2 * pi)) {
-    stop("Please provide freqs between 0 and 2pi.")
+  if (!is.null(freq_grid)) {
+    if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
+    if (!all(freqs >= 0 & freqs <= 2 * pi)) {
+      stop("Please provide freqs between 0 and 2pi.")
+    }
   }
 
   ## Copy BVAR object
@@ -221,7 +238,7 @@ id_fevdfd.bvar <- function(
     sigma <- x$sigma[i, , ]
     b <- t(chol(sigma))
 
-    q <- id_fevdfd_findq(betas, b, ti, freqs, grid_size)
+    q <- id_fevdfd_findq(betas, b, ti, freqs, grid_size, freq_grid)
 
 
     impact <- b %*% q
@@ -256,15 +273,20 @@ id_fevdfd.bvar <- function(
 #' @param target_index index of variable to target
 #' @param freqs vector of length 2 of min and max frequencies (0:pi)
 #' @param grid_size how fine the grid to approximate the frequency domain
+#' @param freq_grid Default to NULL.
+#' Pass a vector of frequencies in c(0,2pi) to target those specific
+#' frequencies.  Overides `freqs` and `grid_size` arguments.
 #'
 #' @return matrix q
 #'
 id_fevdfd_findq <- function(
-    betas,
-    sigma,
-    target_index,
-    freqs,
-    grid_size) {
+  betas,
+  sigma,
+  target_index,
+  freqs,
+  grid_size,
+  freq_grid = NULL
+) {
   ## Construct Objects
   k <- nrow(sigma)
   ti <- target_index
@@ -275,10 +297,16 @@ id_fevdfd_findq <- function(
   nx <- dim(ssv$mx)[[2]]
 
   ## Create grid of frequencies, set to True those to target
-  freq_grid <- seq(0, 2 * pi, length.out = grid_size)
-  f1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
-  f2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
-  freq_keep <- f1 | f2
+  if (is.null(freq_grid)) {
+    freq_grid <- seq(0, 2 * pi, length.out = grid_size)
+    f1 <- freq_grid >= min(freqs) & freq_grid <= max(freqs)
+    f2 <- freq_grid >= 2 * pi - max(freqs) & freq_grid <= 2 * pi - min(freqs)
+    freq_keep <- f1 | f2
+  } else {
+    freq_grid <- freq_grid
+    grid_size <- length(freq_grid)
+    freq_keep <- rep(TRUE, grid_size)
+  }
 
   zi <- exp(-1i * freq_grid)
   r2pi <- 1 / (2 * pi)

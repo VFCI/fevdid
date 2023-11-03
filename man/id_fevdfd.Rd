@@ -12,8 +12,9 @@ variance contribution in the frequency domain.}
 id_fevdfd(
   x,
   target,
-  freqs,
+  freqs = c(0, 2 * pi),
   grid_size = 1000,
+  freq_grid = NULL,
   sign = "positive",
   sign_horizon = 1
 )
@@ -21,8 +22,9 @@ id_fevdfd(
 \method{id_fevdfd}{varest}(
   x,
   target,
-  freqs,
+  freqs = c(0, 2 * pi),
   grid_size = 1000,
+  freq_grid = NULL,
   sign = "positive",
   sign_horizon = 1
 )
@@ -30,8 +32,9 @@ id_fevdfd(
 \method{id_fevdfd}{varboot}(
   x,
   target,
-  freqs,
+  freqs = c(0, 2 * pi),
   grid_size = 1000,
+  freq_grid = NULL,
   sign = "positive",
   sign_horizon = 1
 )
@@ -39,8 +42,9 @@ id_fevdfd(
 \method{id_fevdfd}{bvartools}(
   x,
   target,
-  freqs,
+  freqs = c(0, 2 * pi),
   grid_size = 1000,
+  freq_grid = NULL,
   sign = "positive",
   sign_horizon = 1
 )
@@ -48,8 +52,9 @@ id_fevdfd(
 \method{id_fevdfd}{bvar}(
   x,
   target,
-  freqs,
+  freqs = c(0, 2 * pi),
   grid_size = 1000,
+  freq_grid = NULL,
   sign = "positive",
   sign_horizon = 1
 )
@@ -62,6 +67,10 @@ id_fevdfd(
 \item{freqs}{vector of length 2 of min and max frequencies (0:2pi)}
 
 \item{grid_size}{how fine the grid to approximate the frequency domain}
+
+\item{freq_grid}{Default to NULL.
+Pass a vector of frequencies in c(0,2pi) to target those specific
+frequencies.  Overides \code{freqs} and \code{grid_size} arguments.}
 
 \item{sign}{Default to "positive". Can be "negative".  Ensures the
 cummulative impact of the main shock on the target variable is the
