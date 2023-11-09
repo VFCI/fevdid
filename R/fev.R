@@ -5,6 +5,14 @@
 #'
 #' @return forecast error variance
 #'
+#' @export
+#' 
+#' @examples
+#' x <- svars::USA
+#' v <- vars::VAR(x, p = 2)
+#' mvar <- id_fevdtd(v, "pi", 4:10)
+#' fev(mvar)
+#' 
 fev <- function(var, n_ahead = 20) {
   n <- colnames(var$y)
   k <- length(n)

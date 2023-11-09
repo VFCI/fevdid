@@ -17,3 +17,10 @@ forecast error variance
 \description{
 Calculate the forecast error variance for a VAR out to a specified horizon
 }
+\examples{
+x <- svars::USA
+v <- vars::VAR(x, p = 2)
+mvar <- id_fevdtd(v, "pi", 4:10)
+fev(mvar)
+
+}
