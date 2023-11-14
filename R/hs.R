@@ -133,7 +133,7 @@ hs.fevdvar <- function(
 hist_shocks <- function(
     residuals,
     sigma) {
-  hs <- residuals %*% sigma
+  hs <- t(solve(sigma) %*% t(residuals))
 
   return(hs)
 }
