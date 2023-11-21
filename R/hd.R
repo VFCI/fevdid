@@ -43,7 +43,9 @@ hd.svars <- function(
 
   ## Get historical decompositions
   hidec <- lapply(1:k, function(i) {
-    svars::hd(x, series = i)$hidec
+    hidec <- svars::hd(x, series = i)$hidec
+    if ("V1" %in% names(hidec)) hidec$V1 <- NULL
+    return(hidec)
   })
 
   ## Pull out just each shock contribution
@@ -57,7 +59,7 @@ hd.svars <- function(
     t = rep(1:t, times = k * k),
     impulse = rep(impulse_names, each = t, times = k),
     response = rep(response_names, each = t * k),
-    hd = hd,
+    hd = unname(hd),
     total = total
   )
 
