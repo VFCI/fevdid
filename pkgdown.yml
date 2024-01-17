@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   derivations: derivations.html
-last_built: 2024-01-17T00:42Z
+last_built: 2024-01-17T16:15Z
 urls:
   reference: https://vfci.github.io/fevdid/reference
   article: https://vfci.github.io/fevdid/articles
