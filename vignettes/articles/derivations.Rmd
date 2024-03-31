@@ -1,7 +1,7 @@
 ---
 title: "Derivations for Max Share Identification Method"
 author: "Matthew DeHaven"
-date: "January 16, 2023"
+date: "February 1, 2024"
 ---
 
 Article explaining the mathematics behind the two key `fevdid` functions:
@@ -23,7 +23,7 @@ where $w_t$ are mean zero structural shocks, with a serially uncorrelated diagon
 
 and $B_i$ are matrices of coefficients.
 
-Empirically, however, only the following $A_i$ matrices of coefficients and $v_t$ vector of reduced form residuals are observed,
+Empirically, however, only the following $A_i$ matrices of coefficients and $u_t$ vector of reduced form residuals are observed,
 
 $$
 y_t = \underbrace{B_0^{-1}B_1}_{A_1} y_{t-1} + ... + \underbrace{B_0^{-1}B_p}_{A_p} y_{t-p} + \underbrace{B_0^{-1} w_t}_{u_t} 
@@ -33,7 +33,7 @@ $$
 
 #### Identification Problem
 
-We observe reduced form residuals, $v_t$, but want the structural shocks, $w_t$.
+We observe reduced form residuals, $u_t$, but want the structural shocks, $w_t$.
 
 $$
 u_t = B_0^{-1} w_t
@@ -45,9 +45,31 @@ This implies that $\Sigma_u = B_0^{-1} B_0^{-1^\prime}$.
 
 In order to identify the structural shocks, we simply need to know the structural impact matrix, $B_0$, or equivalently, the inverse $B_0^{-1}$.
 
+##### Choleskey Decomposition
+
+We will not be using the Choleskey matrix as the identifying assumption, but it is still useful for expressing the identification problem.
+
+Let $P$ be the lower triangular Choleksey decomposition of the matrix $\Sigma_u$.
+
+Then,
+
+$$
+\Sigma_u =  B_0^{-1} B_0^{-1^\prime} = PQQ'P
+$$
+
+where $Q$ is an orthonormal matrix (i.e. $QQ' = I$ and $Q^{-1} = Q'$) also known as a rotation matrix.
+
+Since $B_0^{-1} = PQ$ we can represent the structural shock indentification problem as,
+
+$$
+u_t = P Q w_t
+$$
+
+where $Q$ is an unknown rotational matrix and $P$ and $u_t$ are known.
+
 ### Impulse Response Functions (IRF) and Forecast Errors
 
-It will be useful for the max share method to show the impulse response and forecast error definitions
+It will be useful for the max share method to show the impulse response and forecast error definitions.
 
 #### IRFs
 IRFs give the responses of each variable in $y_t$ for any horizon $i$ to a one-time impulse at time $t$ to each structural shock, $w_t$,
@@ -69,15 +91,15 @@ $$
 
 And we can map between the two using the $B_0$ impact matrix,
 $$
-\Theta_i = \Phi_i B_0^{-1}
+\Theta_i = \Phi_i B_0^{-1} = \Phi_i  P Q
 \\
-\theta_{kj,i} = [\Phi_i B_0^{-1}]_{kj}
+\theta_{kj,i} = [\Phi_i B_0^{-1}]_{kj} = [\Phi_i P Q]_{kj}
 $$
 
-Letting $\Phi_{k*,i}$ denote the $k$th row of $\Phi_i$ and $B_{0,*j}^{-1}$ denote the $j$th column of $B_0^{-1}$, then
+Letting $M_{k*}$ denote the $k$^th^ row and $M_{*j}$ denote the $j$^th^ column for any matrix M, then
 
 $$
-\theta_{kj,i} = \Phi_{k*,i} B_{0,*j}^{-1}
+\theta_{kj,i} = \Phi_{k*,i} B_{0,*j}^{-1} = \Phi_{k*,i} P Q_{*j}
 $$
 
 #### Forecast Errors
@@ -107,16 +129,16 @@ The FEV for impulse $j$ contribution to variable $k$ is then denoted as,
 $$
 FEV_{kj,h} =  \sum_{i=0}^{h-1}  [\Phi_i B_0^{-1}]_{jk} [\Phi_i B_0^{-1}]_{jk}^\prime
 \\
-= \sum_{i=0}^{h-1} \Phi_{k*,i} B_{0,*j}^{-1} [\Phi_{k*,i} B_{0,*j}^{-1}]^\prime
+= \sum_{i=0}^{h-1} \Phi_{k*,i} P Q_{*j} [\Phi_{k*,i} P Q_{*j}]^\prime
 \\
-= \sum_{i=0}^{h-1} \Phi_{k*,i} B_{0,*j}^{-1} B_{0,*j}^{-1\prime} \Phi_{k*,i}^\prime
+= \sum_{i=0}^{h-1} \Phi_{k*,i} P Q_{*j} Q_{*j}^\prime P^\prime \Phi_{k*,i}^\prime
 $$
 
-Since $\Phi_{k*,i} B_{0,*j}^{-1}$ is a single number (not a matrix), we can rearrange to
+Since $\Phi_{k*,i} P Q_{*j}$ is a single number (not a matrix), we can rearrange to
 $$
-= \sum_{i=0}^{h-1} B_{0,*j}^{-1\prime} \Phi_{k*,i}^\prime \Phi_{k*,i} B_{0,*j}^{-1}
+= \sum_{i=0}^{h-1} Q_{*j}^\prime P^\prime \Phi_{k*,i}^\prime \Phi_{k*,i} P Q_{*j}
 \\
-= B_{0,*j}^{-1\prime} \sum_{i=0}^{h-1}\left[\Phi_{k*,i}^\prime \Phi_{k*,i}\right] B_{0,*j}^{-1}
+= Q_{*j}^\prime \sum_{i=0}^{h-1}\left[ P^\prime \Phi_{k*,i}^\prime \Phi_{k*,i} P \right] Q_{*j}
 $$
 
 ## Max Share Identification Method - Time Domain
@@ -126,18 +148,140 @@ Pick a structural shock $j$ by choosing the weights for $B_{0,*j}^{-1}$ that max
 Solve the maximization problem:
 $$
 \max_{B_{0,*j}^{-1}} \sum_{h^-}^{h^+} \text{FEV}_{kj,h}
+\\
+= \max_{B_{0,*j}^{-1}} B_{0,*j}^{-1\prime} \sum_{h^-}^{h^+} \sum_{i=0}^{h-1}\left[\Phi_{k*,i}^\prime \Phi_{k*,i}\right] B_{0,*j}^{-1}
 $$
 
 This is equivalent to solving
 $$
-\max_{B_{0,*j}^{-1}} B_{0,*j}^{-1\prime} \sum_{h^-}^{h^+} \sum_{i=0}^{h-1}\left[\Phi_{k*,i}^\prime \Phi_{k*,i}\right] B_{0,*j}^{-1}
+\max_{Q_{*j}} Q_{*j}^\prime \sum_{h^-}^{h^+} \sum_{i=0}^{h-1}\left[P^\prime \Phi_{k*,i}^\prime \Phi_{k*,i} P\right] Q_{*j}
 $$
 
-Which is maximized when $B_{0,*j}^{-1}$ is the eigenvector associated with the largest eigenvalue of the matrix $\sum_{h^-}^{h^+} \sum_{i=0}^{h-1}\left[\Phi_{k*,i}^\prime \Phi_{k*,i}\right]$.
+Which is maximized when $Q_{*j}$ is the eigenvector associated with the largest eigenvalue of the matrix $\Lambda$,
 
-**There's a piece missing here, which is that $B_{0,*j}^{-1}B_{0,*j}^{-1}$ can be decomposed into a Choleskey matrix and rotation matrix Q, then the maximization problem becomes picking a column of Q.**
+$$
+\Lambda \equiv \sum_{h^-}^{h^+} \sum_{i=0}^{h-1}\left[P^\prime \Phi_{k*,i}^\prime \Phi_{k*,i} P\right]
+$$
+
+Both the Choleskey matrix $P$ and the reduced form IRFs $\Phi_{k*,i}$ are known.
+
+---
+
+## Simplifying VAR Representations
+
+It is useful to represent your VAR(p) process as a VAR(1) when implementing these identification methods. 
+In addition, the moving average representation will make it easier to calculate the frequency domain forecast error variance.
+
+#### Representing a VAR(p) process as a VAR(1)
+
+Any VAR(p) can be represented as a VAR(1).
+^[See page 25 of Killian and Lutkepohl.]
+
+Start with a VAR(p) process with $K$ variables in $y_t$,
+$$
+y_t = A_1 y_{t-1} + ... + A_p y_{t-p} + u_t 
+$$
+
+then it can be represented as,
+$$
+\underbrace{Y_t}_{Kpx1} = \underbrace{\mathbf{A}}_{KpxKp} Y_{t-1} + \underbrace{U_t}_{Kpx1}
+$$
+
+where
+$$
+Y_t \equiv \begin{bmatrix}y_t^\prime \\ . . . \\ y_{t-p}^\prime\end{bmatrix}
+, \hspace{1cm}
+\mathbf{A} \equiv \begin{bmatrix}A_1 & A_2 & ... & A_{p-1} & A_p \\ I_K & 0 & ... & 0 & 0 \\ 0 & I_K & ... & 0 & 0 \\ ... & ... & ... & ... & ... \\ 0 & 0 & ... &  I_K & 0 \end{bmatrix}
+, \hspace{1cm}
+U_t \equiv \begin{bmatrix}u_t \\ 0 \\ ... \\ 0 \end{bmatrix}
+$$
+
+$I_K$ is simply an indentity matrix of dimension $K$.
+
+The matrix $\mathbf{A}$ is called the companion of the VAR(p) model.
+
+#### Moving Average Representation
+
+Deriving the moving average representation MA($\infty$) is simple from the VAR(1) process, simply continously substitute,
+$$
+Y_t = \mathbf{A} Y_{t-1} + U_t
+\\
+= \sum_{i=0}^{\infty} \mathbf{A}^i U_{t-i}
+$$
+
+In order to get our original vector, $y_t$,
+$$
+y_t = \sum_{i=0}^{\infty} J \mathbf{A}^i J^\prime U_{t-i}
+$$
+
+where $J = [I_K, 0_{KxK(p-1)}]$.
+
+This is equivalent to,
+
+$$
+y_t = A(L)^{-1} u_t
+\\
+= (I - \mathbf{A})^{-1} u_t
+$$
+
+where 
+
+$$
+A(L)^{-1} = \sum_{i=0}^{\infty} \Phi_i L^{i}
+\\
+\Phi_i = J \mathbf{A}^i J^\prime
+$$
+
+$A(L)$ is known as a matrix polynomial in the lag operator, $L$.
+
+The $\Phi_i$ defined here are the reduced form IRFs that we saw before in the IRF section.
+
+---
 
 ## Max Share Identification Method - Frequency Domain
+
+#### Infinite Horizon FEV
+
+The prediction error covariance matrix ($FEV_h$) converges to the unconditional covariance matrix, $\Gamma_y(0)$,  as $h\rightarrow\infty$.
+
+$$
+\lim_{h\rightarrow\infty} FEV_h \rightarrow \Gamma_y(0)
+$$
+
+where $\Gamma_y(h)$ is the sceond moment of the VAR process
+
+$$
+\Gamma_y(h) \equiv Cov(y_t, y_{t-h}) = E[y_t y_{t-h}^\prime] = \sum_{i=0}^{\infty} \Phi_{h+i} \Sigma_u \Phi_i
+$$
+
+This is not very surprising because we saw that,
+
+$$
+FEV_{h} = \sum_{i=0}^{h-1} \Phi_i \Sigma_u \Phi_i^\prime
+$$
+
+Using our MA($\infty$) representation, we can say that
+$$
+\Gamma_y(0) = Cov(y_t, y_t) = E[ A(L)^{-1} u_t u_t^\prime A(L)^{-1\prime} ] = A(L)^{-1} \Sigma_u A(L)^{-1\prime}
+$$
+
+#### Infinite Horizon Time Domain Max Share
+
+If we wanted the structural shock $j$ that maximixes the infinited horizon FEV for variable $k$, we could then write that as...
+
+$$
+\max_{B_{0,j*}} FEV_{kj, \infty} 
+\\
+= \max_{B_{0,j*}} [A(L)^{-1} \Sigma_u A(L)^{-1\prime}]_{kj}
+\\
+= \max_{B_{0,j*}} A(L)^{-1} B_{0,j*}^{-1} B_{0,j*}^{-1}A(L)^{-1\prime}
+\\
+= \max_{Q_{j*}} A(L)^{-1}_{*k} P Q_{j*} Q^\prime_{j*} P^\prime A(L)^{-1\prime}_{*k}
+\\
+= \max_{Q_{j*}} Q^\prime_{j*} \left[ P^\prime A(L)^{-1\prime}_{*k} A(L)^{-1}_{*k} P \right] Q_{j*}
+$$
+
+#### Temp 
 
 Pick a structural shock $j$ by choosing the weights for $B_{0,*j}^{-1}$ that maximize the forecast error variance for the frequencies in $[\omega^-, \omega^+]$
 
@@ -148,7 +292,7 @@ $$
 
 This is equivalent to solving
 $$
-\max_{B_{0,*j}^{-1}} B_{0,*j}^{-1\prime} \int_{\omega^-}^{\omega^+} \Phi_{k*,\omega}^\prime \Phi_{k*,\omega} \ d\omega \ B_{0,*j}^{-1}
+ \max_{B_{0,*j}^{-1}} B_{0,*j}^{-1\prime} \int_{\omega^-}^{\omega^+} \Phi_{k*,\omega}^\prime \Phi_{k*,\omega} \ d\omega \ B_{0,*j}^{-1}
 $$
 
 where $\Phi_{k*,\omega}$ is the impulse response function for a specific frequency $\omega$.  The next sections show how to calculate this value.
