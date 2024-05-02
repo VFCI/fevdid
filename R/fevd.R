@@ -32,7 +32,7 @@ fevd.fevdvar <- function(
 
   impulse_names <- n
   if (inherits(x, "fevdvar")) {
-    impulse_names <- c("Main", paste0("Orth_", 2:k))
+    impulse_names <- x$impulse_names
   }
   response_names <- n
 

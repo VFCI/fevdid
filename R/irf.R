@@ -52,7 +52,7 @@ irf.fevdvar <- function(
 
   k <- x$K
   response_names <- colnames(x$y)
-  impulse_names <- c("Main", paste0("Orth_", 2:k))
+  impulse_names <- x$impulse_names
 
   ## Set as factors
   impulse_names <-

@@ -19,7 +19,7 @@ fev <- function(var, n_ahead = 20) {
 
   impulse_names <- n
   if (inherits(var, "fevdvar")) {
-    impulse_names <- c("Main", paste0("Orth_", 2:k))
+    impulse_names <- var$impulse_names
   }
   response_names <- n
 

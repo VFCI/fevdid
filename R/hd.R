@@ -84,7 +84,7 @@ hd.fevdvar <- function(
   t <- x$n
 
   ## Set shock names
-  impulse_names <- c("Main", paste0("Orth_", 2:k))
+  impulse_names <- x$impulse_names
   response_names <- colnames(x$y)
 
   ## Set as factors

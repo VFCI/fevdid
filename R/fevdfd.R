@@ -134,7 +134,7 @@ fevdfd.fevdvar <- function(
   k <- var$K
   fevdfd <- fevdfd(var, freqs, grid_size, fev, ...)
 
-  impulse_names <- c("Main", paste0("Orth_", 2:k))
+  impulse_names <- var$impulse_names
   impulse_names <- factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
   fevdfd[[1]]$impulse <- rep(impulse_names, each = grid_size * k)

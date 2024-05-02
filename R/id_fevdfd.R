@@ -70,18 +70,16 @@ id_fevdfd.varest <- function(
   }
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
-  svar <- svars::id.chol(x)
-  sigma <- stats::cov(stats::residuals(x))
-  betas <- svar$A_hat
-  svar$B <- t(chol(sigma))
+  svar <- id_ordered_chol(x)
 
-  q <- id_fevdfd_findq(betas, svar$B, ti, freqs, grid_size, freq_grid)
+  q <- id_fevdfd_findq(svar$A_hat, svar$B, ti, freqs, grid_size, freq_grid)
 
   ## Insert resulting matrix into var
   mvar <- svar
   mvar$Q <- q
   mvar$B <- svar$B %*% q
   mvar$method <- "id_fevdfd"
+  mvar$impulse_names <- c("Main", paste0("Orth_", 2:k))
   mvar$target <- target
   mvar$freqs <- freqs
 
@@ -166,6 +164,7 @@ id_fevdfd.bvartools <- function(
 
   mvar <- x
   mvar$method <- "id_fevdfd"
+  mvar$impulse_names <- c("Main", paste0("Orth_", 2:k))
   mvar$Sigma <- rots_sigma
 
   return(mvar)
@@ -251,6 +250,7 @@ id_fevdfd.bvar <- function(
   }
   ## Insert resulting matrix into var
   mvar$method <- "id_fevdfd"
+  mvar$impulse_names <- c("Main", paste0("Orth_", 2:k))
   mvar$target <- target
   mvar$freqs <- freqs
 

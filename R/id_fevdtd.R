@@ -57,8 +57,8 @@ id_fevdtd.varest <- function(
   if (!all(horizon > 0)) stop("Please provide only positive horizon values.")
 
   ## Fit a Choleskey SVAR (need orthogonal shocks)
-  b <- t(chol(stats::cov(stats::residuals(x))))
-  svar <- svars::id.chol(x)
+  svar <- id_ordered_chol(x)
+  b <- svar$B
 
   q <- id_fevdtd_findq(svar$A_hat, b, ti, horizon)
 
@@ -67,6 +67,7 @@ id_fevdtd.varest <- function(
   mvar$Q <- q
   mvar$B <- b %*% q
   mvar$method <- "id_fevdtd"
+  mvar$impulse_names <- c("Main", paste0("Orth_", 2:k))
   mvar$target <- target
   mvar$horizon <- horizon
 
@@ -148,6 +149,7 @@ id_fevdtd.bvartools <- function(
 
   mvar <- x
   mvar$method <- "id_fevdtd"
+  mvar$impulse_names <- c("Main", paste0("Orth_", 2:k))
   mvar$Sigma <- rots_sigma
 
   return(mvar)
@@ -226,6 +228,7 @@ id_fevdtd.bvar <- function(
   }
   ## Insert resulting matrix into var
   mvar$method <- "id_fevdtd"
+  mvar$impulse_names <- c("Main", paste0("Orth_", 2:k))
   mvar$target <- target
   mvar$horizon <- horizon
 

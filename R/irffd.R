@@ -100,7 +100,7 @@ irffd.fevdvar <- function(
   irffd <- irffd_generic(var, freqs, grid_size)
 
   response_names <- colnames(var$y)
-  impulse_names <- c("Main", paste0("Orth_", 2:k))
+  impulse_names <- var$impulse_names
   impulse_names <- factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
   df <- data.frame(
