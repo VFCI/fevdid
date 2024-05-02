@@ -8,9 +8,7 @@
 #' @export
 #'
 id_ordered_chol <- function(
-  x
-) {
-
+    x) {
   n <- colnames(x$y)
   k <- length(n)
 
