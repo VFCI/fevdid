@@ -54,11 +54,6 @@ irf.fevdvar <- function(
   response_names <- colnames(x$y)
   impulse_names <- x$impulse_names
 
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-  response_names <-
-    factor(response_names, levels = response_names, ordered = TRUE)
 
   ## Represent as state space var
   ssv <- as_statespace_var(x$A_hat, x$B)

@@ -37,10 +37,6 @@ hs.svars <- function(
   ## Set shock names
   impulse_names <- colnames(x$y)
 
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-
   ## Get residuals and Sigma
   residuals <- stats::resid(x$VAR)
   sigma <- x$B
@@ -88,10 +84,6 @@ hs.fevdvar <- function(
 
   ## Set shock names
   impulse_names <- x$impulse_names
-
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
   ## Get residuals and Sigma
   residuals <- stats::resid(x$VAR)

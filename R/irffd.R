@@ -101,7 +101,6 @@ irffd.fevdvar <- function(
 
   response_names <- colnames(var$y)
   impulse_names <- var$impulse_names
-  impulse_names <- factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
   df <- data.frame(
     f = rep(irffd$freq_grid, times = k * k),
@@ -138,7 +137,6 @@ irffd.svars <- function(
 
   response_names <- colnames(var$y)
   impulse_names <- colnames(var$y)
-  impulse_names <- factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
   df <- data.frame(
     f = rep(irffd$freq_grid, times = k * k),

@@ -23,12 +23,6 @@ fev <- function(var, n_ahead = 20) {
   }
   response_names <- n
 
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-  response_names <-
-    factor(response_names, levels = response_names, ordered = TRUE)
-
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
   if (inherits(var, "fevdvar")) {
     irf <- vars::irf(var, n.ahead = n_ahead, as_matrix = TRUE)

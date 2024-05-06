@@ -36,12 +36,6 @@ fevd.fevdvar <- function(
   }
   response_names <- n
 
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-  response_names <-
-    factor(response_names, levels = response_names, ordered = TRUE)
-
   class(x) <- "svars"
 
   fevd <- vars::fevd(x, n.ahead = n.ahead, ...)

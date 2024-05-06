@@ -35,12 +35,6 @@ hd.svars <- function(
   impulse_names <- colnames(x$y)
   response_names <- colnames(x$y)
 
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-  response_names <-
-    factor(response_names, levels = response_names, ordered = TRUE)
-
   ## Get historical decompositions
   hidec <- lapply(1:k, function(i) {
     hidec <- svars::hd(x, series = i)$hidec
@@ -86,12 +80,6 @@ hd.fevdvar <- function(
   ## Set shock names
   impulse_names <- x$impulse_names
   response_names <- colnames(x$y)
-
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-  response_names <-
-    factor(response_names, levels = response_names, ordered = TRUE)
 
   ## Get historical decompositions
   hidec <- lapply(1:k, function(i) {

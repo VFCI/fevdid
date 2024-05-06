@@ -41,12 +41,6 @@ fevdfd.svars <- function(
   impulse_names <- n
   response_names <- n
 
-  ## Set as factors
-  impulse_names <-
-    factor(impulse_names, levels = impulse_names, ordered = TRUE)
-  response_names <-
-    factor(response_names, levels = response_names, ordered = TRUE)
-
   if (!is.numeric(freqs)) stop("Please provide numeric freqs.")
   if (!all(freqs >= 0 & freqs <= 2 * pi)) {
     stop("Please provide freqs between 0 and 2pi.")
@@ -135,7 +129,6 @@ fevdfd.fevdvar <- function(
   fevdfd <- fevdfd(var, freqs, grid_size, fev, ...)
 
   impulse_names <- var$impulse_names
-  impulse_names <- factor(impulse_names, levels = impulse_names, ordered = TRUE)
 
   fevdfd[[1]]$impulse <- rep(impulse_names, each = grid_size * k)
 
