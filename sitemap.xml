@@ -1,84 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://vfci.github.io/fevdid/404.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/articles/derivations.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/index.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/as_statespace_var.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/bootstrap.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/fev.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/fevd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/fevdfd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/fevfd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/hd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/hist_shocks.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/hs.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdfd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdfd_findq.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdtd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_fevdtd_findq.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/id_ordered_chol.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/irf.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/irf_ssv.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/irffd.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/irffd_generic.html</loc>
-  </url>
-  <url>
-    <loc>https://vfci.github.io/fevdid/reference/plot.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://vfci.github.io/fevdid/404.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/LICENSE-text.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/LICENSE.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/articles/derivations.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/articles/index.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/authors.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/index.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/as_statespace_var.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/bootstrap.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/fe.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/fev.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/fevd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/fevdfd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/fevfd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/forecast.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/hd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/hist_shocks.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/hs.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/id_fevdfd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/id_fevdfd_findq.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/id_fevdtd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/id_fevdtd_findq.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/id_ordered_chol.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/index.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/irf.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/irf_ssv.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/irffd.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/irffd_generic.html</loc></url>
+<url><loc>https://vfci.github.io/fevdid/reference/plot.html</loc></url>
 </urlset>
+
