@@ -26,10 +26,14 @@ fev <- function(var, n_ahead = 20) {
   ## Calculate IRFs out to horizon (then adj to 3-dim matrix from DF)
   if (inherits(var, "fevdvar")) {
     irf <- vars::irf(var, n.ahead = n_ahead, as_matrix = TRUE)
-  } else {
+  } else if (inherits(var, "svars")) {
     irf <- vars::irf(var, n.ahead = n_ahead)[[1]][, -1] |>
       apply(1, matrix, simplify = FALSE, nrow = k, ncol = k, byrow = TRUE) |>
       simplify2array()
+  } else if (inherits(var, "varest")) {
+    stop("Please pass an svar object instead of a varest.")
+  } else {
+    stop("This class of VAR not supported")
   }
 
   # Forecast Error Variance calculation

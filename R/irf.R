@@ -151,9 +151,16 @@ irf.bvartools <- function(
 #' @param ssv Statespace VAR class.
 #' @param n_ahead integer. How far out to calculate the impulse response.
 #'
+#' @return array of irfs, dimensions = c(response, shock, horizon)
+#'
 irf_ssv <- function(
-    ssv,
-    n_ahead = 10) {
+  ssv,
+  n_ahead = 10
+) {
+
+  ## Declare this to avoid "no visible binding" warning
+  `%^%` <- expm::`%^%`
+
   k <- nrow(ssv$my)
 
   irf <- array(0, dim = c(k, k, n_ahead))

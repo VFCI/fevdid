@@ -11,6 +11,9 @@ irf_ssv(ssv, n_ahead = 10)
 
 \item{n_ahead}{integer. How far out to calculate the impulse response.}
 }
+\value{
+array of irfs, dimensions = c(response, shock, horizon)
+}
 \description{
 Simple IRF function for statespace VARs
 }
