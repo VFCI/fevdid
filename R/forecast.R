@@ -16,7 +16,6 @@
 #' forecast(v, 10)
 #'
 forecast <- function(var, horizon = 1) {
-
   ## Declare this to avoid "no visible binding" warning
   `%^%` <- expm::`%^%`
 
@@ -49,7 +48,7 @@ forecast <- function(var, horizon = 1) {
 
   non_const <- (ssv$mx %^% (horizon)) %*% t(as.matrix(x_lag))
 
-  x_hat_h <-  t(c(ssv$my %*% const) + ssv$my %*% non_const)
+  x_hat_h <- t(c(ssv$my %*% const) + ssv$my %*% non_const)
 
   x_hat_h <- rbind(matrix(NA, var$p + (horizon - 1), var$K), x_hat_h)
   colnames(x_hat_h) <- colnames(x)

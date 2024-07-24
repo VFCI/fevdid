@@ -15,7 +15,6 @@
 #' fe(v, 10)
 #'
 fe <- function(var, horizon = 1) {
-
   ## Declare this to avoid "no visible binding" warning
   `%^%` <- expm::`%^%`
 

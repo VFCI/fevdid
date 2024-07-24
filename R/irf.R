@@ -154,10 +154,8 @@ irf.bvartools <- function(
 #' @return array of irfs, dimensions = c(response, shock, horizon)
 #'
 irf_ssv <- function(
-  ssv,
-  n_ahead = 10
-) {
-
+    ssv,
+    n_ahead = 10) {
   ## Declare this to avoid "no visible binding" warning
   `%^%` <- expm::`%^%`
 
